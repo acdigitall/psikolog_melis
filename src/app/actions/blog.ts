@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin, getAdminSession } from '@/lib/auth';
+
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
@@ -32,6 +34,8 @@ function slugify(text: string) {
 // Bütün blog yazılarını getir (Admin ve Genel sayfa için)
 export async function getBlogPosts(onlyPublished = false) {
   try {
+    // Taslaklar dahil tüm yazılar yalnızca yöneticiye açık.
+    if (!onlyPublished) await requireAdmin();
     const posts = await prisma.blogPost.findMany({
       where: onlyPublished ? { status: "Yayında" } : {},
       orderBy: { createdAt: 'desc' }
@@ -50,6 +54,8 @@ export async function getBlogPostBySlug(slug: string) {
       where: { slug }
     });
     if (!post) return { success: false, error: "Yazı bulunamadı." };
+    // Yayında olmayan (taslak) yazılar yalnızca yöneticiye görünür.
+    if (post.status !== 'Yayında' && !(await getAdminSession())) return { success: false, error: "Yazı bulunamadı." };
 
     // Görüntülenme sayısını artır
     await prisma.blogPost.update({
@@ -77,6 +83,7 @@ export async function createBlogPost(formData: {
   metaKeys?: string;
 }) {
   try {
+    await requireAdmin();
     const { title, category, excerpt, content, status, image, metaTitle, metaDesc, metaKeys } = formData;
     const baseSlug = slugify(title);
     
@@ -127,6 +134,7 @@ export async function updateBlogPost(id: number, formData: {
   metaKeys?: string;
 }) {
   try {
+    await requireAdmin();
     const { title, category, excerpt, content, status, image, metaTitle, metaDesc, metaKeys } = formData;
     const existingPost = await prisma.blogPost.findUnique({ where: { id } });
     if (!existingPost) return { success: false, error: "Yazı bulunamadı." };
@@ -174,6 +182,7 @@ export async function updateBlogPost(id: number, formData: {
 // Blog yazısını sil
 export async function deleteBlogPost(id: number) {
   try {
+    await requireAdmin();
     await prisma.blogPost.delete({
       where: { id }
     });

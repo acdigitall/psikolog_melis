@@ -71,9 +71,9 @@ export default function HomeAdmin() {
     setUploadingField(null);
     if (res.success && res.url) {
       setUrl(res.url);
-      alert('File uploaded successfully.');
+      alert('Dosya başarıyla yüklendi.');
     } else {
-      alert(res.error || 'Failed to upload file.');
+      alert(res.error || 'Dosya yüklenemedi.');
     }
   };
 
@@ -113,9 +113,9 @@ export default function HomeAdmin() {
     setSaving(false);
 
     if (res.success) {
-      alert("Home page updated successfully!");
+      alert("Ana sayfa başarıyla güncellendi.");
     } else {
-      alert(res.error || "An error occurred.");
+      alert(res.error || "Bir hata oluştu.");
     }
   };
 
@@ -131,65 +131,65 @@ export default function HomeAdmin() {
   };
 
   if (loading) {
-    return <div className="p-8 text-center text-stone-500 font-bold uppercase tracking-widest">Loading...</div>;
+    return <div className="p-8 text-center text-stone-500 font-bold uppercase tracking-widest">Yükleniyor...</div>;
   }
 
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-serif text-stone-900 mb-2">Home Page Management</h1>
-          <p className="text-stone-500">Manage homepage text content and SEO settings.</p>
+          <h1 className="text-3xl font-serif text-stone-900 mb-2">Ana Sayfa Yönetimi</h1>
+          <p className="text-stone-500">Ana sayfa metinlerini ve SEO ayarlarını yönetin.</p>
         </div>
       </div>
 
       <form onSubmit={handleSave} className="space-y-8 max-w-5xl">
         {/* SEO Section */}
         <section className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-stone-200 space-y-6">
-          <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">SEO Settings</h2>
+          <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">SEO Ayarları</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Meta Title</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Meta başlık</label>
               <input type="text" value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded" />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Meta Description</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Meta açıklama</label>
               <textarea value={metaDesc} onChange={(e) => setMetaDesc(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded h-24" />
             </div>
             <div className="space-y-2 md:col-span-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Keywords</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Anahtar kelimeler</label>
               <input type="text" value={metaKeys} onChange={(e) => setMetaKeys(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded" />
             </div>
           </div>
         </section>
 
-        {/* Services Section */}
+        {/* Hizmetler Bölümü */}
         <section className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-stone-200 space-y-6">
-          <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">Services Section</h2>
+          <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">Hizmetler Bölümü</h2>
           <div className="space-y-2 max-w-xl">
-            <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Section Title</label>
+            <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Bölüm başlığı</label>
             <input type="text" value={servicesTitle} onChange={(e) => setServicesTitle(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded" />
-            <p className="text-xs text-stone-500 mt-2">Service cards are automatically fetched from items created under "Services" page where "Featured on Homepage" option is checked.</p>
+            <p className="text-xs text-stone-500 mt-2">Hizmet kartları, "Hizmetler" sayfasında "Ana sayfada öne çıkar" seçeneği işaretlenen hizmetlerden otomatik alınır.</p>
           </div>
         </section>
 
         {/* Why Us Section */}
         <section className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-stone-200 space-y-6">
-          <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">Why Choose Us?</h2>
+          <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">Yaklaşımım</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Section Title</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Bölüm başlığı</label>
               <input type="text" value={whyUsTitle} onChange={(e) => setWhyUsTitle(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded" />
             </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Upload Cover Image</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Kapak Görseli Yükle</label>
               {whyUsImg ? (
                 <div className="relative aspect-[4/3] w-full max-w-sm bg-stone-100 border border-stone-200 shadow-sm overflow-hidden group rounded">
-                  <Image src={whyUsImg} alt="Image" fill className="object-cover" unoptimized />
+                  <Image src={whyUsImg} alt="Görsel" fill className="object-cover" unoptimized />
                   <div className="absolute inset-0 bg-stone-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button type="button" onClick={() => setWhyUsImg('')} className="px-6 py-2 bg-red-600 text-white font-bold text-xs uppercase tracking-wider rounded shadow hover:bg-red-700 transition-colors">Remove Image</button>
+                    <button type="button" onClick={() => setWhyUsImg('')} className="px-6 py-2 bg-red-600 text-white font-bold text-xs uppercase tracking-wider rounded shadow hover:bg-red-700 transition-colors">Görseli Kaldır</button>
                   </div>
                 </div>
               ) : (
@@ -200,8 +200,8 @@ export default function HomeAdmin() {
                   className={`block w-full max-w-sm border-2 border-dashed px-4 py-12 flex flex-col items-center justify-center text-center cursor-pointer transition-all rounded ${dragField === 'whyUs' ? 'border-amber-700 bg-amber-50/50' : 'border-stone-300 bg-stone-50 hover:bg-stone-100'}`}
                 >
                   <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setWhyUsImg, 'whyUs')} disabled={uploadingField === 'whyUs'} className="hidden" />
-                  <span className="text-sm font-bold text-stone-700">{uploadingField === 'whyUs' ? 'Uploading...' : 'Select or Drag Image'}</span>
-                  <p className="text-amber-700 font-medium text-xs mt-1">Recommended Image Size: 800 x 800px (square format)</p>
+                  <span className="text-sm font-bold text-stone-700">{uploadingField === 'whyUs' ? 'Yükleniyor...' : 'Görsel seçin ya da sürükleyin'}</span>
+                  <p className="text-amber-700 font-medium text-xs mt-1">Önerilen görsel boyutu: 800 x 800 px (kare)</p>
                 </label>
               )}
             </div>
@@ -209,16 +209,16 @@ export default function HomeAdmin() {
 
           <div className="space-y-4 pt-6">
             <div className="flex justify-between items-center">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider">Items List</label>
-              <button type="button" onClick={addWhyUsItem} className="px-4 py-2 bg-stone-200 text-stone-900 text-xs font-bold uppercase rounded hover:bg-stone-300">Add Item</button>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider">Maddeler</label>
+              <button type="button" onClick={addWhyUsItem} className="px-4 py-2 bg-stone-200 text-stone-900 text-xs font-bold uppercase rounded hover:bg-stone-300">Madde Ekle</button>
             </div>
             {whyUsItems.map((item, index) => (
               <div key={index} className="flex gap-4 items-start bg-stone-50 p-4 rounded border border-stone-200">
                 <div className="flex-1 space-y-4">
-                  <input type="text" placeholder="Title (e.g. On-Time Delivery)" value={item.title} onChange={(e) => updateWhyUsItem(index, 'title', e.target.value)} className="w-full bg-white border border-stone-200 px-4 py-3 rounded font-bold" />
-                  <textarea placeholder="Description" value={item.desc} onChange={(e) => updateWhyUsItem(index, 'desc', e.target.value)} className="w-full bg-white border border-stone-200 px-4 py-3 rounded h-20 text-sm" />
+                  <input type="text" placeholder="Başlık (ör. Şefkatli ve yargısız)" value={item.title} onChange={(e) => updateWhyUsItem(index, 'title', e.target.value)} className="w-full bg-white border border-stone-200 px-4 py-3 rounded font-bold" />
+                  <textarea placeholder="Açıklama" value={item.desc} onChange={(e) => updateWhyUsItem(index, 'desc', e.target.value)} className="w-full bg-white border border-stone-200 px-4 py-3 rounded h-20 text-sm" />
                 </div>
-                <button type="button" onClick={() => removeWhyUsItem(index)} className="px-3 py-3 bg-red-100 text-red-600 rounded hover:bg-red-200">Delete</button>
+                <button type="button" onClick={() => removeWhyUsItem(index)} className="px-3 py-3 bg-red-100 text-red-600 rounded hover:bg-red-200">Sil</button>
               </div>
             ))}
           </div>
@@ -229,11 +229,11 @@ export default function HomeAdmin() {
           <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">Blog Bölümü (Ana Sayfa)</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Section Title</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Bölüm başlığı</label>
               <input type="text" value={projectsTitle} onChange={(e) => setProjectsTitle(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded" />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Description Text</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Açıklama metni</label>
               <textarea value={projectsDesc} onChange={(e) => setProjectsDesc(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded h-24" />
             </div>
           </div>
@@ -242,36 +242,36 @@ export default function HomeAdmin() {
 
         {/* CTA Section */}
         <section className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-stone-200 space-y-6">
-          <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">Call to Action (CTA) Section</h2>
+          <h2 className="text-xl font-serif font-bold text-stone-900 border-b border-stone-100 pb-2">Randevu Çağrısı (CTA) Bölümü</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2 md:col-span-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Main Heading</label>
-              <input type="text" value={ctaTitle} onChange={(e) => setCtaTitle(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded font-serif text-lg" placeholder="e.g. Let's Design Your Dream Space Together (Use <br/> for line break)" />
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Ana başlık</label>
+              <input type="text" value={ctaTitle} onChange={(e) => setCtaTitle(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded font-serif text-lg" placeholder="ör. Kendinizi daha iyi hissetmeye doğru ilk adımı atın (satır atlamak için <br/> kullanın)" />
             </div>
             
             <div className="space-y-2 md:col-span-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Description Paragraph</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Açıklama paragrafı</label>
               <textarea value={ctaDesc} onChange={(e) => setCtaDesc(e.target.value)} className="w-full bg-stone-50 border border-stone-200 px-4 py-3 rounded h-24" />
             </div>
 
             <div className="space-y-4 p-4 border border-stone-200 rounded">
-              <h4 className="font-bold text-stone-900 uppercase text-xs">Left Button (Button 1)</h4>
+              <h4 className="font-bold text-stone-900 uppercase text-xs">Sol buton (1. buton)</h4>
               <div className="space-y-2">
-                <input type="text" value={ctaBtn1Text} onChange={(e) => setCtaBtn1Text(e.target.value)} placeholder="Button Text" className="w-full bg-white border border-stone-200 px-4 py-3 rounded" />
+                <input type="text" value={ctaBtn1Text} onChange={(e) => setCtaBtn1Text(e.target.value)} placeholder="Buton metni" className="w-full bg-white border border-stone-200 px-4 py-3 rounded" />
               </div>
               <div className="space-y-2">
-                <input type="text" value={ctaBtn1Link} onChange={(e) => setCtaBtn1Link(e.target.value)} placeholder="Button Link (e.g. /quote)" className="w-full bg-white border border-stone-200 px-4 py-3 rounded" />
+                <input type="text" value={ctaBtn1Link} onChange={(e) => setCtaBtn1Link(e.target.value)} placeholder="Buton bağlantısı (ör. /quote)" className="w-full bg-white border border-stone-200 px-4 py-3 rounded" />
               </div>
             </div>
 
             <div className="space-y-4 p-4 border border-stone-200 rounded">
-              <h4 className="font-bold text-stone-900 uppercase text-xs">Right Button (Button 2)</h4>
+              <h4 className="font-bold text-stone-900 uppercase text-xs">Sağ buton (2. buton)</h4>
               <div className="space-y-2">
-                <input type="text" value={ctaBtn2Text} onChange={(e) => setCtaBtn2Text(e.target.value)} placeholder="Button Text" className="w-full bg-white border border-stone-200 px-4 py-3 rounded" />
+                <input type="text" value={ctaBtn2Text} onChange={(e) => setCtaBtn2Text(e.target.value)} placeholder="Buton metni" className="w-full bg-white border border-stone-200 px-4 py-3 rounded" />
               </div>
               <div className="space-y-2">
-                <input type="text" value={ctaBtn2Link} onChange={(e) => setCtaBtn2Link(e.target.value)} placeholder="Button Link (e.g. /contact)" className="w-full bg-white border border-stone-200 px-4 py-3 rounded" />
+                <input type="text" value={ctaBtn2Link} onChange={(e) => setCtaBtn2Link(e.target.value)} placeholder="Buton bağlantısı (ör. /contact)" className="w-full bg-white border border-stone-200 px-4 py-3 rounded" />
               </div>
             </div>
           </div>
@@ -283,7 +283,7 @@ export default function HomeAdmin() {
             disabled={saving}
             className="px-8 py-3 bg-stone-900 text-white font-bold text-sm uppercase tracking-wider rounded hover:bg-amber-800 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {saving ? 'Saving...' : 'Save All Changes'}
+            {saving ? 'Kaydediliyor...' : 'Tüm Değişiklikleri Kaydet'}
           </button>
         </div>
       </form>

@@ -49,8 +49,8 @@ export default function ContactSettingsAdmin() {
       }
       if (!Array.isArray(parsedPhones) || parsedPhones.length === 0) {
         parsedPhones = [];
-        if (res.data.phone1) parsedPhones.push({ label: 'Main Phone', value: res.data.phone1 });
-        if (res.data.phone2) parsedPhones.push({ label: 'Alternative Phone', value: res.data.phone2 });
+        if (res.data.phone1) parsedPhones.push({ label: 'Randevu', value: res.data.phone1 });
+        if (res.data.phone2) parsedPhones.push({ label: 'Diğer telefon', value: res.data.phone2 });
       }
       setPhones(parsedPhones);
 
@@ -65,7 +65,7 @@ export default function ContactSettingsAdmin() {
       }
       if (!Array.isArray(parsedEmails) || parsedEmails.length === 0) {
         parsedEmails = [];
-        if (res.data.email) parsedEmails.push({ label: 'Email', value: res.data.email });
+        if (res.data.email) parsedEmails.push({ label: 'E-posta', value: res.data.email });
       }
       setEmails(parsedEmails);
       
@@ -102,15 +102,15 @@ export default function ContactSettingsAdmin() {
     const res = await uploadImageAction(uploadFormData);
     if (res.success && res.url) {
       setFormData(prev => ({ ...prev, [fieldName]: res.url }));
-      setMessage({ text: 'Logo image uploaded successfully. Click "Save Changes" to apply.', type: 'success' });
+      setMessage({ text: 'Logo yüklendi. Uygulamak için "Değişiklikleri Kaydet"e tıklayın.', type: 'success' });
     } else {
-      setMessage({ text: res.error || 'Failed to upload logo image.', type: 'error' });
+      setMessage({ text: res.error || 'Logo yüklenemedi.', type: 'error' });
     }
     setUploadingField(null);
   };
 
   const addPhone = () => {
-    setPhones([...phones, { label: 'Phone', value: '' }]);
+    setPhones([...phones, { label: 'Telefon', value: '' }]);
   };
 
   const removePhone = (index: number) => {
@@ -126,7 +126,7 @@ export default function ContactSettingsAdmin() {
   };
 
   const addEmail = () => {
-    setEmails([...emails, { label: 'Email', value: '' }]);
+    setEmails([...emails, { label: 'E-posta', value: '' }]);
   };
 
   const removeEmail = (index: number) => {
@@ -142,7 +142,7 @@ export default function ContactSettingsAdmin() {
   };
 
   const addSocialLink = () => {
-    setSocialLinks([...socialLinks, { platform: 'New Platform', url: 'https://' }]);
+    setSocialLinks([...socialLinks, { platform: 'Yeni Platform', url: 'https://' }]);
   };
 
   const removeSocialLink = (index: number) => {
@@ -178,21 +178,21 @@ export default function ContactSettingsAdmin() {
     });
 
     if (res.success) {
-      setMessage({ text: 'Settings saved successfully.', type: 'success' });
+      setMessage({ text: 'Ayarlar başarıyla kaydedildi.', type: 'success' });
     } else {
-      setMessage({ text: res.error || 'An error occurred.', type: 'error' });
+      setMessage({ text: res.error || 'Bir hata oluştu.', type: 'error' });
     }
     setIsSaving(false);
   };
 
-  if (isLoading) return <div className="p-8 text-center text-stone-500">Loading...</div>;
+  if (isLoading) return <div className="p-8 text-center text-stone-500">Yükleniyor...</div>;
 
   return (
     <div className="space-y-6">
       <PageHeaderForm pageIdentifier="contact" />
       <div className="bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
         <div className="p-6 border-b border-stone-200 bg-stone-50 flex justify-between items-center">
-          <h2 className="text-lg font-bold text-stone-800">Site Branding & Contact Settings</h2>
+          <h2 className="text-lg font-bold text-stone-800">Logo ve İletişim Ayarları</h2>
         </div>
 
         <div className="p-6">
@@ -207,9 +207,9 @@ export default function ContactSettingsAdmin() {
             {/* Site Logo Section */}
             <div className="space-y-6 bg-stone-50 p-6 rounded-lg border border-stone-200">
               <div>
-                <h3 className="text-sm font-bold text-stone-900 uppercase tracking-wider">Site Logos (Dynamic Logo Management)</h3>
+                <h3 className="text-sm font-bold text-stone-900 uppercase tracking-wider">Site logoları</h3>
                 <p className="text-xs text-stone-500 mt-1">
-                  Update site logos used across Navbar, Loading Screen, Footer, and Admin Panel.
+                  Menüde, yükleme ekranında, alt bilgide ve yönetim panelinde kullanılan logoları güncelleyin.
                 </p>
               </div>
 
@@ -219,14 +219,14 @@ export default function ContactSettingsAdmin() {
                 <div className="bg-white p-4 rounded border border-stone-200 space-y-4">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-stone-800 uppercase">
-                      Navbar & Loading Screen Logo (Light Background)
+                      Menü ve yükleme ekranı logosu (açık zemin)
                     </label>
                     <button
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, logo: '' }))}
                       className="text-[11px] text-amber-700 hover:underline font-semibold"
                     >
-                      Reset to Default
+                      Varsayılana dön
                     </button>
                   </div>
 
@@ -235,13 +235,13 @@ export default function ContactSettingsAdmin() {
                     {formData.logo ? (
                       <Image
                         src={formData.logo}
-                        alt="Header Logo Preview"
+                        alt="Üst logo önizlemesi"
                         width={180}
                         height={60}
                         className="max-h-full w-auto object-contain"
                       />
                     ) : (
-                      <span className="text-xs text-stone-400">No logo found</span>
+                      <span className="text-xs text-stone-400">Logo yok</span>
                     )}
                   </div>
 
@@ -249,7 +249,7 @@ export default function ContactSettingsAdmin() {
                   <div className="space-y-2">
                     <div className="flex gap-2 items-center">
                       <label className="cursor-pointer px-4 py-2 bg-stone-900 text-white text-xs font-bold rounded hover:bg-amber-800 transition-colors shrink-0">
-                        {uploadingField === 'logo' ? 'Uploading...' : 'Upload Image'}
+                        {uploadingField === 'logo' ? 'Yükleniyor...' : 'Görsel Yükle'}
                         <input
                           type="file"
                           accept="image/*"
@@ -270,18 +270,18 @@ export default function ContactSettingsAdmin() {
                   </div>
                 </div>
 
-                {/* Footer & Admin Logo */}
+                {/* Footer & Yönetim paneli logosu */}
                 <div className="bg-stone-900 text-white p-4 rounded border border-stone-800 space-y-4">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-stone-200 uppercase">
-                      Footer & Admin Panel Logo (Dark Background)
+                      Alt bilgi ve yönetim paneli logosu (koyu zemin)
                     </label>
                     <button
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, logoFooter: '' }))}
                       className="text-[11px] text-amber-400 hover:underline font-semibold"
                     >
-                      Reset to Default
+                      Varsayılana dön
                     </button>
                   </div>
 
@@ -290,13 +290,13 @@ export default function ContactSettingsAdmin() {
                     {formData.logoFooter ? (
                       <Image
                         src={formData.logoFooter}
-                        alt="Footer Logo Preview"
+                        alt="Alt logo önizlemesi"
                         width={180}
                         height={60}
                         className="max-h-full w-auto object-contain"
                       />
                     ) : (
-                      <span className="text-xs text-stone-600">No logo found</span>
+                      <span className="text-xs text-stone-600">Logo yok</span>
                     )}
                   </div>
 
@@ -304,7 +304,7 @@ export default function ContactSettingsAdmin() {
                   <div className="space-y-2">
                     <div className="flex gap-2 items-center">
                       <label className="cursor-pointer px-4 py-2 bg-amber-700 text-white text-xs font-bold rounded hover:bg-amber-600 transition-colors shrink-0">
-                        {uploadingField === 'logoFooter' ? 'Uploading...' : 'Upload Image'}
+                        {uploadingField === 'logoFooter' ? 'Yükleniyor...' : 'Görsel Yükle'}
                         <input
                           type="file"
                           accept="image/*"
@@ -328,22 +328,22 @@ export default function ContactSettingsAdmin() {
               </div>
             </div>
 
-            {/* Dynamic Phone Numbers */}
+            {/* Dynamic Telefon numaraları */}
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">Phone Numbers</label>
+                <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">Telefon numaraları</label>
                 <button
                   type="button"
                   onClick={addPhone}
                   className="px-3 py-1 bg-stone-200 text-stone-700 text-xs font-bold rounded hover:bg-stone-300 transition-colors"
                 >
-                  + Add Phone
+                  + Telefon ekle
                 </button>
               </div>
 
               {phones.length === 0 ? (
                 <div className="text-sm text-stone-500 italic p-4 bg-stone-50 rounded text-center border border-dashed border-stone-300">
-                  No phone numbers added yet.
+                  Henüz telefon numarası eklenmedi.
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-3">
@@ -351,7 +351,7 @@ export default function ContactSettingsAdmin() {
                     <div key={index} className="flex gap-3 items-center bg-stone-50 p-3 rounded border border-stone-200">
                       <input
                         type="text"
-                        placeholder="Label (e.g. Main Phone, WhatsApp)"
+                        placeholder="Etiket (ör. Randevu, WhatsApp)"
                         value={p.label}
                         onChange={(e) => updatePhone(index, 'label', e.target.value)}
                         className="w-1/3 bg-white border border-stone-200 px-3 py-2 text-sm rounded focus:outline-none focus:border-amber-700 transition-colors"
@@ -359,7 +359,7 @@ export default function ContactSettingsAdmin() {
                       />
                       <input
                         type="text"
-                        placeholder="Phone Number"
+                        placeholder="Telefon numarası"
                         value={p.value}
                         onChange={(e) => updatePhone(index, 'value', e.target.value)}
                         className="w-full bg-white border border-stone-200 px-3 py-2 text-sm rounded focus:outline-none focus:border-amber-700 transition-colors"
@@ -369,7 +369,7 @@ export default function ContactSettingsAdmin() {
                         type="button"
                         onClick={() => removePhone(index)}
                         className="p-2 text-red-500 hover:bg-red-50 rounded"
-                        title="Delete"
+                        title="Sil"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                       </button>
@@ -382,19 +382,19 @@ export default function ContactSettingsAdmin() {
             {/* Dynamic Emails */}
             <div className="pt-6 border-t border-stone-200 space-y-3">
               <div className="flex justify-between items-center">
-                <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">Email Addresses</label>
+                <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">E-posta adresleri</label>
                 <button
                   type="button"
                   onClick={addEmail}
                   className="px-3 py-1 bg-stone-200 text-stone-700 text-xs font-bold rounded hover:bg-stone-300 transition-colors"
                 >
-                  + Add Email
+                  + E-posta ekle
                 </button>
               </div>
 
               {emails.length === 0 ? (
                 <div className="text-sm text-stone-500 italic p-4 bg-stone-50 rounded text-center border border-dashed border-stone-300">
-                  No email addresses added yet.
+                  Henüz e-posta adresi eklenmedi.
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-3">
@@ -402,7 +402,7 @@ export default function ContactSettingsAdmin() {
                     <div key={index} className="flex gap-3 items-center bg-stone-50 p-3 rounded border border-stone-200">
                       <input
                         type="text"
-                        placeholder="Label (e.g. Sales, General Inquiry)"
+                        placeholder="Etiket (ör. Randevu, Genel bilgi)"
                         value={emailItem.label}
                         onChange={(e) => updateEmail(index, 'label', e.target.value)}
                         className="w-1/3 bg-white border border-stone-200 px-3 py-2 text-sm rounded focus:outline-none focus:border-amber-700 transition-colors"
@@ -410,7 +410,7 @@ export default function ContactSettingsAdmin() {
                       />
                       <input
                         type="email"
-                        placeholder="Email Address"
+                        placeholder="E-posta adresi"
                         value={emailItem.value}
                         onChange={(e) => updateEmail(index, 'value', e.target.value)}
                         className="w-full bg-white border border-stone-200 px-3 py-2 text-sm rounded focus:outline-none focus:border-amber-700 transition-colors"
@@ -420,7 +420,7 @@ export default function ContactSettingsAdmin() {
                         type="button"
                         onClick={() => removeEmail(index)}
                         className="p-2 text-red-500 hover:bg-red-50 rounded"
-                        title="Delete"
+                        title="Sil"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                       </button>
@@ -431,7 +431,7 @@ export default function ContactSettingsAdmin() {
             </div>
 
             <div className="pt-6 border-t border-stone-200 space-y-2">
-              <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">Address</label>
+              <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">Adres</label>
               <textarea
                 name="address"
                 value={formData.address}
@@ -443,8 +443,8 @@ export default function ContactSettingsAdmin() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">Google Maps Iframe Link (src)</label>
-              <p className="text-xs text-stone-400 mb-2">Paste only the address inside src=" " from the "Embed a map" code obtained from Google Maps.</p>
+              <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">Google Haritalar yerleştirme bağlantısı (src)</label>
+              <p className="text-xs text-stone-400 mb-2">Google Haritalar’daki "Haritayı yerleştir" kodunda yalnızca src=" " içindeki adresi yapıştırın.</p>
               <textarea
                 name="mapIframe"
                 value={formData.mapIframe}
@@ -458,19 +458,19 @@ export default function ContactSettingsAdmin() {
             {/* Dynamic Social Media */}
             <div className="pt-6 border-t border-stone-200">
               <div className="flex justify-between items-center mb-4">
-                <label className="text-sm font-bold text-stone-800 uppercase tracking-wider block">Social Media Accounts</label>
+                <label className="text-sm font-bold text-stone-800 uppercase tracking-wider block">Sosyal medya hesapları</label>
                 <button
                   type="button"
                   onClick={addSocialLink}
                   className="px-3 py-1 bg-stone-200 text-stone-700 text-xs font-bold rounded hover:bg-stone-300 transition-colors"
                 >
-                  + Add New
+                  + Yeni ekle
                 </button>
               </div>
 
               {socialLinks.length === 0 ? (
                 <div className="text-sm text-stone-500 italic p-4 bg-stone-50 rounded text-center border border-dashed border-stone-300">
-                  No social media accounts added yet.
+                  Henüz sosyal medya hesabı eklenmedi.
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -484,16 +484,16 @@ export default function ContactSettingsAdmin() {
                       "TikTok",
                       "WhatsApp",
                       "Pinterest",
-                      "Other"
+                      "Diğer"
                     ];
                     
-                    const isCustom = !SOCIAL_PLATFORMS.includes(link.platform) && link.platform !== 'New Platform';
-                    const options = isCustom ? [...SOCIAL_PLATFORMS.slice(0, -1), link.platform, "Other"] : SOCIAL_PLATFORMS;
+                    const isCustom = !SOCIAL_PLATFORMS.includes(link.platform) && link.platform !== 'Yeni Platform';
+                    const options = isCustom ? [...SOCIAL_PLATFORMS.slice(0, -1), link.platform, "Diğer"] : SOCIAL_PLATFORMS;
 
                     return (
                       <div key={index} className="flex gap-3 items-center bg-stone-50 p-3 rounded border border-stone-200">
                         <select
-                          value={link.platform === 'New Platform' || link.platform === 'Yeni Platform' ? "Other" : link.platform}
+                          value={link.platform === 'Yeni Platform' || link.platform === 'Yeni Platform' ? "Diğer" : link.platform}
                           onChange={(e) => updateSocialLink(index, 'platform', e.target.value)}
                           className="w-1/3 bg-white border border-stone-200 px-3 py-2 text-sm rounded focus:outline-none focus:border-amber-700 transition-colors"
                         >
@@ -512,7 +512,7 @@ export default function ContactSettingsAdmin() {
                           type="button"
                           onClick={() => removeSocialLink(index)}
                           className="p-2 text-red-500 hover:bg-red-50 rounded"
-                          title="Delete"
+                          title="Sil"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         </button>
@@ -529,7 +529,7 @@ export default function ContactSettingsAdmin() {
                 disabled={isSaving}
                 className="px-8 py-3 bg-stone-900 text-white font-bold text-sm uppercase tracking-wider rounded hover:bg-amber-800 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSaving ? 'Saving...' : 'Save Changes'}
+                {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
               </button>
             </div>
           </form>

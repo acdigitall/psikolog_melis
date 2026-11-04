@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
@@ -64,6 +66,7 @@ export async function updateHomePage(
   }
 ) {
   try {
+    await requireAdmin();
     const updated = await prisma.homePage.update({
       where: { id },
       data: formData

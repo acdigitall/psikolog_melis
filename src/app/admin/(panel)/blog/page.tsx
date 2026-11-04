@@ -107,9 +107,9 @@ export default function AdminBlog() {
 
     if (res.success && res.url) {
       setImage(res.url);
-      setMessage({ type: 'success', text: 'Blog cover image uploaded successfully.' });
+      setMessage({ type: 'success', text: 'Kapak görseli yüklendi.' });
     } else {
-      setMessage({ type: 'error', text: res.error || 'Failed to upload image.' });
+      setMessage({ type: 'error', text: res.error || 'Görsel yüklenemedi.' });
     }
   };
 
@@ -137,24 +137,24 @@ export default function AdminBlog() {
   };
 
   const handleDeleteClick = async (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this post?")) return;
+    if (!window.confirm("Bu yazıyı silmek istediğinize emin misiniz?")) return;
     
     setLoading(true);
     const res = await deleteBlogPost(id);
     setLoading(false);
     
     if (res.success) {
-      setMessage({ type: 'success', text: 'Post deleted successfully.' });
+      setMessage({ type: 'success', text: 'Yazı silindi.' });
       fetchPosts();
     } else {
-      setMessage({ type: 'error', text: res.error || 'Failed to delete post.' });
+      setMessage({ type: 'error', text: res.error || 'Yazı silinemedi.' });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !excerpt || !content || !image) {
-      setMessage({ type: 'error', text: 'Please fill in the post title, excerpt, content and upload an image.' });
+      setMessage({ type: 'error', text: 'Lütfen başlık, özet ve içeriği doldurup bir görsel yükleyin.' });
       return;
     }
 
@@ -185,12 +185,12 @@ export default function AdminBlog() {
     if (res.success) {
       setMessage({ 
         type: 'success', 
-        text: editingPost ? 'Post updated successfully.' : 'Post added successfully.' 
+        text: editingPost ? 'Yazı güncellendi.' : 'Yazı eklendi.' 
       });
       setShowForm(false);
       fetchPosts();
     } else {
-      setMessage({ type: 'error', text: res.error || 'Operation failed.' });
+      setMessage({ type: 'error', text: res.error || 'İşlem başarısız oldu.' });
     }
   };
 
@@ -209,38 +209,38 @@ export default function AdminBlog() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-serif text-stone-900 font-bold">Blog Management</h1>
-          <p className="text-xs text-stone-500 mt-1">Write and manage your blog posts.</p>
+          <h1 className="text-2xl font-serif text-stone-900 font-bold">Blog Yazıları</h1>
+          <p className="text-xs text-stone-500 mt-1">Blog yazılarınızı yazın ve yönetin.</p>
         </div>
         <button 
           onClick={showForm ? () => setShowForm(false) : handleAddNewClick}
           className="px-6 py-2.5 bg-stone-900 text-white font-medium text-xs md:text-sm uppercase tracking-wider hover:bg-amber-800 transition-colors cursor-pointer rounded shrink-0"
         >
-          {showForm ? 'Back to List' : '+ Add New Post'}
+          {showForm ? 'Listeye Dön' : '+ Yeni yazı ekle'}
         </button>
       </div>
 
       {showForm ? (
         <div className="bg-white p-8 border border-stone-200 shadow-sm">
           <h2 className="text-xl font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4">
-            {editingPost ? 'Edit Post' : 'New Blog Post'}
+            {editingPost ? 'Yazıyı Düzenle' : 'Yeni Blog Yazısı'}
           </h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Post Title *</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Yazı başlığı *</label>
               <input 
                 type="text" 
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                placeholder="Enter post title..." 
+                placeholder="Yazı başlığını yazın..." 
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Category *</label>
+                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Kategori *</label>
                 <select 
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
@@ -249,18 +249,18 @@ export default function AdminBlog() {
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.name}>{cat.name}</option>
                   ))}
-                  {categories.length === 0 && <option value="">No categories found</option>}
+                  {categories.length === 0 && <option value="">Kategori bulunamadı</option>}
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Status *</label>
+                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Durum *</label>
                 <select 
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700"
                 >
-                  <option value="Yayında">Published</option>
-                  <option value="Taslak">Draft</option>
+                  <option value="Yayında">Yayında</option>
+                  <option value="Taslak">Taslak</option>
                 </select>
               </div>
             </div>
@@ -268,78 +268,78 @@ export default function AdminBlog() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                  <span>Meta Title (SEO)</span>
-                  <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                  <span>Meta başlık (SEO)</span>
+                  <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
                 </label>
                 <input 
                   type="text" 
                   value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                  placeholder="Enter subtitle or detailed title..." 
+                  placeholder="Arama sonuçlarında görünecek başlık..." 
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                  <span>Keywords (SEO)</span>
-                  <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                  <span>Anahtar kelimeler (SEO)</span>
+                  <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
                 </label>
                 <input 
                   type="text" 
                   value={metaKeys}
                   onChange={(e) => setMetaKeys(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                  placeholder="e.g. office furniture, new trends" 
+                  placeholder="ör. panik atak, kaygı, izmir psikolog" 
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                <span>Meta Description (SEO)</span>
-                <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                <span>Meta açıklama (SEO)</span>
+                <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
               </label>
               <textarea 
                 value={metaDesc}
                 onChange={(e) => setMetaDesc(e.target.value)}
                 rows={2}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                placeholder="Summary description for search engines..." 
+                placeholder="Arama motorları için kısa açıklama..." 
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Excerpt * (Description shown on cards)</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Özet * (kartlarda ve arama sonuçlarında görünür)</label>
               <input 
                 type="text" 
                 required
                 value={excerpt}
                 onChange={(e) => setExcerpt(e.target.value)}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                placeholder="Enter a brief summary..." 
+                placeholder="Kısa bir özet yazın..." 
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Content *</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">İçerik *</label>
               <textarea 
                 rows={10} 
                 required
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                placeholder="Write your blog post here..."
+                placeholder="Yazınızı buraya yazın..."
               ></textarea>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Select / Upload Cover Image *</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Kapak görseli seç / yükle *</label>
               
               {image ? (
                 <div className="relative aspect-[16/10] w-full max-w-md bg-stone-100 border border-stone-200 shadow-sm overflow-hidden group rounded">
                   <Image 
                     src={image} 
-                    alt="Uploaded Image Preview" 
+                    alt="Yüklenen görselin önizlemesi" 
                     fill 
                     unoptimized
                     sizes="(max-width: 768px) 100vw, 448px"
@@ -351,7 +351,7 @@ export default function AdminBlog() {
                       onClick={() => setImage('')}
                       className="px-6 py-2 bg-red-600 text-white font-bold text-xs uppercase tracking-wider rounded shadow hover:bg-red-700 transition-colors cursor-pointer"
                     >
-                      Change / Remove Image
+                      Görseli Değiştir / Kaldır
                     </button>
                   </div>
                 </div>
@@ -387,10 +387,10 @@ export default function AdminBlog() {
                     </svg>
                   )}
                   <p className="text-stone-700 font-bold text-sm">
-                    {uploading ? 'Preparing Image... Hammers at Work!' : isDragging ? 'Drop to Upload' : 'Click or Drag to Select Blog Cover Image'}
+                    {uploading ? 'Görsel hazırlanıyor...' : isDragging ? 'Yüklemek için bırakın' : 'Yazı kapak görseli seçmek için tıklayın ya da sürükleyin'}
                   </p>
-                  <p className="text-stone-400 text-xs mt-2">Max size 5MB (JPG, PNG, WEBP, SVG)</p>
-                  <p className="text-amber-700 font-medium text-xs mt-1">Recommended Image Size: 800 x 600px (or similar landscape format)</p>
+                  <p className="text-stone-400 text-xs mt-2">En fazla 8 MB (JPG, PNG, WEBP, GIF)</p>
+                  <p className="text-amber-700 font-medium text-xs mt-1">Önerilen görsel boyutu: 800 x 600 px (ya da benzer yatay oran)</p>
                 </label>
               )}
             </div>
@@ -401,14 +401,14 @@ export default function AdminBlog() {
                 onClick={() => setShowForm(false)} 
                 className="px-8 py-3 bg-stone-200 text-stone-700 font-bold uppercase tracking-wider text-sm hover:bg-stone-300 transition-colors cursor-pointer"
               >
-                Cancel
+                İptal
               </button>
               <button 
                 type="submit" 
                 disabled={loading || uploading || !image}
                 className="px-8 py-3 bg-stone-900 text-white font-bold text-sm uppercase tracking-wider rounded hover:bg-amber-800 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Saving...' : 'Save Post'}
+                {loading ? 'Kaydediliyor...' : 'Yazıyı Kaydet'}
               </button>
             </div>
           </form>
@@ -417,17 +417,17 @@ export default function AdminBlog() {
         <div className="bg-white border border-stone-200 shadow-sm overflow-x-auto rounded">
           {posts.length === 0 ? (
             <div className="text-center py-10 text-stone-500">
-              No blog posts added yet.
+              Henüz blog yazısı eklenmedi.
             </div>
           ) : (
             <table className="w-full text-left text-sm text-stone-600">
               <thead className="bg-stone-50 text-stone-900 uppercase tracking-wider font-bold border-b border-stone-200">
                 <tr>
-                  <th className="px-6 py-4">Title</th>
-                  <th className="px-6 py-4">Category</th>
-                  <th className="px-6 py-4">Views</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
+                  <th className="px-6 py-4">Başlık</th>
+                  <th className="px-6 py-4">Kategori</th>
+                  <th className="px-6 py-4">Okunma</th>
+                  <th className="px-6 py-4">Durum</th>
+                  <th className="px-6 py-4 text-right">İşlemler</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
@@ -440,7 +440,7 @@ export default function AdminBlog() {
                       <span className={`px-2 py-1 text-xs font-bold uppercase rounded-sm ${
                         post.status === 'Yayında' ? 'bg-green-100 text-green-700' : 'bg-stone-200 text-stone-600'
                       }`}>
-                        {post.status === 'Yayında' ? 'Published' : post.status === 'Taslak' ? 'Draft' : post.status}
+                        {post.status === 'Yayında' ? 'Yayında' : post.status === 'Taslak' ? 'Taslak' : post.status}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right space-x-3 whitespace-nowrap">
@@ -448,13 +448,13 @@ export default function AdminBlog() {
                         onClick={() => handleEditClick(post)} 
                         className="text-amber-700 hover:text-amber-900 font-medium cursor-pointer"
                       >
-                        Edit
+                        Düzenle
                       </button>
                       <button 
                         onClick={() => handleDeleteClick(post.id)} 
                         className="text-red-600 hover:text-red-800 font-medium cursor-pointer"
                       >
-                        Delete
+                        Sil
                       </button>
                     </td>
                   </tr>

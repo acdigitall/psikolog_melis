@@ -102,9 +102,9 @@ export default function AdminServices() {
 
     if (res.success && res.url) {
       setImg(res.url);
-      setMessage({ type: 'success', text: 'Image uploaded successfully.' });
+      setMessage({ type: 'success', text: 'Görsel başarıyla yüklendi.' });
     } else {
-      setMessage({ type: 'error', text: res.error || 'Failed to upload image.' });
+      setMessage({ type: 'error', text: res.error || 'Görsel yüklenemedi.' });
     }
   };
 
@@ -132,24 +132,24 @@ export default function AdminServices() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this service?")) return;
+    if (!window.confirm("Bu hizmeti silmek istediğinize emin misiniz?")) return;
     
     setLoading(true);
     const res = await deleteService(id);
     setLoading(false);
 
     if (res.success) {
-      setMessage({ type: 'success', text: 'Service deleted successfully.' });
+      setMessage({ type: 'success', text: 'Hizmet silindi.' });
       fetchServices();
     } else {
-      setMessage({ type: 'error', text: res.error || 'Failed to delete service.' });
+      setMessage({ type: 'error', text: res.error || 'Hizmet silinemedi.' });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !slug || !img) {
-      setMessage({ type: 'error', text: 'Please fill in required fields and upload an image.' });
+      setMessage({ type: 'error', text: 'Lütfen zorunlu alanları doldurup bir görsel yükleyin.' });
       return;
     }
 
@@ -170,12 +170,12 @@ export default function AdminServices() {
     setLoading(false);
 
     if (res.success) {
-      setMessage({ type: 'success', text: editingId ? 'Service updated successfully.' : 'Service added successfully.' });
+      setMessage({ type: 'success', text: editingId ? 'Hizmet güncellendi.' : 'Hizmet eklendi.' });
       setShowForm(false);
       setEditingId(null);
       fetchServices();
     } else {
-      setMessage({ type: 'error', text: res.error || 'An error occurred.' });
+      setMessage({ type: 'error', text: res.error || 'Bir hata oluştu.' });
     }
   };
 
@@ -201,27 +201,27 @@ export default function AdminServices() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-serif text-stone-900 font-bold">Services Management</h1>
-          <p className="text-xs text-stone-500 mt-1">Manage services and detail pages on your site.</p>
+          <h1 className="text-2xl font-serif text-stone-900 font-bold">Hizmet Yönetimi</h1>
+          <p className="text-xs text-stone-500 mt-1">Hizmetleri ve detay sayfalarını yönetin.</p>
         </div>
         <button 
           onClick={showForm ? () => setShowForm(false) : handleAddNewClick}
           className="px-6 py-2.5 bg-stone-900 text-white font-medium text-xs md:text-sm uppercase tracking-wider hover:bg-amber-800 transition-colors cursor-pointer rounded shrink-0"
         >
-          {showForm ? 'Back to List' : '+ Add New Service'}
+          {showForm ? 'Listeye Dön' : '+ Yeni hizmet ekle'}
         </button>
       </div>
 
       {showForm ? (
         <div className="bg-white p-6 sm:p-8 border border-stone-200 shadow-sm rounded">
           <h2 className="text-xl font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4">
-            {editingId ? 'Edit Service' : 'Add New Service'}
+            {editingId ? 'Hizmeti Düzenle' : 'Yeni Hizmet Ekle'}
           </h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
             
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Service Title *</label>
+                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Hizmet adı *</label>
                 <input 
                   type="text" 
                   required
@@ -231,21 +231,21 @@ export default function AdminServices() {
                     if (!editingId) setSlug(generateSlug(e.target.value));
                   }}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                  placeholder="e.g. Interior Design" 
+                  placeholder="ör. Çift ve İlişki Terapisi" 
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">URL (Slug) *</label>
+                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Sayfa adresi (slug) *</label>
                 <input 
                   type="text" 
                   required
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                  placeholder="e.g. interior-design" 
+                  placeholder="ör. cift-ve-iliski-terapisi" 
                 />
-                <p className="text-xs text-stone-500">Name as it appears in address bar. Write without spaces.</p>
+                <p className="text-xs text-stone-500">Adres çubuğunda görünecek ad. Boşluksuz ve Türkçe karaktersiz yazın.</p>
               </div>
             </div>
 
@@ -258,107 +258,107 @@ export default function AdminServices() {
                 className="w-4 h-4 text-amber-800 border-stone-300 rounded focus:ring-amber-700"
               />
               <label htmlFor="isFeatured" className="text-sm font-bold text-stone-900 uppercase tracking-wider cursor-pointer">
-                Is Featured Service?
+                Ana sayfada öne çıkar
               </label>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                  <span>Meta Title (SEO)</span>
-                  <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                  <span>Meta başlık (SEO)</span>
+                  <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
                 </label>
                 <input 
                   type="text" 
                   value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                  placeholder="Enter subtitle or detailed title..." 
+                  placeholder="Arama sonuçlarında görünecek başlık..." 
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                  <span>Keywords (SEO)</span>
-                  <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                  <span>Anahtar kelimeler (SEO)</span>
+                  <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
                 </label>
                 <input 
                   type="text" 
                   value={metaKeys}
                   onChange={(e) => setMetaKeys(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                  placeholder="e.g. interior design, home design" 
+                  placeholder="ör. çift terapisi, izmir" 
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                <span>Meta Description (SEO)</span>
-                <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                <span>Meta açıklama (SEO)</span>
+                <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
               </label>
               <textarea 
                 value={metaDesc}
                 onChange={(e) => setMetaDesc(e.target.value)}
                 rows={2}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                placeholder="Summary description for search engines..." 
+                placeholder="Arama motorları için kısa açıklama..." 
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Short Description (Summary)</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Kısa açıklama (özet)</label>
               <textarea 
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 rows={2}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                placeholder="Short summary to appear on services list..." 
+                placeholder="Hizmet listesinde görünecek kısa özet..." 
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Long Description (For Detail Page)</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Uzun açıklama (detay sayfası için)</label>
               <textarea 
                 value={longDesc}
                 onChange={(e) => setLongDesc(e.target.value)}
                 rows={4}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                placeholder="Detailed description text to appear on detail page..." 
+                placeholder="Detay sayfasında görünecek ayrıntılı açıklama..." 
               />
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Features (Separate with commas)</label>
+                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Çalışılan konular (virgülle ayırın)</label>
                 <textarea 
                   value={features}
                   onChange={(e) => setFeatures(e.target.value)}
                   rows={3}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                  placeholder="e.g. 3D Design, Fast Delivery, Premium Materials" 
+                  placeholder="ör. Kaygı, Panik atak, Sosyal kaygı" 
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Process Steps (Separate with commas)</label>
+                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Süreç adımları (virgülle ayırın)</label>
                 <textarea 
                   value={steps}
                   onChange={(e) => setSteps(e.target.value)}
                   rows={3}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
-                  placeholder="e.g. Discovery, Design, Production, Assembly" 
+                  placeholder="ör. Tanışma görüşmesi, Değerlendirme, Hedef belirleme" 
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Select / Upload Service Image *</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Hizmet görseli seç / yükle *</label>
               
               {img ? (
                 <div className="relative aspect-[4/3] w-full max-w-md bg-stone-100 border border-stone-200 shadow-sm overflow-hidden group rounded">
                   <Image 
                     src={img} 
-                    alt="Uploaded Image Preview" 
+                    alt="Yüklenen görselin önizlemesi" 
                     fill 
                     unoptimized
                     sizes="(max-width: 768px) 100vw, 448px"
@@ -370,7 +370,7 @@ export default function AdminServices() {
                       onClick={() => setImg('')}
                       className="px-6 py-2 bg-red-600 text-white font-bold text-xs uppercase tracking-wider rounded shadow hover:bg-red-700 transition-colors cursor-pointer"
                     >
-                      Change / Remove Image
+                      Görseli Değiştir / Kaldır
                     </button>
                   </div>
                 </div>
@@ -406,10 +406,10 @@ export default function AdminServices() {
                     </svg>
                   )}
                   <p className="text-stone-700 font-bold text-sm">
-                    {uploading ? 'Preparing Image... Hammers at Work!' : isDragging ? 'Drop to Upload' : 'Click or Drag to Select Cover Image'}
+                    {uploading ? 'Görsel hazırlanıyor...' : isDragging ? 'Yüklemek için bırakın' : 'Kapak görseli seçmek için tıklayın ya da sürükleyin'}
                   </p>
-                  <p className="text-stone-400 text-xs mt-2">Max size 5MB (JPG, PNG, WEBP, SVG)</p>
-                  <p className="text-amber-700 font-medium text-xs mt-1">Recommended Image Size: 800 x 600px (or similar landscape format)</p>
+                  <p className="text-stone-400 text-xs mt-2">En fazla 8 MB (JPG, PNG, WEBP, GIF)</p>
+                  <p className="text-amber-700 font-medium text-xs mt-1">Önerilen görsel boyutu: 800 x 600 px (ya da benzer yatay oran)</p>
                 </label>
               )}
             </div>
@@ -420,14 +420,14 @@ export default function AdminServices() {
                 onClick={() => setShowForm(false)} 
                 className="px-8 py-3 bg-stone-200 text-stone-700 font-bold uppercase tracking-wider text-sm hover:bg-stone-300 transition-colors cursor-pointer rounded"
               >
-                Cancel
+                İptal
               </button>
               <button 
                 type="submit" 
                 disabled={loading || uploading || !img || !slug}
                 className="px-8 py-3 bg-stone-900 text-white font-bold text-sm uppercase tracking-wider rounded hover:bg-amber-800 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Saving...' : (editingId ? 'Save Changes' : 'Save Service')}
+                {loading ? 'Kaydediliyor...' : (editingId ? 'Değişiklikleri Kaydet' : 'Hizmeti Kaydet')}
               </button>
             </div>
           </form>
@@ -436,16 +436,16 @@ export default function AdminServices() {
         <div className="bg-white border border-stone-200 shadow-sm overflow-x-auto rounded">
           {services.length === 0 ? (
             <div className="text-center py-10 text-stone-500">
-              No services added yet.
+              Henüz hizmet eklenmedi.
             </div>
           ) : (
             <table className="w-full text-left text-sm text-stone-600">
               <thead className="bg-stone-50 text-stone-900 uppercase tracking-wider font-bold border-b border-stone-200">
                 <tr>
-                  <th className="px-6 py-4">Service Title</th>
-                  <th className="px-6 py-4">URL (Slug)</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
+                  <th className="px-6 py-4">Hizmet adı</th>
+                  <th className="px-6 py-4">Sayfa adresi</th>
+                  <th className="px-6 py-4">Durum</th>
+                  <th className="px-6 py-4 text-right">İşlemler</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
@@ -455,7 +455,7 @@ export default function AdminServices() {
                     <td className="px-6 py-4">/{service.slug}</td>
                     <td className="px-6 py-4">
                       {service.isFeatured && (
-                        <span className="bg-amber-100 text-amber-800 text-[10px] px-2 py-1 rounded font-bold uppercase">Featured</span>
+                        <span className="bg-amber-100 text-amber-800 text-[10px] px-2 py-1 rounded font-bold uppercase">Öne çıkan</span>
                       )}
                     </td>
                     <td className="px-6 py-4 text-right whitespace-nowrap space-x-3">
@@ -463,13 +463,13 @@ export default function AdminServices() {
                         onClick={() => handleEditClick(service)}
                         className="text-amber-700 hover:text-amber-900 font-medium cursor-pointer"
                       >
-                        Edit
+                        Düzenle
                       </button>
                       <button 
                         onClick={() => handleDelete(service.id)}
                         className="text-red-600 hover:text-red-800 font-medium cursor-pointer"
                       >
-                        Delete
+                        Sil
                       </button>
                     </td>
                   </tr>

@@ -1,9 +1,12 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from "@/lib/db";
 
 export async function getDashboardStats() {
   try {
+    await requireAdmin();
     const serviceCount = await prisma.service.count();
     const galleryCount = await prisma.galleryItem.count();
     const blogCount = await prisma.blogPost.count({ where: { status: 'Yayında' } });

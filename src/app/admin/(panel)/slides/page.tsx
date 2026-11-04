@@ -89,9 +89,9 @@ export default function AdminSlides() {
 
     if (res.success && res.url) {
       setBg(res.url);
-      setMessage({ type: 'success', text: 'Slide background image uploaded successfully.' });
+      setMessage({ type: 'success', text: 'Slayt görseli yüklendi.' });
     } else {
-      setMessage({ type: 'error', text: res.error || 'Failed to upload image.' });
+      setMessage({ type: 'error', text: res.error || 'Görsel yüklenemedi.' });
     }
   };
 
@@ -119,24 +119,24 @@ export default function AdminSlides() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this slide?")) return;
+    if (!window.confirm("Bu slaytı silmek istediğinize emin misiniz?")) return;
 
     setLoading(true);
     const res = await deleteSlide(id);
     setLoading(false);
 
     if (res.success) {
-      setMessage({ type: 'success', text: 'Slide deleted successfully.' });
+      setMessage({ type: 'success', text: 'Slayt silindi.' });
       fetchSlides();
     } else {
-      setMessage({ type: 'error', text: res.error || 'Failed to delete slide.' });
+      setMessage({ type: 'error', text: res.error || 'Slayt silinemedi.' });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !subtitle || !desc || !bg) {
-      setMessage({ type: 'error', text: 'Please fill in all fields and upload a cover image.' });
+      setMessage({ type: 'error', text: 'Lütfen tüm alanları doldurup bir görsel yükleyin.' });
       return;
     }
 
@@ -173,13 +173,13 @@ export default function AdminSlides() {
     if (res.success) {
       setMessage({ 
         type: 'success', 
-        text: editingId ? 'Slide updated successfully.' : 'Slide added successfully.' 
+        text: editingId ? 'Slayt güncellendi.' : 'Slayt eklendi.' 
       });
       setShowForm(false);
       setEditingId(null);
       fetchSlides();
     } else {
-      setMessage({ type: 'error', text: res.error || 'An error occurred while performing the operation.' });
+      setMessage({ type: 'error', text: res.error || 'İşlem sırasında bir hata oluştu.' });
     }
   };
 
@@ -197,45 +197,45 @@ export default function AdminSlides() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-serif text-stone-900 font-bold">Hero Slider Management</h1>
-          <p className="text-xs text-stone-500 mt-1">Manage and edit main banner and cover slides on homepage.</p>
+          <h1 className="text-2xl font-serif text-stone-900 font-bold">Açılış Slaytları</h1>
+          <p className="text-xs text-stone-500 mt-1">Ana sayfanın açılış bölümündeki slaytları yönetin.</p>
         </div>
         <button 
           onClick={showForm ? () => { setShowForm(false); setEditingId(null); } : handleAddNewClick}
           className="px-6 py-2.5 bg-stone-900 text-white font-medium text-xs md:text-sm uppercase tracking-wider hover:bg-amber-800 transition-colors cursor-pointer rounded shrink-0"
         >
-          {showForm ? 'Back to List' : '+ Add New Slide'}
+          {showForm ? 'Listeye Dön' : '+ Yeni slayt ekle'}
         </button>
       </div>
 
       {showForm ? (
         <div className="bg-white p-8 border border-stone-200 shadow-sm">
           <h2 className="text-xl font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4">
-            {editingId ? 'Edit Slide' : 'Add New Slide'}
+            {editingId ? 'Slaytı Düzenle' : 'Yeni Slayt Ekle'}
           </h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Subtitle *</label>
+                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Üst başlık *</label>
                 <input 
                   type="text" 
                   required
                   value={subtitle}
                   onChange={(e) => setSubtitle(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                  placeholder="e.g. Corporate Manufacturer & Interior Architecture" 
+                  placeholder="ör. Bilimsel yaklaşım, şefkatli dinleme" 
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Main Title *</label>
+                <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Ana başlık *</label>
                 <input 
                   type="text" 
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                  placeholder="e.g. Traditional Craftsmanship, Modern Design" 
+                  placeholder="ör. Kendinizi anlama yolculuğunuzda yanınızdayım" 
                 />
               </div>
             </div>
@@ -243,67 +243,67 @@ export default function AdminSlides() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                  <span>Meta Title (SEO)</span>
-                  <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                  <span>Meta başlık (SEO)</span>
+                  <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
                 </label>
                 <input 
                   type="text" 
                   value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                  placeholder="Enter subtitle or detailed title..." 
+                  placeholder="Arama sonuçlarında görünecek başlık..." 
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                  <span>Keywords (SEO)</span>
-                  <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                  <span>Anahtar kelimeler (SEO)</span>
+                  <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
                 </label>
                 <input 
                   type="text" 
                   value={metaKeys}
                   onChange={(e) => setMetaKeys(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                  placeholder="e.g. home page, wooden bed" 
+                  placeholder="ör. izmir psikolog, seans odası" 
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block flex items-center justify-between">
-                <span>Meta Description (SEO)</span>
-                <span className="text-[10px] text-stone-400 normal-case font-normal">Optional</span>
+                <span>Meta açıklama (SEO)</span>
+                <span className="text-[10px] text-stone-400 normal-case font-normal">İsteğe bağlı</span>
               </label>
               <textarea 
                 value={metaDesc}
                 onChange={(e) => setMetaDesc(e.target.value)}
                 rows={2}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                placeholder="Summary description for search engines..." 
+                placeholder="Arama motorları için kısa açıklama..." 
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Description *</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Açıklama *</label>
               <textarea 
                 required
                 rows={3}
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700" 
-                placeholder="Summary description text to appear on slide..." 
+                placeholder="Slaytta görünecek kısa açıklama..." 
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Upload Background Image *</label>
+              <label className="text-sm font-bold text-stone-900 uppercase tracking-wider block">Arka plan görseli yükle *</label>
               
               {bg ? (
                 <div className="space-y-3">
                   <div className="relative aspect-[21/9] w-full max-w-xl bg-stone-100 border border-stone-200 shadow-sm overflow-hidden group rounded">
                     <Image 
                       src={bg} 
-                      alt="Slide Background Preview" 
+                      alt="Slayt görseli önizlemesi" 
                       fill 
                       unoptimized
                       className="object-cover" 
@@ -314,18 +314,18 @@ export default function AdminSlides() {
                         onClick={() => setBg('')}
                         className="px-6 py-2 bg-red-600 text-white font-bold text-xs uppercase tracking-wider rounded shadow hover:bg-red-700 transition-colors cursor-pointer"
                       >
-                        Remove / Change Image
+                        Görseli Kaldır / Değiştir
                       </button>
                     </div>
                   </div>
                   <div className="space-y-1 max-w-xl">
-                    <label className="text-[11px] text-stone-500 font-bold uppercase tracking-wider">Image URL / Direct Path:</label>
+                    <label className="text-[11px] text-stone-500 font-bold uppercase tracking-wider">Görsel adresi / doğrudan yol:</label>
                     <input
                       type="text"
                       value={bg}
                       onChange={(e) => setBg(e.target.value)}
                       className="w-full bg-stone-50 border border-stone-200 px-3 py-2 text-xs text-stone-800 rounded focus:outline-none focus:border-amber-700"
-                      placeholder="/uploads/... or https://..."
+                      placeholder="/uploads/... ya da https://..."
                     />
                   </div>
                 </div>
@@ -362,19 +362,19 @@ export default function AdminSlides() {
                       </svg>
                     )}
                     <p className="text-stone-700 font-bold text-sm">
-                      {uploading ? 'Uploading Image...' : isDragging ? 'Drop to Upload' : 'Click or Drag to Select Image'}
+                      {uploading ? 'Görsel yükleniyor...' : isDragging ? 'Yüklemek için bırakın' : 'Görsel seçmek için tıklayın ya da sürükleyin'}
                     </p>
-                    <p className="text-amber-700 font-medium text-xs mt-2">Recommended Image Size: 1920 x 1080px (16:9 landscape aspect). Images are centered automatically.</p>
+                    <p className="text-amber-700 font-medium text-xs mt-2">Önerilen görsel boyutu: 1920 x 1080 px (16:9 yatay). Görseller otomatik ortalanır.</p>
                   </label>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] text-stone-500 font-bold uppercase tracking-wider">Or Enter Image URL Directly:</label>
+                    <label className="text-[11px] text-stone-500 font-bold uppercase tracking-wider">Ya da görsel adresini doğrudan girin:</label>
                     <input
                       type="text"
                       value={bg}
                       onChange={(e) => setBg(e.target.value)}
                       className="w-full bg-stone-50 border border-stone-200 px-3 py-2 text-xs text-stone-800 rounded focus:outline-none focus:border-amber-700"
-                      placeholder="e.g. /uploads/banner.png or https://..."
+                      placeholder="ör. /uploads/gorsel.jpg ya da https://..."
                     />
                   </div>
                 </div>
@@ -387,14 +387,14 @@ export default function AdminSlides() {
                 onClick={() => { setShowForm(false); setEditingId(null); }} 
                 className="px-8 py-3 bg-stone-200 text-stone-700 font-bold uppercase tracking-wider text-sm hover:bg-stone-300 transition-colors cursor-pointer"
               >
-                Cancel
+                İptal
               </button>
               <button 
                 type="submit" 
                 disabled={loading || uploading || !bg}
                 className="px-8 py-3 bg-stone-900 text-white font-bold text-sm uppercase tracking-wider rounded hover:bg-amber-800 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Saving...' : editingId ? 'Save Changes' : 'Save Slide'}
+                {loading ? 'Kaydediliyor...' : editingId ? 'Değişiklikleri Kaydet' : 'Slaytı Kaydet'}
               </button>
             </div>
           </form>
@@ -403,7 +403,7 @@ export default function AdminSlides() {
         <div className="grid grid-cols-1 gap-6">
           {slides.length === 0 ? (
             <div className="bg-white p-10 text-center border border-stone-200 text-stone-500">
-              No slides added yet.
+              Henüz slayt eklenmedi.
             </div>
           ) : (
             slides.map((slide, idx) => (
@@ -441,13 +441,13 @@ export default function AdminSlides() {
                     onClick={() => handleEditClick(slide)}
                     className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 font-medium text-xs uppercase tracking-wider rounded border border-stone-300 transition-colors cursor-pointer"
                   >
-                    Edit
+                    Düzenle
                   </button>
                   <button 
                     onClick={() => handleDelete(slide.id)}
                     className="px-4 py-2 text-red-600 hover:bg-red-50 border border-red-200 font-medium text-xs uppercase tracking-wider rounded transition-colors cursor-pointer"
                   >
-                    Delete
+                    Sil
                   </button>
                 </div>
               </div>

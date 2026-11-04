@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
@@ -37,6 +39,7 @@ export async function upsertProductionInfo(data: {
   metaKeys?: string;
 }) {
   try {
+    await requireAdmin();
     const existing = await prisma.productionInfo.findFirst();
     let result;
 
@@ -123,6 +126,7 @@ export async function createProductionStep(data: {
   order: number;
 }) {
   try {
+    await requireAdmin();
     const step = await prisma.productionStep.create({
       data
     });
@@ -140,6 +144,7 @@ export async function updateProductionStep(id: number, data: {
   order: number;
 }) {
   try {
+    await requireAdmin();
     const step = await prisma.productionStep.update({
       where: { id },
       data
@@ -154,6 +159,7 @@ export async function updateProductionStep(id: number, data: {
 
 export async function deleteProductionStep(id: number) {
   try {
+    await requireAdmin();
     await prisma.productionStep.delete({
       where: { id }
     });

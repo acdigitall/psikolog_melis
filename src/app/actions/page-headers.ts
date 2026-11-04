@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
@@ -27,6 +29,7 @@ export async function getAllPageHeaders() {
 
 export async function updatePageHeader(pageIdentifier: string, title: string, description: string) {
   try {
+    await requireAdmin();
     const updated = await prisma.pageHeader.upsert({
       where: { pageIdentifier },
       update: {

@@ -1,0 +1,80 @@
+/* ───────── Yönetim paneli teması ─────────
+   Panel bileşenleri Tailwind'in stone/amber tonlarını kullanır; bu kapsamda o tonlar
+   sitenin orman yeşili–krem paletine eşlenir. Böylece sayfa mantığına dokunmadan
+   panel siteyle aynı görsel dili konuşur. */
+.admin-theme {
+  --color-stone-50: #fbf8f0;
+  --color-stone-100: #f2ecdf;
+  --color-stone-200: #e4ddcc;
+  --color-stone-300: #cfc8b5;
+  --color-stone-400: #8b9488;
+  --color-stone-500: #59635b;
+  --color-stone-600: #4d574f;
+  --color-stone-700: #36423a;
+  --color-stone-800: #285935;
+  --color-stone-900: #17321f;
+  --color-stone-950: #0f2416;
+  --color-black: #17321f;
+
+  --color-amber-50: #f1f3eb;
+  --color-amber-100: #e3e9d9;
+  --color-amber-400: #b6c49c;
+  --color-amber-500: #a3b386;
+  --color-amber-600: #607a42;
+  --color-amber-700: #21492c;
+  --color-amber-800: #285935;
+  --color-amber-900: #17321f;
+
+  --radius-sm: 0.625rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+
+  font-family: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  color: var(--color-ink);
+  background: var(--color-sand);
+}
+
+/* Koyu yan menü içinde açık tonlar daha okunur olsun */
+.admin-theme aside {
+  --color-stone-300: #dfe5d6;
+  --color-stone-400: #b3bfae;
+  --color-stone-800: #23442d;
+  --color-amber-500: #c3d0ab;
+  --color-amber-700: #3c6b48;
+}
+
+.admin-theme .rounded { border-radius: 0.75rem; }
+.admin-theme .shadow-sm,
+.admin-theme .shadow-md,
+.admin-theme .shadow-lg,
+.admin-theme .shadow-xl { box-shadow: 0 1px 2px rgba(23, 50, 31, 0.04), 0 8px 24px -12px rgba(23, 50, 31, 0.12); }
+.admin-theme .shadow-2xl { box-shadow: 0 20px 50px -20px rgba(23, 50, 31, 0.35); }
+
+/* Sitedeki sakin tipografi: büyük harf ve geniş harf aralığı yerine cümle düzeni */
+.admin-theme .uppercase { text-transform: none; }
+.admin-theme .tracking-wider,
+.admin-theme .tracking-widest,
+.admin-theme .tracking-wide,
+.admin-theme [class*="tracking-[0."] { letter-spacing: 0.005em; }
+.admin-theme label.font-bold,
+.admin-theme th,
+.admin-theme button.font-bold,
+.admin-theme a.font-bold { font-weight: 500; }
+.admin-theme h1, .admin-theme h2, .admin-theme h3 {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--color-forest);
+}
+.admin-theme h1.font-bold, .admin-theme h2.font-bold, .admin-theme h3.font-bold { font-weight: 400; }
+
+.admin-theme input:not([type="checkbox"]):not([type="radio"]),
+.admin-theme textarea,
+.admin-theme select { background-color: #fff; }
+.admin-theme input:focus, .admin-theme textarea:focus, .admin-theme select:focus {
+  border-color: var(--color-forest);
+  box-shadow: 0 0 0 3px rgba(33, 73, 44, 0.1);
+  outline: none;
+}
+.admin-theme input[type="checkbox"], .admin-theme input[type="radio"] { accent-color: var(--color-forest); }
+.admin-theme ::selection { background: var(--color-sage-light); color: var(--color-forest); }

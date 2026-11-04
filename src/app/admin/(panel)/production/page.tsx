@@ -274,7 +274,7 @@ export default function ProductionAdmin() {
                 <span className="text-sm font-bold text-stone-700">
                   {uploading ? 'Görsel Yükleniyor...' : 'Görsel Seçin veya Buraya Sürükleyin'}
                 </span>
-                <span className="text-xs text-stone-500 mt-1">PNG, JPG, WEBP (Maks. 5MB)</span>
+                <span className="text-xs text-stone-500 mt-1">PNG, JPG, WEBP (en fazla 8 MB)</span>
               </label>
             )}
           </div>

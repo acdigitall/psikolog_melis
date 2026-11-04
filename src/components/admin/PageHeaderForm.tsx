@@ -44,7 +44,7 @@ export default function PageHeaderForm({ pageIdentifier }: PageHeaderFormProps) 
   return (
     <section className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-stone-200 mb-12">
       <h2 className="text-xl font-serif font-bold text-stone-900 mb-6 pb-2 border-b border-stone-100 uppercase">
-        Sayfa Başlık & Açıklama Bilgileri (Hero)
+        Sayfa Başlık & Açıklama Bilgileri
       </h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">

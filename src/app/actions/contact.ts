@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
@@ -54,6 +56,7 @@ export async function updateContactSettings(formData: {
   logoFooter?: string;
 }) {
   try {
+    await requireAdmin();
     const settings = await prisma.contactSettings.findFirst();
 
     if (settings) {

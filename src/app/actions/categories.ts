@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
@@ -30,6 +32,7 @@ export async function getCategories() {
 
 export async function createCategory(name: string) {
   try {
+    await requireAdmin();
     const trimmedName = name.trim();
     if (!trimmedName) return { success: false, error: "Kategori adı boş olamaz." };
 
@@ -57,6 +60,7 @@ export async function createCategory(name: string) {
 
 export async function updateCategory(id: number, name: string) {
   try {
+    await requireAdmin();
     const trimmedName = name.trim();
     if (!trimmedName) return { success: false, error: "Kategori adı boş olamaz." };
 
@@ -77,6 +81,7 @@ export async function updateCategory(id: number, name: string) {
 
 export async function deleteCategory(id: number) {
   try {
+    await requireAdmin();
     await prisma.category.delete({
       where: { id }
     });

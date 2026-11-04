@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
@@ -27,6 +29,7 @@ export async function createGalleryItem(formData: {
   order?: number;
 }) {
   try {
+    await requireAdmin();
     const { title, category, img, metaTitle, metaDesc, metaKeys, order } = formData;
     const newItem = await prisma.galleryItem.create({
       data: {
@@ -52,6 +55,7 @@ export async function createGalleryItem(formData: {
 // Galeri ögesini sil
 export async function deleteGalleryItem(id: number) {
   try {
+    await requireAdmin();
     await prisma.galleryItem.delete({
       where: { id }
     });
@@ -78,6 +82,7 @@ export async function updateGalleryItem(
   }
 ) {
   try {
+    await requireAdmin();
     const updatedItem = await prisma.galleryItem.update({
       where: { id },
       data: {

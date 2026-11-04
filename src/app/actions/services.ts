@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
@@ -44,6 +46,7 @@ export async function createService(formData: {
   isFeatured?: boolean;
 }) {
   try {
+    await requireAdmin();
     const newService = await prisma.service.create({
       data: {
         ...formData,
@@ -82,6 +85,7 @@ export async function updateService(
   }
 ) {
   try {
+    await requireAdmin();
     const updatedService = await prisma.service.update({
       where: { id },
       data: formData
@@ -105,6 +109,7 @@ export async function updateService(
 // Hizmeti sil
 export async function deleteService(id: number) {
   try {
+    await requireAdmin();
     await prisma.service.delete({
       where: { id }
     });

@@ -1,5 +1,7 @@
 "use server";
 
+import { requireAdmin } from '@/lib/auth';
+
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
@@ -60,6 +62,7 @@ export async function createSlide(formData: {
   metaKeys?: string;
 }) {
   try {
+    await requireAdmin();
     const { title, subtitle, desc, bg, order, metaTitle, metaDesc, metaKeys } = formData;
     const count = await prisma.slide.count();
     
@@ -87,6 +90,7 @@ export async function createSlide(formData: {
 
 export async function deleteSlide(id: number) {
   try {
+    await requireAdmin();
     await prisma.slide.delete({
       where: { id }
     });
@@ -111,6 +115,7 @@ export async function updateSlide(id: number, formData: {
   metaKeys?: string;
 }) {
   try {
+    await requireAdmin();
     const { title, subtitle, desc, bg, order, metaTitle, metaDesc, metaKeys } = formData;
     
     const updatedSlide = await prisma.slide.update({
