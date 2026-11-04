@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import JsonLd from '@/components/site/JsonLd';
+import { breadcrumbSchema } from '@/lib/schema';
 
 interface Crumb {
   label: string;
@@ -12,6 +14,7 @@ export default function PageHero({
   description,
   image,
   crumbs = [],
+  imageAlt,
 }: {
   eyebrow?: string;
   title: string;
@@ -19,9 +22,11 @@ export default function PageHero({
   image?: string | null;
   crumbs?: Crumb[];
   accentWords?: number;
+  imageAlt?: string;
 }) {
   return (
     <section className="border-b border-line bg-sand/60">
+      {crumbs.length > 0 && <JsonLd data={breadcrumbSchema(crumbs.map((c) => ({ name: c.label, path: c.href })))} />}
       <div
         className={`mx-auto grid max-w-[1240px] items-center gap-12 px-6 pt-12 pb-16 md:pt-14 md:pb-20 lg:px-10 ${
           image ? 'lg:grid-cols-[1.4fr_1fr] lg:gap-20' : ''
@@ -57,7 +62,7 @@ export default function PageHero({
         {image && (
           <div className="intro-image mx-auto hidden w-full max-w-[340px] lg:block">
             <div className="arch relative aspect-[4/5] bg-sage-light">
-              <Image src={image} alt="" fill unoptimized priority sizes="340px" className="object-cover" />
+              <Image src={image} alt={imageAlt || ""} fill unoptimized priority sizes="340px" className="object-cover" />
             </div>
           </div>
         )}

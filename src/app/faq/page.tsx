@@ -1,25 +1,23 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 import Link from 'next/link';
 import CtaBand from '@/components/site/CtaBand';
 import PageHero from '@/components/site/PageHero';
 import { Plus, ArrowRight } from '@/components/site/Icons';
 import { faqs } from '@/lib/faqs';
+import JsonLd from '@/components/site/JsonLd';
+import { faqSchema } from '@/lib/schema';
 
-export const metadata: Metadata = {
-  title: 'Sıkça Sorulan Sorular',
-  description: 'Seans süresi, online terapi, gizlilik ve terapi süreci hakkında sıkça sorulan soruların yanıtları.',
-};
+export const metadata: Metadata = pageMeta({
+  title: "İzmir'de Psikolog ve Terapi Hakkında Sık Sorulan Sorular",
+  description: "İzmir'de psikoloğa gitmek, seans süresi ve sıklığı, online terapi, gizlilik ve ilk görüşme hakkında merak edilen soruların yanıtları.",
+  path: '/faq',
+});
 
 export default function FAQ() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-  };
-
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={faqSchema(faqs)} />
       <PageHero
         image="/images/klinik-cay.jpg"
         title="Sıkça sorulan sorular"

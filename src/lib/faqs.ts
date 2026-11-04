@@ -5,6 +5,14 @@ export interface Faq {
 
 export const faqs: Faq[] = [
   {
+    q: "İzmir'de klinik nerede, nasıl ulaşırım?",
+    a: "Klinik İzmir'in merkezinde, Konak ilçesine bağlı Alsancak'tadır. Alsancak İZBAN istasyonu, Konak–Alsancak tramvay hattı, metro ve Alsancak vapur iskelesi yürüme mesafesindedir; Karşıyaka, Bornova, Bayraklı ve Buca'dan toplu taşımayla kolayca gelinebilir. Tam adres ve yol tarifi iletişim sayfasındadır.",
+  },
+  {
+    q: 'Yüz yüze gelemiyorum; İzmir dışından da görüşebilir miyiz?',
+    a: "Evet. İzmir'in uzak ilçelerinden, Türkiye'nin farklı şehirlerinden ya da yurt dışından danışanlarla güvenli görüntülü görüşmeyle online seanslar yapıyorum. Online seanslar yüz yüze seanslarla aynı süre, yöntem ve gizlilik ilkeleriyle yürütülür.",
+  },
+  {
     q: 'Hangi konularda destek alabilirim?',
     a: 'Kaygı ve panik atak, depresyon, ilişki ve evlilik sorunları, travma ve zorlayıcı yaşam olayları, yas, tükenmişlik, özgüven ve sınır koyma güçlükleri en sık çalıştığım alanlardır. Emin değilseniz ilk görüşmede birlikte değerlendirebiliriz.',
   },
@@ -35,5 +43,13 @@ export const faqs: Faq[] = [
   {
     q: 'Psikiyatriste mi yoksa psikoloğa mı gitmeliyim?',
     a: 'Psikologlar ilaç dışı yöntemlerle, yani psikoterapiyle çalışır. İlaç tedavisi gerekebilecek durumlarda sizi bir psikiyatriste yönlendirir ve gerekirse iş birliği içinde ilerleriz. Pek çok kişi için en etkili yol, iki desteğin birlikte yürütülmesidir.',
+  },
+  {
+    q: "İzmir'de psikolog seans ücretleri ne kadar?",
+    a: 'Seans ücreti; seansın bireysel ya da çift seansı olmasına ve yüz yüze/online yapılmasına göre değişir. Güncel ücret bilgisini telefonla ya da randevu formu üzerinden sorabilirsiniz; ilk görüşmeden önce şeffaf biçimde paylaşılır.',
+  },
+  {
+    q: 'Randevu almak için ne yapmalıyım?',
+    a: 'Randevu formunu doldurabilir, telefonla arayabilir ya da WhatsApp üzerinden yazabilirsiniz. Hafta içi 10:00–20:00 ve cumartesi 10:00–16:00 arasında seans planlanır; talebinize genellikle 1 iş günü içinde dönüş yapılır.',
   },
 ];

@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "KVKK Aydınlatma Metni",
   description: "6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) uyarınca aydınlatma metni.",
-};
+  path: '/kvkk',
+});
 
 export default function KVKK() {
   return (

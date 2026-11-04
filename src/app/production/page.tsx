@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 import Image from 'next/image';
 import { getProductionInfo, getProductionSteps } from '@/app/actions/production';
 import { getPageHeader } from '@/app/actions/page-headers';
@@ -8,11 +9,13 @@ import PageHero from '@/components/site/PageHero';
 export async function generateMetadata(): Promise<Metadata> {
   const infoRes = await getProductionInfo();
   const info = infoRes.success && infoRes.data ? infoRes.data : null;
-  return {
-    title: info?.metaTitle || 'Terapi Süreci',
+  return pageMeta({
+    title: info?.metaTitle || 'Terapi Süreci Nasıl İlerler? · İzmir Psikolog',
     description: info?.metaDesc || info?.desc || 'İlk görüşmeden sonlandırmaya kadar adım adım terapi süreci.',
-    ...(info?.metaKeys ? { keywords: info.metaKeys } : {}),
-  };
+    keywords: info?.metaKeys,
+    path: '/production',
+    image: '/images/surec-yolculuk.jpg',
+  });
 }
 
 const delay = (ms: number) => ({ ['--reveal-delay' as string]: `${ms}ms` });
@@ -56,7 +59,7 @@ export default async function Production() {
           {[
             ['50 dakika', 'Bireysel seans süresi. Çift seansları 60–75 dakika.'],
             ['Haftada bir', 'Başlangıçta önerilen sıklık; zamanla aralıklar açılır.'],
-            ['Yüz yüze & online', 'Kadıköy kliniğinde ya da güvenli görüntülü görüşmeyle.'],
+            ['Yüz yüze & online', 'İzmir Alsancak\'taki klinikte ya da güvenli görüntülü görüşmeyle.'],
           ].map(([k, v], i) => (
             <div key={k} data-reveal style={delay(i * 80)}>
               <dt className="font-serif text-[2rem] leading-tight text-forest">{k}</dt>

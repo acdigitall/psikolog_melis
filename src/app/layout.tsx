@@ -4,6 +4,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RouteLoader from "@/components/RouteLoader";
 import "./globals.css";
+import JsonLd from "@/components/site/JsonLd";
+import { siteGraph } from "@/lib/schema";
+import { SITE_URL, SITE_NAME, PSYCHOLOGIST_NAME, DEFAULT_DESCRIPTION, GEO } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -24,38 +27,61 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Uzm. Klinik Psikolog | Bireysel, Çift ve Online Terapi",
+    default: "İzmir Psikolog | Uzm. Klinik Psikolog · Alsancak & Online Terapi",
     template: "%s | Uzm. Klinik Psikolog",
   },
-  description: "Kaygı, depresyon, ilişki sorunları ve kişisel gelişim alanlarında bilimsel ekoller (BDT, EMDR, Şema Terapi) ile yüz yüze ve online profesyonel psikolojik danışmanlık hizmeti.",
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
   keywords: [
-    "psikolog",
-    "klinik psikolog",
-    "bireysel terapi",
-    "çift terapisi",
-    "online terapi",
-    "emdr terapisi",
-    "bilişsel davranışçı terapi",
-    "şema terapi",
-    "anksiyete tedavisi",
-    "depresyon",
-    "psikolojik danışmanlık"
+    "izmir psikolog",
+    "psikolog izmir",
+    "izmir klinik psikolog",
+    "alsancak psikolog",
+    "konak psikolog",
+    "karşıyaka psikolog",
+    "bornova psikolog",
+    "izmir çift terapisi",
+    "izmir emdr",
+    "izmir online terapi",
+    "izmir kaygı terapisi",
+    "izmir panik atak tedavisi",
+    "bilişsel davranışçı terapi izmir",
+    "şema terapi izmir",
   ],
-  authors: [{ name: "Uzm. Klinik Psikolog" }],
-  creator: "Uzm. Klinik Psikolog",
-  publisher: "Uzm. Klinik Psikolog",
+  authors: [{ name: PSYCHOLOGIST_NAME, url: "/about" }],
+  creator: PSYCHOLOGIST_NAME,
+  publisher: SITE_NAME,
+  category: "health",
+  formatDetection: { telephone: true, address: true, email: true },
   openGraph: {
-    title: "Uzm. Klinik Psikolog | Bireysel, Çift ve Online Terapi",
-    description: "Bilimsel ekoller ve şefkatli yaklaşımla yüz yüze ve online terapi hizmetleri.",
-    url: "https://psikolog.com",
-    siteName: "Uzm. Klinik Psikolog",
+    title: "İzmir Psikolog | Uzm. Klinik Psikolog · Alsancak & Online Terapi",
+    description: DEFAULT_DESCRIPTION,
+    siteName: `${SITE_NAME} · İzmir`,
     locale: "tr_TR",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "İzmir Psikolog | Uzm. Klinik Psikolog",
+    description: DEFAULT_DESCRIPTION,
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  verification: {
+    ...(process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : {}),
+    ...(process.env.YANDEX_VERIFICATION ? { yandex: process.env.YANDEX_VERIFICATION } : {}),
+    ...(process.env.BING_VERIFICATION ? { other: { "msvalidate.01": process.env.BING_VERIFICATION } } : {}),
+  },
+  other: {
+    "geo.region": "TR-35",
+    "geo.placename": "İzmir",
+    "geo.position": `${GEO.lat};${GEO.lng}`,
+    ICBM: `${GEO.lat}, ${GEO.lng}`,
   },
 };
 
@@ -72,6 +98,7 @@ export default async function RootLayout({
   return (
     <html lang="tr" className={`${newsreader.variable} ${hanken.variable}`}>
       <body className="bg-paper text-ink antialiased">
+        <JsonLd data={siteGraph(contactSettings)} />
         <RouteLoader logoUrl={contactSettings?.logo ?? undefined} />
         <Navbar settings={contactSettings} />
         {children}

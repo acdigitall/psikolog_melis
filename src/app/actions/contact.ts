@@ -11,7 +11,7 @@ export async function getContactSettings() {
     if (!settings) {
       settings = await prisma.contactSettings.create({
         data: {
-          address: "Bağdat Caddesi No: 124/6, Kadıköy, İstanbul",
+          address: "Kıbrıs Şehitleri Caddesi No: 00/0, Alsancak, 35220 Konak / İzmir",
           phone1: "+90 (555) 000 00 00",
           phone2: "+90 (555) 000 00 01",
           email: "bilgi@psikolog.com",

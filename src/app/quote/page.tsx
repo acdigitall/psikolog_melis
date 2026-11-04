@@ -17,7 +17,7 @@ const DEFAULT_CATS = [
 ];
 
 const SESSION_TYPES = [
-  { value: 'Yüz Yüze Terapi (Klinik)', title: 'Yüz yüze', desc: 'Kadıköy kliniğinde' },
+  { value: 'Yüz Yüze Terapi (Klinik)', title: 'Yüz yüze', desc: 'Alsancak, İzmir kliniğinde' },
   { value: 'Online Terapi (Görüntülü Görüşme)', title: 'Online', desc: 'Güvenli görüntülü görüşme' },
 ];
 

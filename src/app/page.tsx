@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { pageMeta, DEFAULT_DESCRIPTION } from '@/lib/site';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import CtaBand from '@/components/site/CtaBand';
@@ -15,13 +16,13 @@ import { faqs } from '@/lib/faqs';
 export async function generateMetadata(): Promise<Metadata> {
   const res = await getHomePage();
   const d = res.success && res.data ? res.data : null;
-  return {
-    title: d?.metaTitle || 'Uzm. Klinik Psikolog | Bireysel, Çift ve Online Terapi',
-    description:
-      d?.metaDesc ||
-      'Kaygı, depresyon, ilişki sorunları ve travma alanlarında kanıta dayalı yöntemlerle yüz yüze ve online psikoterapi.',
-    keywords: d?.metaKeys || 'psikolog, klinik psikolog, bireysel terapi, çift terapisi, online terapi, emdr',
-  };
+  return pageMeta({
+    title: d?.metaTitle || 'İzmir Psikolog | Uzm. Klinik Psikolog · Alsancak & Online Terapi',
+    description: d?.metaDesc || DEFAULT_DESCRIPTION,
+    keywords: d?.metaKeys || 'izmir psikolog, psikolog izmir, alsancak psikolog, izmir klinik psikolog, izmir online terapi',
+    path: '/',
+    absoluteTitle: true,
+  });
 }
 
 function parseJson<T>(value: unknown, fallback: T): T {
@@ -67,10 +68,10 @@ export default async function Home() {
       {/* ——— Açılış ——— */}
       <section className="mx-auto grid max-w-[1240px] items-center gap-12 px-6 pt-10 pb-16 md:grid-cols-[1.25fr_1fr] md:gap-10 md:pt-14 md:pb-24 lg:grid-cols-[1.15fr_1fr] lg:gap-20 lg:pb-28 lg:px-10">
         <div>
-          <p className="intro kicker mb-7">{hero?.subtitle || 'Uzm. Klinik Psikolog · Kadıköy & Online'}</p>
-          <h1 style={delay(80)} className="intro display max-w-[15ch]">
+          <h1 className="intro kicker mb-7 font-sans">{hero?.subtitle || 'İzmir Psikolog · Uzm. Klinik Psikolog · Alsancak & Online'}</h1>
+          <p style={delay(80)} className="intro display max-w-[15ch] [text-wrap:balance]">
             <Accent text={hero?.title || 'Pratik, şefkatli ve gerçekten işe yarayan bir terapi'} words={2} />
-          </h1>
+          </p>
           <p style={delay(160)} className="intro lead mt-7 max-w-xl">
             {hero?.desc ||
               'Kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde kanıta dayalı yöntemlerle, size özel bir yol haritası oluşturuyoruz.'}
@@ -82,7 +83,7 @@ export default async function Home() {
             <Link href="/contact" className="btn-ghost">Ön görüşme için arayın</Link>
           </div>
           <p style={delay(320)} className="intro mt-10 text-sm text-muted">
-            Kadıköy kliniğinde yüz yüze · Türkiye&apos;nin her yerinden online
+            <Link href="/izmir-psikolog" className="underline decoration-line underline-offset-4 hover:text-forest transition-colors">İzmir Alsancak&apos;taki klinikte</Link>{' '}yüz yüze · Türkiye&apos;nin her yerinden online
           </p>
         </div>
 
@@ -90,7 +91,7 @@ export default async function Home() {
           <div className="arch relative aspect-[4/5] bg-sage-light">
             <Image
               src={hero?.bg || '/images/hero-sakin-oda.jpg'}
-              alt={hero?.metaTitle || ''}
+              alt={hero?.metaTitle || "İzmir Alsancak'ta sakin terapi odası"}
               fill
               unoptimized
               priority
@@ -140,7 +141,7 @@ export default async function Home() {
       <section className="mx-auto grid max-w-[1240px] items-center gap-12 px-6 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-10 md:py-24 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:py-28 lg:px-10">
         <div data-reveal="image" className="mx-auto w-full max-w-[320px] sm:max-w-[380px] md:max-w-none lg:max-w-[440px]">
           <div className="arch relative aspect-[4/5] bg-sage-light">
-            <Image src={about.storyImg || '/images/hakkimda-hikaye.jpg'} alt="" fill unoptimized sizes="(max-width: 1024px) 90vw, 440px" className="object-cover" />
+            <Image src={about.storyImg || '/images/hakkimda-hikaye.jpg'} alt="İzmir'de uzman klinik psikolog ile terapi" fill unoptimized sizes="(max-width: 1024px) 90vw, 440px" className="object-cover" />
           </div>
         </div>
         <div data-reveal>

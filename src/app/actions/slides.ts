@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 const defaultSlides = [
   {
-    subtitle: "Uzm. Klinik Psikolog · Kadıköy & Online",
+    subtitle: "İzmir Psikolog · Uzm. Klinik Psikolog · Alsancak & Online",
     title: "Pratik, şefkatli ve gerçekten işe yarayan bir terapi",
     desc: "Kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde kanıta dayalı yöntemlerle, size özel bir yol haritası oluşturuyoruz.",
     bg: "/images/hero-sakin-oda.jpg",

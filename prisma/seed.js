@@ -9,6 +9,8 @@
  */
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const { applyIzmirSeo } = require('./seo-izmir');
+const { applyIzmirBlog } = require('./blog-izmir');
 
 const IMG = (name) => `/images/${name}.jpg`;
 
@@ -31,7 +33,7 @@ async function main() {
   // 1. İletişim ayarları
   console.log('📞 İletişim ayarları...');
   await upsertSingleton('contactSettings', {
-    address: 'Bağdat Caddesi No: 124/6, Kadıköy, İstanbul',
+    address: 'Kıbrıs Şehitleri Caddesi No: 00/0, Alsancak, 35220 Konak / İzmir',
     phone1: '+90 (555) 000 00 00',
     phone2: '+90 (555) 000 00 01',
     email: 'bilgi@psikolog.com',
@@ -54,10 +56,10 @@ async function main() {
   // 2. Ana sayfa
   console.log('🏠 Ana sayfa...');
   await upsertSingleton('homePage', {
-    metaTitle: 'Uzm. Klinik Psikolog | Kadıköy & Online Terapi',
+    metaTitle: 'İzmir Psikolog | Uzm. Klinik Psikolog · Alsancak & Online Terapi',
     metaDesc:
       'Kaygı, depresyon, ilişki sorunları ve travma alanlarında BDT, Şema Terapi ve EMDR gibi kanıta dayalı yöntemlerle yüz yüze ve online psikoterapi.',
-    metaKeys: 'psikolog, klinik psikolog, kadıköy psikolog, online terapi, çift terapisi, emdr, bilişsel davranışçı terapi, şema terapi',
+    metaKeys: 'psikolog, klinik psikolog, izmir psikolog, online terapi, çift terapisi, emdr, bilişsel davranışçı terapi, şema terapi',
     servicesTitle: 'Size nasıl destek olabilirim?',
     whyUsTitle: 'Kanıta dayalı, güçlü yanlarınızı merkeze alan bir terapi',
     whyUsItems: [
@@ -84,7 +86,7 @@ async function main() {
   await prisma.slide.createMany({
     data: [
       {
-        subtitle: 'Uzm. Klinik Psikolog · Kadıköy & Online',
+        subtitle: 'İzmir Psikolog · Uzm. Klinik Psikolog · Alsancak & Online',
         title: 'Pratik, şefkatli ve gerçekten işe yarayan bir terapi',
         desc: 'Kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde kanıta dayalı yöntemlerle, size özel bir yol haritası oluşturuyoruz.',
         bg: IMG('hero-sakin-oda'),
@@ -201,7 +203,7 @@ async function main() {
   await upsertSingleton('aboutPage', {
     metaTitle: 'Hakkımda',
     metaDesc: 'Eğitimim, terapi yaklaşımım (BDT, Şema Terapi, EMDR), etik ilkelerim ve çalışma alanlarım.',
-    metaKeys: 'uzman klinik psikolog, bdt terapisti, emdr terapisti, şema terapi, kadıköy psikolog',
+    metaKeys: 'uzman klinik psikolog, bdt terapisti, emdr terapisti, şema terapi, izmir psikolog',
     storyImg: IMG('hakkimda-hikaye'),
     storyTitle: 'Kendinizi anlama ve iyileşme yolculuğunuzda yanınızdayım',
     storyDesc1:
@@ -454,6 +456,11 @@ Aylar geçmesine rağmen günlük işlevleriniz ciddi biçimde etkileniyorsa, ka
   for (const name of catNames) {
     await prisma.category.upsert({ where: { name }, update: {}, create: { name } });
   }
+
+  // 11. İzmir yerel SEO alanları (adres, meta başlıklar, sayfa açıklamaları)
+  console.log('📍 İzmir SEO...');
+  await applyIzmirSeo(prisma);
+  await applyIzmirBlog(prisma);
 
   console.log('🎉 Tamamlandı.');
 }

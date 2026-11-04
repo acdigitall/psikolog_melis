@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Gizlilik Politikası",
   description: "Kişisel verilerinizin ve danışan bilgilerinizin etik ilkeler doğrultusunda korunması hakkında gizlilik politikası.",
-};
+  path: '/privacy',
+});
 
 export default function Privacy() {
   return (

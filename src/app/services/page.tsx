@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getServices } from '@/app/actions/services';
@@ -7,10 +8,14 @@ import CtaBand from '@/components/site/CtaBand';
 import PageHero from '@/components/site/PageHero';
 import { ArrowRight } from '@/components/site/Icons';
 
-export const metadata: Metadata = {
-  title: 'Hizmetler',
-  description: 'Bireysel terapi, çift terapisi, online terapi, EMDR ve travma terapisi, kaygı ve depresyon için psikolojik destek.',
-};
+export const metadata: Metadata = pageMeta({
+  title: "İzmir Psikoterapi Hizmetleri · Bireysel, Çift, EMDR",
+  description:
+    "İzmir Alsancak'ta ve online: bireysel terapi, çift ve ilişki terapisi, EMDR travma terapisi, kaygı-panik atak ve depresyon-yas için uzman klinik psikolog desteği.",
+  keywords: 'izmir bireysel terapi, izmir çift terapisi, izmir emdr, izmir panik atak, izmir depresyon terapisi, izmir online terapi',
+  path: '/services',
+  image: '/images/hero-nefes.jpg',
+});
 
 export default async function Services() {
   const [res, headerRes] = await Promise.all([getServices(), getPageHeader('services')]);

@@ -1,16 +1,21 @@
 import type { MetadataRoute } from 'next';
 import { getServices } from '@/app/actions/services';
 import { getBlogPosts } from '@/app/actions/blog';
+import { SITE_URL } from '@/lib/site';
+
+// Her istekte veritabanından üretilir: admin'den eklenen/güncellenen içerik yeniden derleme gerekmeden yer alır.
+export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://psikolog.com';
+  const baseUrl = SITE_URL;
   const currentDate = new Date();
 
   // Statik Sayfalar
   const routes = [
-    { path: '', changeFrequency: 'daily' as const, priority: 1.0 },
+    { path: '', changeFrequency: 'weekly' as const, priority: 1.0 },
+    { path: '/izmir-psikolog', changeFrequency: 'monthly' as const, priority: 0.9 },
     { path: '/about', changeFrequency: 'monthly' as const, priority: 0.8 },
-    { path: '/services', changeFrequency: 'weekly' as const, priority: 0.8 },
+    { path: '/services', changeFrequency: 'weekly' as const, priority: 0.9 },
     { path: '/blog', changeFrequency: 'daily' as const, priority: 0.8 },
     { path: '/contact', changeFrequency: 'monthly' as const, priority: 0.7 },
     { path: '/faq', changeFrequency: 'monthly' as const, priority: 0.6 },
@@ -37,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/services/${s.slug}`,
       lastModified: s.createdAt,
       changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      priority: 0.8,
     })),
     ...posts.map((p: any) => ({
       url: `${baseUrl}/blog/${p.slug}`,

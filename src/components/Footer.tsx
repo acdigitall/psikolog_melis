@@ -26,7 +26,7 @@ export default function Footer({ settings }: { settings?: any }) {
           <div className="col-span-2 space-y-5 lg:col-span-1">
             <Brand logo={settings?.logoFooter} variant="light" />
             <p className="max-w-xs text-sm text-paper/60 leading-relaxed">
-              Kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde yüz yüze ve online psikoterapi.
+              İzmir Alsancak&apos;ta uzman klinik psikolog: kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde yüz yüze ve online psikoterapi.
             </p>
           </div>
 
@@ -39,13 +39,14 @@ export default function Footer({ settings }: { settings?: any }) {
               <li><Link href="/gallery" className={link}>Klinik</Link></li>
               <li><Link href="/blog" className={link}>Yazılar</Link></li>
               <li><Link href="/faq" className={link}>Sorular</Link></li>
+              <li><Link href="/izmir-psikolog" className={link}>İzmir psikolog</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="mb-5 font-sans text-sm text-paper/45">İletişim</h4>
             <ul className="space-y-2.5 text-[15px] text-paper/65 break-words">
-              {settings?.address && <li className="leading-relaxed">{settings.address}</li>}
+              {settings?.address && <li className="leading-relaxed"><address className="not-italic">{settings.address}</address></li>}
               {settings?.phone1 && (
                 <li><a href={`tel:${settings.phone1.replace(/[^\d+]/g, '')}`} className={link}>{settings.phone1}</a></li>
               )}

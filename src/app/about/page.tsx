@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAboutPage, getDefaultAboutData } from '@/app/actions/about';
@@ -11,11 +12,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const res = await getAboutPage();
   const defaultData = await getDefaultAboutData();
   const data = res.success && res.data ? res.data : defaultData;
-  return {
-    title: data.metaTitle || 'Hakkımda',
-    description: data.metaDesc || 'Eğitimim, terapi yaklaşımım ve çalışma alanlarım.',
-    keywords: data.metaKeys || 'psikolog hakkında, klinik psikolog, bdt, emdr, şema terapi',
-  };
+  return pageMeta({
+    title: data.metaTitle || 'Hakkımda · İzmir Uzman Klinik Psikolog',
+    description: data.metaDesc || "İzmir Alsancak'ta çalışan uzman klinik psikolog: eğitim, terapi yaklaşımı (BDT, Şema Terapi, EMDR) ve çalışma alanları.",
+    keywords: data.metaKeys || 'izmir uzman klinik psikolog, izmir emdr terapisti, izmir bdt',
+    path: '/about',
+    image: data.storyImg,
+  });
 }
 
 function parseList(value: unknown, fallback: string): { title: string; desc: string }[] {

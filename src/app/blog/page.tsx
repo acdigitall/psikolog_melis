@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getBlogPosts } from '@/app/actions/blog';
@@ -6,10 +7,12 @@ import { getPageHeader } from '@/app/actions/page-headers';
 import CtaBand from '@/components/site/CtaBand';
 import PageHero from '@/components/site/PageHero';
 
-export const metadata: Metadata = {
-  title: 'Yazılar',
-  description: 'Ruh sağlığı, kaygı, depresyon, ilişkiler ve psikoterapi yöntemleri üzerine yazılar.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Psikoloji Yazıları · İzmir Klinik Psikolog Blogu',
+  description: 'Kaygı, panik atak, depresyon, ilişkiler, yas ve EMDR üzerine İzmir\'de çalışan uzman klinik psikologdan sade ve uygulanabilir yazılar.',
+  path: '/blog',
+  image: '/images/blog-gunluk.jpg',
+});
 
 const fmt = (d: Date) => new Date(d).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
 const delay = (ms: number) => ({ ['--reveal-delay' as string]: `${ms}ms` });

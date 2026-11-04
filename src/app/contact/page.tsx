@@ -1,14 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 import Link from 'next/link';
 import { getContactSettings } from '@/app/actions/contact';
 import { getPageHeader } from '@/app/actions/page-headers';
 import PageHero from '@/components/site/PageHero';
 import { ArrowRight } from '@/components/site/Icons';
 
-export const metadata: Metadata = {
-  title: 'İletişim',
-  description: 'Klinik adresi, telefon, e-posta ve randevu bilgileri.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'İletişim ve Adres · Alsancak, Konak / İzmir',
+  description: "İzmir Alsancak'taki klinik adresi, telefon, e-posta, seans saatleri ve ulaşım bilgileri. Yüz yüze ya da online randevu için ulaşın.",
+  path: '/contact',
+  image: '/images/klinik-detay.jpg',
+});
 
 function parseArr(v: unknown): any[] {
   if (Array.isArray(v)) return v;
@@ -54,7 +57,19 @@ export default async function Contact() {
         <div className="grid gap-16 lg:grid-cols-[1.1fr_1fr] lg:gap-24">
           <div>
             <dl className="border-t border-line">
-              {settings?.address && <Row label="Adres">{settings.address}</Row>}
+              {settings?.address && (
+                <Row label="Adres">
+                  <address className="not-italic">{settings.address}</address>
+                </Row>
+              )}
+              <Row label="Ulaşım">
+                <span className="block text-[1.1rem] leading-relaxed font-sans text-ink/75">
+                  Alsancak İZBAN istasyonu, Alsancak vapur iskelesi ve Konak tramvay hattına yürüme mesafesinde.{' '}
+                  <Link href="/izmir-psikolog" className="text-forest underline decoration-line underline-offset-4 hover:text-olive">
+                    Ulaşım ve hizmet bölgeleri
+                  </Link>
+                </span>
+              </Row>
               {phones.map((p, i) => (
                 <Row key={i} label={p.label}>
                   <a href={tel(p.value)} className="hover:text-olive transition-colors">{p.value}</a>

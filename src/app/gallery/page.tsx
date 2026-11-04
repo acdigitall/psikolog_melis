@@ -1,14 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 import { getGalleryItems } from '@/app/actions/gallery';
 import GalleryGrid from '@/components/GalleryGrid';
 import { getPageHeader } from '@/app/actions/page-headers';
 import CtaBand from '@/components/site/CtaBand';
 import PageHero from '@/components/site/PageHero';
 
-export const metadata: Metadata = {
-  title: 'Klinik',
-  description: 'Sakin, konforlu ve güvenli terapi ortamından kareler.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Klinik ve Seans Odası · Alsancak, İzmir',
+  description: "İzmir Alsancak'taki sakin, konforlu ve gizliliğe özen gösterilen terapi ortamından kareler.",
+  path: '/gallery',
+  image: '/images/klinik-salon.jpg',
+});
 
 export default async function Gallery() {
   const [response, headerRes] = await Promise.all([getGalleryItems(), getPageHeader('gallery')]);

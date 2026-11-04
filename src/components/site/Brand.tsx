@@ -19,7 +19,7 @@ export default function Brand({
   return (
     <span className="flex flex-col leading-none">
       <span className={`font-serif text-[1.35rem] tracking-[-0.01em] ${main}`}>Uzm. Klinik Psikolog</span>
-      <span className={`mt-1.5 text-[12px] ${sub}`}>Psikoterapi · Kadıköy & Online</span>
+      <span className={`mt-1.5 text-[12px] ${sub}`}>Psikoterapi · İzmir & Online</span>
     </span>
   );
 }

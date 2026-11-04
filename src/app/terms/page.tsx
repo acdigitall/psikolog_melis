@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/site';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Kullanım Koşulları",
   description: "Web sitesi ve psikolojik danışmanlık hizmetlerinin kullanımını düzenleyen temel şartlar ve koşullar.",
-};
+  path: '/terms',
+});
 
 export default function Terms() {
   return (
