@@ -45,9 +45,10 @@ export default function Navbar({ settings }: { settings?: any }) {
   const phone = settings?.phone1 as string | undefined;
 
   return (
+    <>
     <header
       className={`sticky top-0 z-50 w-full transition-[background-color,border-color] duration-500 border-b ${
-        scrolled || open ? 'bg-paper/92 backdrop-blur-md border-line' : 'bg-paper border-transparent'
+        open ? 'bg-paper border-line' : scrolled ? 'bg-paper/92 backdrop-blur-md border-line' : 'bg-paper border-transparent'
       }`}
     >
       <nav className="mx-auto flex h-[76px] max-w-[1240px] items-center justify-between gap-8 px-6 lg:px-10">
@@ -80,6 +81,7 @@ export default function Navbar({ settings }: { settings?: any }) {
             onClick={() => setOpen(!open)}
             aria-label={open ? 'Menüyü kapat' : 'Menüyü aç'}
             aria-expanded={open}
+            aria-controls="mobil-menu"
           >
             <span className="relative block h-3 w-6">
               <span className={`absolute left-0 h-px w-6 bg-current transition-all duration-500 ${open ? 'top-1.5 rotate-45' : 'top-0'}`} />
@@ -88,14 +90,17 @@ export default function Navbar({ settings }: { settings?: any }) {
           </button>
         </div>
       </nav>
+    </header>
 
-      {/* Mobil menü */}
+      {/* Mobil menü — header dışında: backdrop-filter, fixed öğeyi header'a hapsediyor */}
       <div
-        className={`lg:hidden fixed inset-x-0 top-[76px] bottom-0 bg-paper transition-[opacity,visibility] duration-500 ${
+        id="mobil-menu"
+        aria-hidden={!open}
+        className={`lg:hidden fixed inset-x-0 top-[76px] bottom-0 z-40 bg-paper transition-[opacity,visibility] duration-500 ${
           open ? 'visible opacity-100' : 'invisible opacity-0'
         }`}
       >
-        <div className="flex h-full flex-col justify-between overflow-y-auto px-6 pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
+        <div className="flex h-full flex-col justify-between overflow-y-auto px-6 pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))] [@media(max-height:700px)]:pt-5">
           <ul className="space-y-1">
             {[{ name: 'Anasayfa', href: '/' }, ...navLinks].map((link, i) => (
               <li
@@ -103,7 +108,7 @@ export default function Navbar({ settings }: { settings?: any }) {
                 className={`transition-all duration-700 ${open ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'}`}
                 style={{ transitionDelay: open ? `${80 + i * 45}ms` : '0ms' }}
               >
-                <Link href={link.href} className="block py-2 font-serif text-[2.1rem] leading-tight text-forest">
+                <Link href={link.href} className="block py-2 font-serif text-[2.1rem] leading-tight text-forest [@media(max-height:700px)]:py-1 [@media(max-height:700px)]:text-[1.65rem]">
                   {link.name}
                 </Link>
               </li>
@@ -121,6 +126,6 @@ export default function Navbar({ settings }: { settings?: any }) {
           </div>
         </div>
       </div>
-    </header>
+    </>
   );
 }
