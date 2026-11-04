@@ -29,7 +29,7 @@ export default async function Production() {
       <PageHero
         image="/images/surec-yolculuk.jpg" title={header?.title || info.title} description={header?.description || info.desc} crumbs={[{ label: 'Terapi süreci' }]} />
 
-      <section className="mx-auto max-w-[1320px] px-6 py-24 md:py-32 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-32 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-[1fr_1.4fr] lg:gap-24">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <div data-reveal="image" className="arch relative aspect-[4/5] max-w-[440px] bg-sage-light">
@@ -52,7 +52,7 @@ export default async function Production() {
       </section>
 
       <section className="border-t border-line">
-        <dl className="mx-auto grid max-w-[1320px] gap-10 px-6 py-20 md:grid-cols-3 lg:px-10">
+        <dl className="mx-auto grid max-w-[1240px] gap-10 px-6 py-20 md:grid-cols-3 lg:px-10">
           {[
             ['50 dakika', 'Bireysel seans süresi. Çift seansları 60–75 dakika.'],
             ['Haftada bir', 'Başlangıçta önerilen sıklık; zamanla aralıklar açılır.'],

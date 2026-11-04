@@ -62,7 +62,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
             <button
               type="button"
               onClick={() => setActiveIndex(i)}
-              className="group relative block w-full overflow-hidden rounded-[4px] bg-sage-light"
+              className="group relative block w-full overflow-hidden rounded-[1.25rem] bg-sage-light"
               aria-label={`${img.title} görselini büyüt`}
             >
               <Image

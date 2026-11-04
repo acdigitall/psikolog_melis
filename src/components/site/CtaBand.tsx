@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowRight } from '@/components/site/Icons';
 
 export default function CtaBand({
@@ -7,7 +6,6 @@ export default function CtaBand({
   description = 'Yüz yüze ya da online; size uygun bir zamanda tanışma görüşmesi planlayalım. Hangi desteğin size iyi geleceğini birlikte netleştirelim.',
   primary = { text: 'Randevu talebi oluştur', href: '/quote' },
   secondary = { text: 'Önce soru sormak istiyorum', href: '/contact' },
-  image = '/images/hero-nefes.jpg',
 }: {
   eyebrow?: string;
   title?: string;
@@ -17,31 +15,18 @@ export default function CtaBand({
   image?: string | null;
 }) {
   return (
-    <section className="px-4 pb-4 md:px-6 md:pb-6">
-      <div className="relative mx-auto max-w-[1400px] overflow-hidden rounded-[2.25rem] bg-olive text-paper">
-        <div aria-hidden className="drift absolute -left-16 -top-16 h-64 w-64 rounded-full bg-paper/10" />
-        <div aria-hidden className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-forest/25" />
-        <div className="relative grid items-center gap-12 px-8 py-16 md:px-16 md:py-20 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
-          <div data-reveal>
-            <h2 className="h-section max-w-xl !text-paper" dangerouslySetInnerHTML={{ __html: title }} />
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-paper/85">{description}</p>
-            <div className="mt-10 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
-              <Link href={primary.href} className="btn-light">
-                {primary.text} <ArrowRight />
-              </Link>
-              {secondary && (
-                <Link href={secondary.href} className="link-line !text-paper">
-                  {secondary.text}
-                </Link>
-              )}
-            </div>
-          </div>
-          {image && (
-            <div data-reveal="image" className="relative mx-auto w-full max-w-[420px]">
-              <div className="arch relative aspect-[4/5] border-[6px] border-paper/20 bg-forest">
-                <Image src={image} alt="" fill unoptimized sizes="(max-width: 1024px) 80vw, 420px" className="object-cover" />
-              </div>
-            </div>
+    <section className="mx-auto max-w-[1240px] px-6 pb-16 md:pb-24 lg:pb-28 lg:px-10">
+      <div data-reveal className="rounded-[1.75rem] bg-forest px-6 py-14 text-center text-paper sm:px-10 md:px-16 md:py-20">
+        <h2 className="h-section mx-auto max-w-2xl !text-paper" dangerouslySetInnerHTML={{ __html: title }} />
+        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-paper/75 sm:text-lg">{description}</p>
+        <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <Link href={primary.href} className="btn-light">
+            {primary.text} <ArrowRight />
+          </Link>
+          {secondary && (
+            <Link href={secondary.href} className="btn-outline-light">
+              {secondary.text}
+            </Link>
           )}
         </div>
       </div>

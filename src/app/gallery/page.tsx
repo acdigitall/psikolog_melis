@@ -23,8 +23,8 @@ export default async function Gallery() {
         description={header?.description}
         crumbs={[{ label: 'Klinik' }]}
       />
-      <section className="py-20 md:py-28 px-6 lg:px-10">
-        <div className="max-w-[1320px] mx-auto">
+      <section className="py-16 md:py-24 lg:py-28 px-6 lg:px-10">
+        <div className="max-w-[1240px] mx-auto">
           {items.length === 0 ? (
             <p className="text-muted">Galeriye henüz görsel eklenmedi.</p>
           ) : (

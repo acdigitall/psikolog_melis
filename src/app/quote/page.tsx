@@ -76,7 +76,7 @@ export default function Quote() {
         crumbs={[{ label: 'Randevu' }]}
       />
 
-      <section className="mx-auto max-w-[1320px] px-6 py-20 md:py-28 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-[1.5fr_1fr] lg:gap-24">
           <form onSubmit={handleSubmit} className="space-y-12" noValidate>
             {status && (
@@ -150,7 +150,7 @@ export default function Quote() {
               </span>
             </label>
 
-            <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed">
+            <button type="submit" disabled={loading} className="btn-primary w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed">
               {loading ? 'Gönderiliyor…' : <>Talebi gönder <ArrowRight /></>}
             </button>
           </form>

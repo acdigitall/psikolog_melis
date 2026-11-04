@@ -26,7 +26,7 @@ export default async function Services() {
         crumbs={[{ label: 'Hizmetler' }]}
       />
 
-      <section className="mx-auto max-w-[1320px] px-6 py-20 md:py-28 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
         <div className="space-y-24 md:space-y-32">
           {services.map((s: any, i: number) => {
             const features = s.features ? s.features.split(',').map((f: string) => f.trim()).filter(Boolean).slice(0, 5) : [];
@@ -36,7 +36,7 @@ export default async function Services() {
                 <Link
                   href={`/services/${s.slug}`}
                   data-reveal="image"
-                  className={`group relative block aspect-[5/4] overflow-hidden rounded-[4px] bg-sage-light ${flip ? 'lg:order-2' : ''}`}
+                  className={`group relative block aspect-[5/4] overflow-hidden rounded-[1.25rem] bg-sage-light ${flip ? 'lg:order-2' : ''}`}
                   tabIndex={-1}
                   aria-hidden="true"
                 >

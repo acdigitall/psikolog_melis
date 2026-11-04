@@ -50,7 +50,7 @@ export default function Navbar({ settings }: { settings?: any }) {
         scrolled || open ? 'bg-paper/92 backdrop-blur-md border-line' : 'bg-paper border-transparent'
       }`}
     >
-      <nav className="mx-auto flex h-[76px] max-w-[1320px] items-center justify-between gap-8 px-6 lg:px-10">
+      <nav className="mx-auto flex h-[76px] max-w-[1240px] items-center justify-between gap-8 px-6 lg:px-10">
         <Link href="/" className="shrink-0" aria-label="Anasayfa">
           <Brand logo={settings?.logo} />
         </Link>
@@ -95,7 +95,7 @@ export default function Navbar({ settings }: { settings?: any }) {
           open ? 'visible opacity-100' : 'invisible opacity-0'
         }`}
       >
-        <div className="flex h-full flex-col justify-between px-6 pb-10 pt-8 overflow-y-auto">
+        <div className="flex h-full flex-col justify-between overflow-y-auto px-6 pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
           <ul className="space-y-1">
             {[{ name: 'Anasayfa', href: '/' }, ...navLinks].map((link, i) => (
               <li

@@ -87,7 +87,7 @@ export default async function BlogPostDetail({ params }: Props) {
 
         {post.image && (
           <div className="intro-image mx-auto mt-14 md:mt-20 max-w-[1100px] px-6">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-[4px] bg-sage-light">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-[1.25rem] bg-sage-light">
               <Image src={post.image} alt={post.metaTitle || ''} fill unoptimized priority sizes="(max-width: 1100px) 100vw, 1100px" className="object-cover" />
             </div>
           </div>

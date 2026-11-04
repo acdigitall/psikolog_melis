@@ -54,7 +54,7 @@ export default async function About() {
         image="/images/klinik-pencere.jpg" title={header?.title || 'Hakkımda'} description={header?.description} crumbs={[{ label: 'Hakkımda' }]} />
 
       {/* Hikaye */}
-      <section className="mx-auto max-w-[1320px] px-6 py-24 md:py-32 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-32 lg:px-10">
         <div className="grid gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-24">
           <div data-reveal="image" className="lg:sticky lg:top-28 lg:self-start">
             <div className="arch relative aspect-[4/5] max-w-[480px] bg-sage-light">
@@ -87,21 +87,21 @@ export default async function About() {
 
       {/* Yöntemler */}
       <section className="bg-forest text-paper">
-        <div className="mx-auto grid max-w-[1320px] items-center gap-14 px-6 py-24 md:py-32 lg:grid-cols-[1.1fr_1fr] lg:gap-24 lg:px-10">
+        <div className="mx-auto grid max-w-[1240px] items-center gap-14 px-6 py-16 md:py-24 lg:py-32 lg:grid-cols-[1.1fr_1fr] lg:gap-24 lg:px-10">
           <div data-reveal>
             <p className="kicker mb-6 !text-sage-light">{d.bridgeLabel}</p>
             <h2 className="h-section !text-paper" dangerouslySetInnerHTML={{ __html: d.bridgeTitle }} />
             <p className="mt-8 max-w-xl text-[1.08rem] leading-[1.75] text-paper/80">{d.bridgeDesc1}</p>
             <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-paper/60">{d.bridgeDesc2}</p>
           </div>
-          <div data-reveal="image" className="relative aspect-[4/5] overflow-hidden rounded-[4px] bg-forest-dark">
+          <div data-reveal="image" className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-forest-dark">
             <Image src={d.bridgeImg} alt="" fill unoptimized sizes="(max-width: 1024px) 100vw, 45vw" className="object-cover" />
           </div>
         </div>
       </section>
 
       {/* Eğitimler & alanlar */}
-      <section className="mx-auto max-w-[1320px] px-6 py-24 md:py-32 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-32 lg:px-10">
         <div className="grid gap-14 lg:grid-cols-[1fr_1.5fr] lg:gap-24">
           <div data-reveal>
             <h2 className="h-section">{d.brochureTitle}</h2>
@@ -131,7 +131,7 @@ export default async function About() {
 
       {/* İlkeler */}
       <section className="border-t border-line">
-        <div className="mx-auto max-w-[1320px] px-6 py-24 md:py-32 lg:px-10">
+        <div className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-32 lg:px-10">
           <h2 data-reveal className="h-section max-w-2xl">{d.policyTitle}</h2>
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             {policies.map((p, i) => (

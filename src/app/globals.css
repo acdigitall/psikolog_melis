@@ -39,12 +39,14 @@
   }
   body {
     @apply bg-paper text-ink font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
     font-size: 17px;
     line-height: 1.65;
     text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4 {
     @apply font-serif text-forest;
+    overflow-wrap: break-word;
     font-weight: 400;
     letter-spacing: -0.015em;
     font-optical-sizing: auto;
@@ -108,7 +110,7 @@
   /* Butonlar */
   .btn-primary,
   .btn-forest {
-    @apply inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-forest px-6 text-[15px] font-medium text-paper;
+    @apply inline-flex h-12 whitespace-nowrap items-center justify-center gap-2.5 rounded-full bg-forest px-6 text-[15px] font-medium text-paper;
     transition: background-color 0.4s var(--ease-calm);
   }
   .btn-primary:hover,
@@ -116,7 +118,7 @@
     @apply bg-forest-light;
   }
   .btn-light {
-    @apply inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-paper px-6 text-[15px] font-medium text-forest;
+    @apply inline-flex h-12 whitespace-nowrap items-center justify-center gap-2.5 rounded-full bg-paper px-6 text-[15px] font-medium text-forest;
     transition: background-color 0.4s var(--ease-calm);
   }
   .btn-light:hover {
@@ -124,7 +126,7 @@
   }
   .btn-ghost,
   .btn-outline-light {
-    @apply inline-flex h-12 items-center justify-center gap-2.5 rounded-full border px-6 text-[15px] font-medium;
+    @apply inline-flex h-12 whitespace-nowrap items-center justify-center gap-2.5 rounded-full border px-6 text-[15px] font-medium;
     transition: background-color 0.4s var(--ease-calm), color 0.4s var(--ease-calm), border-color 0.4s var(--ease-calm);
   }
   .btn-ghost {
@@ -153,6 +155,7 @@
   /* Alt çizgisi akan metin bağlantısı */
   .link-line {
     @apply inline-flex items-center gap-2 font-medium text-forest;
+    width: fit-content;
     background-image: linear-gradient(currentColor, currentColor);
     background-size: 100% 1px;
     background-position: 0 100%;
@@ -234,38 +237,29 @@
   }
 }
 
-/* Kayan konu şeridi */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 48s linear infinite;
-}
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
-
-/* Yavaş yüzen organik şekil */
-@keyframes drift {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(10px, -14px) rotate(6deg); }
-}
-.drift {
-  animation: drift 14s ease-in-out infinite;
-}
-
-/* Fotoğraf üzerinde okunaklı metin için alt geçiş */
-.photo-fade {
-  background: linear-gradient(to top, rgba(23, 50, 31, 0.88) 0%, rgba(23, 50, 31, 0.35) 45%, rgba(23, 50, 31, 0) 75%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track,
-  .drift {
-    animation: none !important;
+/* Mobilde yana kaydırılan kart şeridi; sm ve üstünde ızgara */
+@media (max-width: 639px) {
+  .snap-row {
+    display: flex;
+    gap: 1rem;
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+    padding-bottom: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.5rem;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .snap-row::-webkit-scrollbar {
+    display: none;
+  }
+  .snap-row > * {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+  .snap-row > [data-reveal] {
+    animation: none;
   }
 }
 

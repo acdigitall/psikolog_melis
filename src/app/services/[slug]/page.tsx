@@ -51,9 +51,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   return (
     <>
       {/* Başlık */}
-      <section className="relative overflow-hidden bg-sage-light/60 pb-14 md:pb-20">
-      <div aria-hidden className="drift absolute -right-20 -top-24 h-72 w-72 rounded-full bg-paper/50" />
-      <div className="relative mx-auto max-w-[1320px] px-6 pt-14 md:pt-20 lg:px-10">
+      <section className="border-b border-line bg-sand/60 pb-14 md:pb-20">
+      <div className="mx-auto max-w-[1240px] px-6 pt-12 md:pt-14 lg:px-10">
         <nav aria-label="Sayfa yolu" className="mb-12 md:mb-16 text-sm text-muted">
           <Link href="/" className="hover:text-forest">Anasayfa</Link>
           <span className="mx-2 text-sage/60">/</span>
@@ -70,14 +69,14 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             </Link>
           </div>
         </div>
-        <div className="intro-image relative mt-14 md:mt-16 aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[2rem] bg-sage-light shadow-[0_40px_80px_-40px_rgba(23,50,31,0.45)]">
+        <div className="intro-image relative mt-14 md:mt-16 aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[1.5rem] bg-sage-light">
           <Image src={service.img} alt={service.metaTitle || ''} fill unoptimized priority sizes="100vw" className="object-cover" />
         </div>
       </div>
       </section>
 
       {/* İçerik */}
-      <section className="mx-auto max-w-[1320px] px-6 py-24 md:py-32 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-32 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-[1fr_1.6fr] lg:gap-24">
           <aside className="lg:sticky lg:top-28 lg:self-start order-last lg:order-first">
             <div data-reveal className="rounded-[1.75rem] bg-forest p-8 text-paper">
@@ -129,12 +128,12 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
       {others.length > 0 && (
         <section className="border-t border-line">
-          <div className="mx-auto max-w-[1320px] px-6 py-24 lg:px-10">
+          <div className="mx-auto max-w-[1240px] px-6 py-24 lg:px-10">
             <h2 data-reveal className="h-sub mb-10">Diğer çalışma alanları</h2>
-            <div className="grid gap-10 md:grid-cols-3">
+            <div className="snap-row sm:grid sm:grid-cols-2 sm:gap-8 md:grid-cols-3">
               {others.map((item: any, i: number) => (
                 <Link key={item.slug} href={`/services/${item.slug}`} data-reveal style={delay(i * 80)} className="group block">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-sage-light">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-sage-light">
                     <Image src={item.img} alt="" fill unoptimized sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1.2s] group-hover:scale-[1.03]" />
                   </div>
                   <h3 className="mt-5 font-serif text-[1.45rem] leading-snug group-hover:text-olive transition-colors duration-500">{item.title}</h3>

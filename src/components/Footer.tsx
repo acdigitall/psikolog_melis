@@ -21,9 +21,9 @@ export default function Footer({ settings }: { settings?: any }) {
 
   return (
     <footer className="bg-forest text-paper">
-      <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
-        <div className="grid gap-12 pt-20 pb-16 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-          <div className="space-y-5">
+      <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-12 pt-16 pb-12 md:pt-20 md:pb-16 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          <div className="col-span-2 space-y-5 lg:col-span-1">
             <Brand logo={settings?.logoFooter} variant="light" />
             <p className="max-w-xs text-sm text-paper/60 leading-relaxed">
               Kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde yüz yüze ve online psikoterapi.
@@ -44,7 +44,7 @@ export default function Footer({ settings }: { settings?: any }) {
 
           <div>
             <h4 className="mb-5 font-sans text-sm text-paper/45">İletişim</h4>
-            <ul className="space-y-2.5 text-[15px] text-paper/65">
+            <ul className="space-y-2.5 text-[15px] text-paper/65 break-words">
               {settings?.address && <li className="leading-relaxed">{settings.address}</li>}
               {settings?.phone1 && (
                 <li><a href={`tel:${settings.phone1.replace(/[^\d+]/g, '')}`} className={link}>{settings.phone1}</a></li>
@@ -55,7 +55,7 @@ export default function Footer({ settings }: { settings?: any }) {
             </ul>
           </div>
 
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <h4 className="mb-5 font-sans text-sm text-paper/45">Seans saatleri</h4>
             <dl className="space-y-2.5 text-[15px] text-paper/65">
               <div className="flex justify-between gap-6"><dt>Hafta içi</dt><dd>10:00–20:00</dd></div>

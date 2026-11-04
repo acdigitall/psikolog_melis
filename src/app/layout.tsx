@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Newsreader, Hanken_Grotesk } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -18,6 +18,10 @@ const hanken = Hanken_Grotesk({
   variable: "--font-hanken",
   subsets: ["latin", "latin-ext"],
 });
+
+export const viewport: Viewport = {
+  themeColor: "#FBF8F0",
+};
 
 export const metadata: Metadata = {
   title: {

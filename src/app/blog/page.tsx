@@ -25,13 +25,13 @@ export default async function Blog() {
       <PageHero
         image="/images/blog-gunluk.jpg" title={header?.title || 'Yazılar'} description={header?.description} crumbs={[{ label: 'Yazılar' }]} />
 
-      <section className="mx-auto max-w-[1320px] px-6 py-20 md:py-28 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
         {!first ? (
           <p className="text-muted">Henüz yayınlanmış bir yazı yok.</p>
         ) : (
           <>
             <Link href={`/blog/${first.slug}`} className="group grid items-center gap-10 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
-              <div className="intro-image relative aspect-[16/10] overflow-hidden rounded-[4px] bg-sage-light">
+              <div className="intro-image relative aspect-[16/10] overflow-hidden rounded-[1.25rem] bg-sage-light">
                 {first.image && (
                   <Image src={first.image} alt="" fill unoptimized priority sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]" />
                 )}
@@ -47,7 +47,7 @@ export default async function Blog() {
             <div className="mt-24 grid gap-x-10 gap-y-16 border-t border-line pt-16 md:grid-cols-2 lg:grid-cols-3">
               {rest.map((post, i) => (
                 <Link key={post.id} href={`/blog/${post.slug}`} data-reveal style={delay((i % 3) * 80)} className="group block">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-sage-light">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-sage-light">
                     {post.image && (
                       <Image src={post.image} alt="" fill unoptimized sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]" />
                     )}

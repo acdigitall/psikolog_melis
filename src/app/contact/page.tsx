@@ -50,7 +50,7 @@ export default async function Contact() {
       <PageHero
         image="/images/klinik-detay.jpg" title={header?.title || 'İletişim'} description={header?.description} crumbs={[{ label: 'İletişim' }]} />
 
-      <section className="mx-auto max-w-[1320px] px-6 py-20 md:py-28 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-[1.1fr_1fr] lg:gap-24">
           <div>
             <dl className="border-t border-line">
@@ -90,7 +90,7 @@ export default async function Contact() {
           </div>
 
           <div data-reveal="image" className="lg:sticky lg:top-28 lg:self-start">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[4px] bg-mist">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-mist lg:aspect-[4/5]">
               {settings?.mapIframe ? (
                 <div
                   dangerouslySetInnerHTML={{ __html: settings.mapIframe }}

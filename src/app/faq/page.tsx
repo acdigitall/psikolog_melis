@@ -27,7 +27,7 @@ export default function FAQ() {
         crumbs={[{ label: 'Sorular' }]}
       />
 
-      <section className="mx-auto max-w-[1320px] px-6 py-20 md:py-28 lg:px-10">
+      <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
         <div className="grid gap-14 lg:grid-cols-[1fr_2fr] lg:gap-24">
           <div data-reveal className="lg:sticky lg:top-28 lg:self-start">
             <p className="text-muted leading-relaxed max-w-xs">Başka bir sorunuz mu var?</p>
@@ -40,7 +40,7 @@ export default function FAQ() {
                   {f.q}
                   <Plus className="mt-1.5 h-5 w-5 shrink-0 text-olive transition-transform duration-500 group-open:rotate-45" />
                 </summary>
-                <p className="-mt-1 max-w-2xl pb-8 pr-12 text-ink/75 leading-[1.75]">{f.a}</p>
+                <p className="-mt-1 max-w-2xl pb-8 sm:pr-12 text-ink/75 leading-[1.75]">{f.a}</p>
               </details>
             ))}
           </div>
