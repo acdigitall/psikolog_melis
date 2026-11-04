@@ -1,0 +1,22 @@
+# Hostinger LiteSpeed / Apache Configuration for Next.js & Static Assets
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Direct static files in public directory to be served by LiteSpeed
+  RewriteCond %{REQUEST_URI} ^/(logo|dummygorsel|uploads)/ [NC]
+  RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
+  RewriteRule ^(.*)$ /public/$1 [L]
+
+  # Allow direct access to public folder files
+  RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
+  RewriteRule ^(.*)$ /public/$1 [L]
+</IfModule>
+
+# Set correct MIME types for images & fonts
+<IfModule mod_mime.c>
+  AddType image/svg+xml .svg
+  AddType image/webp .webp
+  AddType image/png .png
+  AddType image/jpeg .jpg .jpeg
+  AddType font/woff2 .woff2
+</IfModule>

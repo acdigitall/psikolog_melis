@@ -1,0 +1,281 @@
+@import "tailwindcss";
+
+/*
+ * Palet: guidedpsychology.com.au referanslı
+ * forest #21492C · olive #607A42 · sage #738566 · paper #FBF8F0
+ */
+@theme {
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-heading: var(--font-newsreader), ui-serif, Georgia, serif;
+
+  --color-forest: #21492C;
+  --color-forest-dark: #17321F;
+  --color-forest-light: #285935;
+  --color-olive: #607A42;
+  --color-olive-dark: #4E6435;
+  --color-sage: #738566;
+  --color-sage-light: #D9DFD0;
+  --color-mist: #E9ECE2;
+  --color-cream: #FBF8F0;
+  --color-paper: #FBF8F0;
+  --color-sand: #F2ECDF;
+  --color-ink: #1B2620;
+  --color-muted: #59635B;
+  --color-line: rgba(33, 73, 44, 0.16);
+
+  --shadow-soft: 0 1px 2px rgba(27, 38, 32, 0.04), 0 12px 32px -16px rgba(27, 38, 32, 0.18);
+  --shadow-soft-hover: var(--shadow-soft);
+  --shadow-luxury: var(--shadow-soft);
+  --shadow-luxury-hover: var(--shadow-soft);
+
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-size: 17px;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif text-forest;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-sage-light);
+    color: var(--color-forest);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-olive);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Yazı ölçekleri */
+  .display {
+    @apply font-serif text-forest;
+    font-size: clamp(2.6rem, 1.6rem + 4.2vw, 5.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+  }
+  .h-section {
+    @apply font-serif text-forest;
+    font-size: clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+  .h-sub {
+    @apply font-serif text-forest;
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.85rem);
+    line-height: 1.2;
+  }
+  .lead {
+    @apply text-ink/75;
+    font-size: clamp(1.075rem, 1rem + 0.35vw, 1.25rem);
+    line-height: 1.6;
+  }
+  .kicker {
+    @apply inline-flex items-center gap-3 text-[13px] font-medium text-olive;
+    letter-spacing: 0.02em;
+  }
+  .kicker::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  /* Kemer biçimli görsel (referans) */
+  .arch {
+    border-radius: 999px 999px 0 0;
+    overflow: hidden;
+  }
+
+  /* Butonlar */
+  .btn-primary,
+  .btn-forest {
+    @apply inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-forest px-6 text-[15px] font-medium text-paper;
+    transition: background-color 0.4s var(--ease-calm);
+  }
+  .btn-primary:hover,
+  .btn-forest:hover {
+    @apply bg-forest-light;
+  }
+  .btn-light {
+    @apply inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-paper px-6 text-[15px] font-medium text-forest;
+    transition: background-color 0.4s var(--ease-calm);
+  }
+  .btn-light:hover {
+    @apply bg-white;
+  }
+  .btn-ghost,
+  .btn-outline-light {
+    @apply inline-flex h-12 items-center justify-center gap-2.5 rounded-full border px-6 text-[15px] font-medium;
+    transition: background-color 0.4s var(--ease-calm), color 0.4s var(--ease-calm), border-color 0.4s var(--ease-calm);
+  }
+  .btn-ghost {
+    @apply border-forest/30 text-forest;
+  }
+  .btn-ghost:hover {
+    @apply border-forest bg-forest text-paper;
+  }
+  .btn-outline-light {
+    @apply border-paper/40 text-paper;
+  }
+  .btn-outline-light:hover {
+    @apply bg-paper text-forest;
+  }
+  .btn-primary svg,
+  .btn-light svg,
+  .btn-ghost svg {
+    transition: transform 0.4s var(--ease-calm);
+  }
+  .btn-primary:hover svg,
+  .btn-light:hover svg,
+  .btn-ghost:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* Alt çizgisi akan metin bağlantısı */
+  .link-line {
+    @apply inline-flex items-center gap-2 font-medium text-forest;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.5s var(--ease-calm);
+  }
+  .link-line:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+
+  .rule {
+    @apply border-line;
+  }
+
+  /* Eski sınıflarla uyumluluk (admin dışı kalan yerler) */
+  .eyebrow {
+    @apply mb-5 inline-flex items-center gap-3 text-[13px] font-medium text-olive;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+  .card {
+    @apply bg-white/60 border border-line rounded-2xl;
+  }
+  .bg-texture-green {
+    @apply bg-forest;
+  }
+
+  .prose-calm p {
+    @apply mb-6;
+  }
+}
+
+/* Açılıştaki öğeler: sayfa yüklenirken yumuşak beliriş */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes reveal-image {
+  from { opacity: 0; transform: scale(1.04); }
+  to { opacity: 1; transform: none; }
+}
+.intro {
+  animation: reveal-up 1.1s var(--ease-calm) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+.intro-image {
+  animation: reveal-image 1.6s var(--ease-calm) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* Aşağıdaki öğeler: kaydırmaya bağlı, JS'siz beliriş (desteklenmeyen tarayıcıda içerik doğrudan görünür) */
+@supports (animation-timeline: view()) {
+  [data-reveal] {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 55%;
+  }
+  [data-reveal="image"] {
+    animation-name: reveal-image;
+    animation-range: entry 0% entry 70%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .intro,
+  .intro-image,
+  [data-reveal] {
+    animation: none !important;
+  }
+}
+
+/* Kayan konu şeridi */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Yavaş yüzen organik şekil */
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(10px, -14px) rotate(6deg); }
+}
+.drift {
+  animation: drift 14s ease-in-out infinite;
+}
+
+/* Fotoğraf üzerinde okunaklı metin için alt geçiş */
+.photo-fade {
+  background: linear-gradient(to top, rgba(23, 50, 31, 0.88) 0%, rgba(23, 50, 31, 0.35) 45%, rgba(23, 50, 31, 0) 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .drift {
+    animation: none !important;
+  }
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  cursor: pointer;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}

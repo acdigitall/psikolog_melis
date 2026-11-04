@@ -1,0 +1,215 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model BlogPost {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  category  String
+  order     Int      @default(0)
+  excerpt   String   @db.Text
+  content   String   @db.LongText
+  image     String?
+  status    String   @default("Yayında")
+  views     Int      @default(0)
+  metaTitle String?
+  metaDesc  String?  @db.Text
+  metaKeys  String?  @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  description String?  @db.Text
+  img         String
+  images      Json?
+  metaTitle   String?
+  metaDesc    String?  @db.Text
+  metaKeys    String?  @db.Text
+  isFeatured  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Quote {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  service   String
+  message   String   @db.Text
+  status    String   @default("Yeni")
+  createdAt DateTime @default(now())
+}
+
+model GalleryItem {
+  id        Int      @id @default(autoincrement())
+  title     String
+  metaTitle String?
+  metaDesc  String?  @db.Text
+  metaKeys  String?  @db.Text
+  category  String
+  order     Int      @default(0)
+  img       String
+  createdAt DateTime @default(now())
+}
+
+model Slide {
+  id        Int      @id @default(autoincrement())
+  title     String
+  subtitle  String
+  desc      String   @db.Text
+  bg        String
+  order     Int      @default(0)
+  metaTitle String?
+  metaDesc  String?  @db.Text
+  metaKeys  String?  @db.Text
+  createdAt DateTime @default(now())
+}
+
+model ProductGroup {
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String   @db.Text
+  items     String   @db.Text
+  img       String
+  metaTitle String?
+  metaDesc  String?  @db.Text
+  metaKeys  String?  @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Service {
+  id         Int      @id @default(autoincrement())
+  slug       String   @unique
+  title      String
+  desc       String   @db.Text
+  longDesc   String   @db.Text
+  features   String   @db.Text
+  steps      String   @db.Text
+  img        String
+  metaTitle  String?
+  metaDesc   String?  @db.Text
+  metaKeys   String?  @db.Text
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model ProductionInfo {
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String   @db.Text
+  img       String
+  metaTitle String?
+  metaDesc  String?  @db.Text
+  metaKeys  String?  @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+model ProductionStep {
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String   @db.Text
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AboutPage {
+  id Int @id @default(autoincrement())
+
+  metaTitle String?
+  metaDesc  String? @db.Text
+  metaKeys  String? @db.Text
+
+  storyImg   String
+  storyTitle String
+  storyDesc1 String @db.Text
+  storyDesc2 String @db.Text
+
+  visionTitle String?
+  visionText  String @db.Text
+  missionTitle String?
+  missionText String @db.Text
+
+  bridgeLabel String
+  bridgeTitle String
+  bridgeDesc1 String @db.Text
+  bridgeDesc2 String @db.Text
+  bridgeImg   String
+
+  brochureLabel      String
+  brochureTitle      String
+  brochureDesc       String  @db.Text
+  brochureUrl        String?
+  brochureHighlights Json
+  materialsTitle     String?
+  materials          String  @db.Text
+
+  policyTitle String
+  policies    Json
+
+  updatedAt DateTime @updatedAt
+}
+
+model HomePage {
+  id Int @id @default(autoincrement())
+
+  metaTitle String?
+  metaDesc  String? @db.Text
+  metaKeys  String? @db.Text
+
+  servicesTitle String
+
+  whyUsTitle String
+  whyUsItems Json
+  whyUsImg   String
+
+  projectsTitle String
+  projectsDesc  String @db.Text
+
+  ctaTitle    String
+  ctaDesc     String @db.Text
+  ctaBtn1Text String
+  ctaBtn1Link String
+  ctaBtn2Text String
+  ctaBtn2Link String
+
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+}
+
+model ContactSettings {
+  id          Int      @id @default(autoincrement())
+  address     String   @db.Text
+  phone1      String
+  phone2      String?
+  email       String
+  phones      Json?
+  emails      Json?
+  socialLinks Json
+  mapIframe   String   @db.Text
+  logo        String?  @db.Text
+  logoFooter  String?  @db.Text
+  updatedAt   DateTime @updatedAt
+}
+
+model PageHeader {
+  id             Int      @id @default(autoincrement())
+  pageIdentifier String   @unique // e.g. "products", "production", "services", "projects", "gallery", "blog", "contact"
+  title          String
+  description    String   @db.Text
+  updatedAt      DateTime @updatedAt
+}
