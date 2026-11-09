@@ -51,6 +51,7 @@ export default async function Contact() {
   return (
     <>
       <PageHero
+        background="scene-cizim"
         image="/images/klinik-detay.jpg" title={header?.title || 'İletişim'} description={header?.description} crumbs={[{ label: 'İletişim' }]} />
 
       <section className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">

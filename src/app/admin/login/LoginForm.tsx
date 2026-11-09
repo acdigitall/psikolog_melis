@@ -14,7 +14,7 @@ export default function LoginForm() {
     <div className="min-h-screen bg-sand/70 flex items-center justify-center px-5 py-10">
       <div className="w-full max-w-[440px]">
         <div className="mb-8 text-center">
-          <p className="font-serif text-[1.6rem] leading-none text-forest">Uzm. Klinik Psikolog</p>
+          <p className="font-serif text-[1.6rem] leading-none text-forest">Uzm. Klinik Psikolog Melisa Sağlam</p>
           <p className="mt-2 text-sm text-muted">Yönetim paneli</p>
         </div>
 

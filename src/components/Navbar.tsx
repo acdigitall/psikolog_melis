@@ -10,6 +10,7 @@ const navLinks = [
   { name: 'Hakkımda', href: '/about' },
   { name: 'Hizmetler', href: '/services' },
   { name: 'Süreç', href: '/production' },
+  { name: 'Klinik', href: '/gallery' },
   { name: 'Yazılar', href: '/blog' },
   { name: 'Sorular', href: '/faq' },
   { name: 'İletişim', href: '/contact' },

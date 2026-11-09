@@ -7,9 +7,9 @@ import type { Metadata } from 'next';
  */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://psikolog.com').replace(/\/$/, '');
 
-export const SITE_NAME = 'Uzm. Klinik Psikolog';
-/** Psikoloğun ad soyadı — belli olduğunda değiştirin (Person şeması ve yazar bilgisi). */
-export const PSYCHOLOGIST_NAME = 'Uzm. Klinik Psikolog';
+export const SITE_NAME = 'Uzm. Klinik Psikolog Melisa Sağlam';
+/** Psikoloğun ad soyadı (Person şeması ve yazar bilgisi). */
+export const PSYCHOLOGIST_NAME = 'Melisa Sağlam';
 export const JOB_TITLE = 'Uzman Klinik Psikolog';
 
 export const CITY = 'İzmir';

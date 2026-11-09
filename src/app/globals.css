@@ -193,6 +193,48 @@
   .prose-calm p {
     @apply mb-6;
   }
+
+  /* Arka plan görselleri (public/backgrounds): yalnızca seçili bölümlerde */
+  .scene-adacayi,
+  .scene-dalgalar,
+  .scene-tepeler,
+  .scene-suluboya,
+  .scene-cizim,
+  .scene-kolaj {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .scene-adacayi {
+    background-image: url("/backgrounds/arkaplan-1-adacayi-kil.webp");
+  }
+  .scene-dalgalar {
+    background-image: url("/backgrounds/arkaplan-2-sakin-dalgalar.webp");
+  }
+  /* Açık ufuk bölgesinde açık renkli metin okunabilsin diye koyu katmanlı */
+  .scene-tepeler {
+    background-image:
+      linear-gradient(rgba(23, 50, 31, 0.6), rgba(23, 50, 31, 0.6)),
+      url("/backgrounds/arkaplan-3-sisli-tepeler.webp");
+    background-position: center bottom;
+  }
+  .scene-suluboya {
+    background-image: url("/backgrounds/el-1-suluboya.webp");
+  }
+  .scene-cizim {
+    background-image: url("/backgrounds/el-2-kalem-cizim.webp");
+  }
+  /* Dar ekranda çizgiler metnin altına giriyor; soluklaştır */
+  @media (max-width: 1023px) {
+    .scene-cizim {
+      background-image:
+        linear-gradient(rgba(251, 248, 240, 0.6), rgba(251, 248, 240, 0.6)),
+        url("/backgrounds/el-2-kalem-cizim.webp");
+    }
+  }
+  .scene-kolaj {
+    background-image: url("/backgrounds/el-3-kagit-kolaj.webp");
+  }
 }
 
 /* Açılıştaki öğeler: sayfa yüklenirken yumuşak beliriş */

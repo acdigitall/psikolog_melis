@@ -41,7 +41,7 @@ const defaultPolicies = [
 
 const defaultAboutData = {
   id: 1,
-  metaTitle: "Hakkımda | Uzm. Klinik Psikolog",
+  metaTitle: "Hakkımda | Melisa Sağlam",
   metaDesc: "Eğitimim, benimsediğim terapi ekolleri (BDT, EMDR, Şema Terapi), etik değerler ve klinik yaklaşımım hakkında detaylı bilgi.",
   metaKeys: "uzman klinik psikolog hakkında, bdt terapisti, emdr terapisti, istanbul psikolog",
 

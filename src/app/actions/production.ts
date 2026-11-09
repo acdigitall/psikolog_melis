@@ -17,7 +17,7 @@ export async function getProductionInfo() {
           title: "Terapi Sürecimiz Nasıl İlerler?",
           desc: "Psikoterapi, kendinizi daha derinlemesine tanıma, zorlayıcı duyguları anlama ve yaşam kalitenizi artırma yolculuğudur. Sürecimiz adım adım ve tamamen sizin temponuza uygun ilerler.",
           img: "/images/surec-yolculuk.jpg",
-          metaTitle: "Terapi Süreci & Danışmanlık Yaklaşımı | Uzm. Klinik Psikolog",
+          metaTitle: "Terapi Süreci & Danışmanlık Yaklaşımı | Melisa Sağlam",
           metaDesc: "İlk görüşmeden hedeflere, düzenli seanslardan sağlıklı sonlandırmaya kadar adım adım psikolojik danışmanlık süreci.",
           metaKeys: "terapi süreci, psikolog seansı nasıl geçer, terapi aşamaları"
         }

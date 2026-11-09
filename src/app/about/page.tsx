@@ -54,6 +54,7 @@ export default async function About() {
   return (
     <>
       <PageHero
+        background="scene-suluboya"
         image="/images/klinik-pencere.jpg" title={header?.title || 'Hakkımda'} description={header?.description} crumbs={[{ label: 'Hakkımda' }]} />
 
       {/* Hikaye */}
@@ -121,7 +122,7 @@ export default async function About() {
         </div>
 
         {areas.length > 0 && (
-          <div data-reveal className="mt-24 md:mt-32 rounded-[2rem] bg-sage-light/70 p-8 md:p-14">
+          <div data-reveal className="scene-kolaj mt-24 md:mt-32 rounded-[2rem] bg-sage-light/70 p-8 md:p-14">
             <h3 className="h-sub">{d.materialsTitle}</h3>
             <ul className="mt-8 flex flex-wrap gap-3">
               {areas.map((a: string) => (

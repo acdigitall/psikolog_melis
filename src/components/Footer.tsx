@@ -83,7 +83,7 @@ export default function Footer({ settings }: { settings?: any }) {
             veya en yakın acil servise başvurun.
           </p>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <p>&copy; {new Date().getFullYear()} Uzm. Klinik Psikolog</p>
+            <p>&copy; {new Date().getFullYear()} Uzm. Klinik Psikolog Melisa Sağlam</p>
             <div className="flex flex-wrap gap-x-6 gap-y-2">
               <Link href="/privacy" className={link}>Gizlilik</Link>
               <Link href="/terms" className={link}>Kullanım koşulları</Link>

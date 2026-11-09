@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const res = await getHomePage();
   const d = res.success && res.data ? res.data : null;
   return pageMeta({
-    title: d?.metaTitle || 'İzmir Psikolog | Uzm. Klinik Psikolog · Alsancak & Online Terapi',
+    title: d?.metaTitle || 'İzmir Uzm. Klinik Psikolog Melisa Sağlam | Alsancak & Online Terapi',
     description: d?.metaDesc || DEFAULT_DESCRIPTION,
     keywords: d?.metaKeys || 'izmir psikolog, psikolog izmir, alsancak psikolog, izmir klinik psikolog, izmir online terapi',
     path: '/',
@@ -104,7 +104,7 @@ export default async function Home() {
 
       {/* ——— Destek olabileceğim konular ——— */}
       {concerns.length > 0 && (
-        <section className="bg-white/60 border-y border-line">
+        <section className="scene-adacayi border-y border-line">
           <div className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
             <div data-reveal className="max-w-2xl">
               <h2 className="h-section">Şu durumlarda destek olabilirim</h2>
@@ -221,7 +221,7 @@ export default async function Home() {
 
       {/* ——— Süreç ——— */}
       {steps.length > 0 && (
-        <section className="border-t border-line bg-white/60">
+        <section className="scene-dalgalar border-t border-line">
           <div className="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
             <div data-reveal className="mb-12 max-w-2xl">
               <h2 className="h-section">Terapi nasıl ilerler?</h2>

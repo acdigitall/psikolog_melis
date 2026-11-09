@@ -62,7 +62,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               className="h-7 w-auto object-contain rounded-sm"
             />
           ) : (
-            <span className="font-semibold text-sm tracking-wide">Uzm. Klinik Psikolog</span>
+            <span className="font-semibold text-sm tracking-wide">Melisa Sağlam</span>
           )}
         </Link>
 
@@ -118,7 +118,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                 />
               ) : (
                 <div className="flex flex-col">
-                  <span className="font-serif text-[1.2rem] leading-none text-white">Uzm. Klinik Psikolog</span>
+                  <span className="font-serif text-[1.2rem] leading-none text-white">Melisa Sağlam</span>
                   <span className="mt-1.5 text-[12px] text-amber-500">Yönetim paneli</span>
                 </div>
               )}
@@ -222,7 +222,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-xs font-bold text-stone-600">UKP</span>
+                <span className="text-xs font-bold text-stone-600">MS</span>
               )}
             </div>
           </div>

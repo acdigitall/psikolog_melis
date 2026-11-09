@@ -15,6 +15,7 @@ export default function PageHero({
   image,
   crumbs = [],
   imageAlt,
+  background = 'bg-sand/60',
 }: {
   eyebrow?: string;
   title: string;
@@ -23,9 +24,10 @@ export default function PageHero({
   crumbs?: Crumb[];
   accentWords?: number;
   imageAlt?: string;
+  background?: string;
 }) {
   return (
-    <section className="border-b border-line bg-sand/60">
+    <section className={`border-b border-line ${background}`}>
       {crumbs.length > 0 && <JsonLd data={breadcrumbSchema(crumbs.map((c) => ({ name: c.label, path: c.href })))} />}
       <div
         className={`mx-auto grid max-w-[1240px] items-center gap-12 px-6 pt-12 pb-16 md:pt-14 md:pb-20 lg:px-10 ${
