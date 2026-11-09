@@ -77,7 +77,7 @@ export default function AdminQuotes() {
     setLoading(false);
 
     if (res.success) {
-      setMessage({ type: 'success', text: 'Randevu talebi başarıyla silindi.' });
+      setMessage({ type: 'success', text: 'Randevu talebi silindi.' });
       setSelectedQuote(null);
       fetchQuotes();
     } else {

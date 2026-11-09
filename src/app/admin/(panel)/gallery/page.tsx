@@ -114,7 +114,7 @@ export default function AdminGallery() {
 
     if (res.success && res.url) {
       setImg(res.url);
-      setMessage({ type: 'success', text: 'Görsel başarıyla yüklendi.' });
+      setMessage({ type: 'success', text: 'Görsel yüklendi.' });
     } else {
       setMessage({ type: 'error', text: res.error || 'Görsel yüklenemedi.' });
     }
@@ -200,7 +200,7 @@ export default function AdminGallery() {
     setLoading(false);
 
     if (res.success) {
-      setMessage({ type: 'success', text: editingId ? 'Görsel başarıyla güncellendi.' : 'Görsel galeriye eklendi.' });
+      setMessage({ type: 'success', text: editingId ? 'Görsel güncellendi.' : 'Görsel galeriye eklendi.' });
       setShowForm(false);
       setEditingId(null);
       fetchItems();
@@ -226,7 +226,6 @@ export default function AdminGallery() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-serif text-stone-900 font-bold">Klinik Galerisi</h1>
-          <p className="text-xs text-stone-500 mt-1">Klinik ve seans odası fotoğraflarını yükleyin ve yönetin.</p>
         </div>
         <button 
           onClick={showForm ? () => setShowForm(false) : handleAddNewClick}
@@ -392,7 +391,7 @@ export default function AdminGallery() {
                     onDrop={handleDrop}
                     className={`block w-full border-2 border-dashed px-4 py-12 flex flex-col items-center justify-center text-center cursor-pointer transition-all rounded ${
                       isDragging 
-                        ? 'border-amber-700 bg-amber-50/50 scale-[1.01]' 
+                        ? 'border-amber-700 bg-amber-50/50' 
                         : 'border-stone-300 bg-stone-50 hover:bg-stone-100 hover:border-amber-700'
                     }`}
                   >
@@ -404,17 +403,9 @@ export default function AdminGallery() {
                       disabled={uploading}
                       className="hidden" 
                     />
-                    {uploading ? (
-                      <svg className="w-12 h-12 text-amber-700 mb-3 animate-hammer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m15 5 4 4" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.5 4.5 19.5 2.5a1 1 0 0 0-1.4 0l-6.5 6.5 4 4 6.5-6.5a1 1 0 0 0 0-1.4z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m11.5 9.5-8.5 8.5v3h3l8.5-8.5" />
-                      </svg>
-                    ) : (
-                      <svg className={`w-12 h-12 mb-3 transition-transform ${isDragging ? 'text-amber-700 scale-110' : 'text-stone-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-12 h-12 mb-3 ${isDragging ? 'text-amber-700' : 'text-stone-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
-                    )}
                     <p className="text-stone-700 font-bold text-sm">
                       {uploading ? 'Görsel hazırlanıyor...' : isDragging ? 'Yüklemek için bırakın' : 'Görsel seçmek için tıklayın ya da sürükleyin'}
                     </p>

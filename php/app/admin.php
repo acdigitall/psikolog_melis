@@ -749,76 +749,92 @@ function admin_dashboard(): void
         'services' => db_value('SELECT COUNT(*) FROM `Service`'),
         'gallery' => db_value('SELECT COUNT(*) FROM `GalleryItem`'),
         'blogs' => db_value("SELECT COUNT(*) FROM `BlogPost` WHERE status = 'Yayında'"),
+        'drafts' => db_value("SELECT COUNT(*) FROM `BlogPost` WHERE status = 'Taslak'"),
         'quotes' => db_value('SELECT COUNT(*) FROM `Quote`'),
+        'newQuotes' => db_value("SELECT COUNT(*) FROM `Quote` WHERE status = 'Yeni'"),
     ], []);
-
-    $activity = safe(function () {
-        $items = [];
-        foreach (db_all('SELECT name, service, createdAt FROM `Quote` ORDER BY createdAt DESC LIMIT 2') as $q) {
-            $items[] = ['type' => 'Randevu talebi · ' . $q['service'], 'title' => $q['name'], 'time' => $q['createdAt'], 'dot' => 'bg-blue-100'];
-        }
-        foreach (db_all('SELECT title, createdAt FROM `BlogPost` ORDER BY createdAt DESC LIMIT 2') as $b) {
-            $items[] = ['type' => 'Blog yazısı', 'title' => $b['title'], 'time' => $b['createdAt'], 'dot' => 'bg-amber-100'];
-        }
-        usort($items, fn ($a, $b) => strcmp($b['time'], $a['time']));
-        return array_slice($items, 0, 4);
-    }, []);
+    $recentQuotes = safe(fn () => db_all('SELECT id, name, service, status, createdAt FROM `Quote` ORDER BY createdAt DESC LIMIT 5'), []);
+    $recentBlogs = safe(fn () => db_all('SELECT title, status, createdAt FROM `BlogPost` ORDER BY createdAt DESC LIMIT 5'), []);
 
     $ago = function (string $time): string {
         $hours = (int) floor((time() - parse_date($time)->getTimestamp()) / 3600);
-        return $hours >= 24 ? floor($hours / 24) . ' gün önce' : ($hours === 0 ? 'Yeni' : "$hours saat önce");
+        return $hours >= 24 ? floor($hours / 24) . ' gün önce' : ($hours === 0 ? 'Az önce' : "$hours saat önce");
     };
 
-    $cards = [['Terapi Hizmetleri', 'services'], ['Galeri Görselleri', 'gallery'], ['Yayınlanan Bloglar', 'blogs'], ['Randevu Talepleri', 'quotes']];
-    $quick = [['/admin/services', 'Hizmetleri Düzenle'], ['/admin/gallery/new', 'Galeriye Görsel Yükle'], ['/admin/blog/new', 'Yeni Blog Yazısı']];
+    $newQuotes = (int) ($stats['newQuotes'] ?? 0);
+    $drafts = (int) ($stats['drafts'] ?? 0);
+    $cards = [
+        ['Randevu talebi', 'quotes', '/admin/quotes', $newQuotes ? "$newQuotes yeni" : ''],
+        ['Yayındaki yazı', 'blogs', '/admin/blog', $drafts ? "$drafts taslak" : ''],
+        ['Hizmet', 'services', '/admin/services', ''],
+        ['Galeri görseli', 'gallery', '/admin/gallery', ''],
+    ];
 
-    admin_shell('Yönetim Paneli', '/admin', function () use ($stats, $activity, $ago, $cards, $quick) {
+    admin_shell('Yönetim Paneli', '/admin', function () use ($stats, $recentQuotes, $recentBlogs, $ago, $cards) {
+        $secondary = 'px-5 py-3 text-sm bg-white border border-stone-300 text-stone-700 rounded hover:border-amber-700 hover:text-amber-700 transition-colors';
         ?>
         <div class="space-y-8">
-          <div class="bg-white p-8 border border-stone-200 shadow-sm">
-            <h1 class="text-2xl font-serif text-stone-900 mb-2">Hoş Geldiniz, Yönetici 👋</h1>
-            <p class="text-stone-500 text-sm">Psikolog web sitenizin tüm içeriklerini buradan kolayca yönetebilirsiniz.</p>
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <h1 class="text-3xl font-serif text-stone-900">Panel</h1>
+            <div class="flex flex-wrap gap-3">
+              <a href="/admin/services" class="<?= $secondary ?>">Hizmetleri düzenle</a>
+              <a href="/admin/gallery/new" class="<?= $secondary ?>">Galeriye görsel ekle</a>
+              <a href="/admin/blog/new" class="px-5 py-3 text-sm bg-amber-700 text-white rounded hover:bg-amber-800 transition-colors">Yeni blog yazısı</a>
+            </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <?php foreach ($cards as [$label, $key]): ?>
-              <div class="bg-white p-6 border border-stone-200 shadow-sm hover:border-amber-500 transition-colors">
-                <span class="block text-3xl font-serif text-stone-900 font-bold mb-4"><?= (int) ($stats[$key] ?? 0) ?></span>
-                <h3 class="font-sans text-sm font-medium text-stone-500 uppercase tracking-wider"><?= e($label) ?></h3>
-              </div>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <?php foreach ($cards as [$label, $key, $href, $note]): ?>
+              <a href="<?= e($href) ?>" class="bg-white border border-stone-200 rounded-lg p-6 hover:border-amber-700 transition-colors">
+                <span class="block text-4xl font-serif text-stone-900"><?= (int) ($stats[$key] ?? 0) ?></span>
+                <span class="block text-sm text-stone-600 mt-2"><?= e($label) ?><?php if ($note): ?><span class="text-amber-700"> · <?= e($note) ?></span><?php endif; ?></span>
+              </a>
             <?php endforeach; ?>
           </div>
-          <div class="grid lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-1 bg-white border border-stone-200 shadow-sm">
-              <div class="p-6 border-b border-stone-100"><h3 class="font-sans text-base font-bold text-stone-900">Hızlı İşlemler</h3></div>
-              <div class="p-6 space-y-4">
-                <?php foreach ($quick as [$href, $label]): ?>
-                  <a href="<?= e($href) ?>" class="flex items-center gap-3 p-4 bg-stone-50 border border-stone-100 hover:border-amber-700 hover:text-amber-700 transition-colors">
-                    <span class="text-xl">+</span><span class="font-medium text-sm"><?= e($label) ?></span>
-                  </a>
-                <?php endforeach; ?>
+          <div class="grid lg:grid-cols-2 gap-6">
+            <section class="bg-white border border-stone-200 rounded-lg">
+              <div class="flex items-center justify-between gap-4 px-6 py-4 border-b border-stone-200">
+                <h2 class="text-lg text-stone-900">Son randevu talepleri</h2>
+                <a href="/admin/quotes" class="text-sm text-amber-700 hover:underline">Tümü</a>
               </div>
-            </div>
-            <div class="lg:col-span-2 bg-white border border-stone-200 shadow-sm">
-              <div class="p-6 border-b border-stone-100"><h3 class="font-sans text-base font-bold text-stone-900">Son Aktiviteler</h3></div>
-              <div class="p-6">
-                <?php if ($activity): ?>
-                  <ul class="space-y-6">
-                    <?php foreach ($activity as $act): ?>
-                      <li class="flex items-start gap-4">
-                        <div class="mt-1 w-2.5 h-2.5 rounded-full <?= e($act['dot']) ?>"></div>
-                        <div class="flex-1">
-                          <p class="text-sm font-medium text-stone-900"><?= e($act['title']) ?></p>
-                          <p class="text-xs text-stone-500 mt-1"><?= e($act['type']) ?></p>
-                        </div>
-                        <span class="text-xs text-stone-400"><?= e($ago($act['time'])) ?></span>
-                      </li>
-                    <?php endforeach; ?>
-                  </ul>
-                <?php else: ?>
-                  <p class="text-stone-500 text-sm">Henüz aktivite bulunmuyor.</p>
-                <?php endif; ?>
+              <?php if ($recentQuotes): ?>
+                <ul class="divide-y divide-stone-100">
+                  <?php foreach ($recentQuotes as $q): ?>
+                    <li>
+                      <a href="/admin/quotes?id=<?= (int) $q['id'] ?>" class="flex items-center justify-between gap-4 px-6 py-4 hover:bg-stone-50 transition-colors">
+                        <span class="min-w-0">
+                          <span class="block text-sm text-stone-900 truncate"><?= e($q['name']) ?></span>
+                          <span class="block text-xs text-stone-500 mt-1 truncate"><?= e($q['service']) ?> · <?= e($ago($q['createdAt'])) ?></span>
+                        </span>
+                        <?= quote_status_badge($q['status']) ?>
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php else: ?>
+                <p class="px-6 py-12 text-center text-sm text-stone-500">Henüz randevu talebi yok.</p>
+              <?php endif; ?>
+            </section>
+            <section class="bg-white border border-stone-200 rounded-lg">
+              <div class="flex items-center justify-between gap-4 px-6 py-4 border-b border-stone-200">
+                <h2 class="text-lg text-stone-900">Son blog yazıları</h2>
+                <a href="/admin/blog" class="text-sm text-amber-700 hover:underline">Tümü</a>
               </div>
-            </div>
+              <?php if ($recentBlogs): ?>
+                <ul class="divide-y divide-stone-100">
+                  <?php foreach ($recentBlogs as $b): ?>
+                    <li class="flex items-center justify-between gap-4 px-6 py-4">
+                      <span class="min-w-0">
+                        <span class="block text-sm text-stone-900 truncate"><?= e($b['title']) ?></span>
+                        <span class="block text-xs text-stone-500 mt-1"><?= e($ago($b['createdAt'])) ?></span>
+                      </span>
+                      <span class="px-2.5 py-1 text-xs rounded-md whitespace-nowrap <?= $b['status'] === 'Yayında' ? 'bg-green-100 text-green-800' : 'bg-stone-100 text-stone-600' ?>"><?= e($b['status']) ?></span>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php else: ?>
+                <p class="px-6 py-12 text-center text-sm text-stone-500">Henüz blog yazısı yok.</p>
+              <?php endif; ?>
+            </section>
           </div>
         </div>
         <?php
@@ -962,7 +978,7 @@ function admin_head(string $title): void
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($title) ?></title>
-<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="icon" href="/icon.png" type="image/png">
 <link rel="stylesheet" href="/assets/site.css?v=<?= (int) @filemtime(ROOT_DIR . '/assets/site.css') ?>">
 <script src="/assets/admin.js?v=<?= (int) @filemtime(ROOT_DIR . '/assets/admin.js') ?>" defer></script>
 </head>
@@ -971,33 +987,31 @@ function admin_head(string $title): void
 
 function admin_login_page(?string $error): void
 {
-    $field = 'w-full h-12 rounded-xl border border-line bg-white px-4 text-ink placeholder:text-muted/60 transition-colors focus:border-forest focus:outline-none focus:ring-4 focus:ring-forest/10';
+    $field = 'w-full h-12 rounded-md border border-line bg-white px-4 text-ink transition-colors focus:border-forest focus:outline-none';
     admin_head('Yönetim Paneli');
     ?>
 <body class="bg-paper text-ink antialiased">
 <div class="min-h-screen bg-sand/70 flex items-center justify-center px-5 py-10">
-  <div class="w-full max-w-[440px]">
-    <div class="mb-8 text-center">
-      <p class="font-serif text-[1.6rem] leading-none text-forest">Uzm. Klinik Psikolog Melisa Sağlam</p>
-      <p class="mt-2 text-sm text-muted">Yönetim paneli</p>
+  <div class="w-full max-w-[460px]">
+    <div class="mb-8">
+      <h1 class="font-serif text-[2.25rem] leading-tight text-forest">Yönetim paneli</h1>
+      <p class="mt-1 text-base text-muted">Uzm. Klinik Psikolog Melisa Sağlam</p>
     </div>
-    <div class="rounded-[1.75rem] border border-line bg-paper px-6 py-9 shadow-[0_20px_50px_-24px_rgba(23,50,31,0.25)] sm:px-10">
-      <h1 class="font-serif text-[1.9rem] leading-tight text-forest">Giriş yapın</h1>
-      <p class="mt-2 text-[15px] text-muted">Devam etmek için yönetici bilgilerinizi girin.</p>
-      <form method="post" action="/admin/login" class="mt-8 space-y-5">
-        <?php if ($error): ?><div role="alert" class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"><?= e($error) ?></div><?php endif; ?>
+    <div class="rounded-lg border border-line bg-paper p-8 sm:p-10">
+      <form method="post" action="/admin/login" class="space-y-5">
+        <?php if ($error): ?><div role="alert" class="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[15px] text-red-800"><?= e($error) ?></div><?php endif; ?>
         <div class="space-y-2">
-          <label for="email" class="block text-sm font-medium text-ink/80">E-posta adresi</label>
-          <input id="email" name="email" type="email" autocomplete="username" required maxlength="254" class="<?= $field ?>" placeholder="admin@psikolog.com">
+          <label for="email" class="block text-base font-medium text-ink/80">E-posta</label>
+          <input id="email" name="email" type="email" autocomplete="username" required maxlength="254" class="<?= $field ?>">
         </div>
         <div class="space-y-2">
-          <label for="password" class="block text-sm font-medium text-ink/80">Şifre</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256" class="<?= $field ?>" placeholder="••••••••">
+          <label for="password" class="block text-base font-medium text-ink/80">Şifre</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256" class="<?= $field ?>">
         </div>
         <button type="submit" class="btn-primary mt-2 w-full">Giriş yap</button>
       </form>
     </div>
-    <div class="mt-8 text-center"><a href="/" class="text-sm text-muted transition-colors hover:text-forest">← Siteye dön</a></div>
+    <div class="mt-5"><a href="/" class="text-base text-muted transition-colors hover:text-forest">Siteye dön</a></div>
   </div>
 </div>
 </body>
@@ -1010,20 +1024,19 @@ function admin_shell(string $heading, string $activePath, callable $body): void
     $menu = [
         ['Ana Sayfa', '/admin/home', 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
         ['Hizmetler', '/admin/services', 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
-        ['Randevu Talepleri', '/admin/quotes', 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
-        ['Terapi Süreci', '/admin/production', 'M13 10V3L4 14h7v7l9-11h-7z'],
+        ['Randevu Talepleri', '/admin/quotes', 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
+        ['Terapi Süreci', '/admin/production', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
         ['Klinik & Seans Odaları', '/admin/gallery', 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
-        ['Hakkımda', '/admin/about', 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
-        ['Açılış Slaytları', '/admin/slides', 'M7 4v16M17 4v16M3 8h18M3 16h18'],
+        ['Hakkımda', '/admin/about', 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
+        ['Açılış Slaytları', '/admin/slides', 'M4 5a1 1 0 011-1h14a1 1 0 011 1v10a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM8 20h8M12 16v4'],
         ['Kategoriler', '/admin/categories', 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
         ['Blog Yazıları', '/admin/blog', 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-.586-1.414l-4.5-4.5A2 2 0 0012.586 3H12'],
         ['İletişim Ayarları', '/admin/contact', 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
     ];
     $settings = contact_settings();
     $logo = ($settings['logoFooter'] ?? '') ?: ($settings['logo'] ?? '');
-    $icon = fn (string $d, string $class = 'w-5 h-5 shrink-0') => '<svg class="' . $class . '" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' . $d . '"/></svg>';
+    $icon = fn (string $d, string $class = 'w-5 h-5 shrink-0') => '<svg class="' . $class . '" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="' . $d . '"/></svg>';
     $back = 'M10 19l-7-7m0 0l7-7m-7 7h18';
-    $exit = 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1';
     $close = 'M6 18L18 6M6 6l12 12';
     $notice = ADMIN_MESSAGES[$_GET['m'] ?? ''] ?? null;
 
@@ -1038,51 +1051,38 @@ function admin_shell(string $heading, string $activePath, callable $body): void
       <button type="button" data-drawer-open class="p-2 text-stone-300 hover:text-white" aria-label="Menü"><?= $icon('M4 6h16M4 12h16M4 18h16', 'w-6 h-6') ?></button>
     </div>
   </header>
-  <div id="admin-backdrop" data-drawer-close class="hidden fixed inset-0 bg-stone-950/70 z-40 md:hidden backdrop-blur-sm"></div>
+  <div id="admin-backdrop" data-drawer-close class="hidden fixed inset-0 bg-stone-950/70 z-40 md:hidden"></div>
 
-  <aside id="admin-aside" class="fixed md:sticky top-0 inset-y-0 left-0 z-50 w-64 md:h-screen bg-stone-900 text-stone-300 flex flex-col justify-between shadow-2xl md:shadow-xl transition-transform duration-300 ease-in-out flex-shrink-0 overflow-y-auto -translate-x-full md:translate-x-0">
+  <aside id="admin-aside" class="fixed md:sticky top-0 inset-y-0 left-0 z-50 w-72 md:h-screen bg-stone-900 text-stone-300 flex flex-col justify-between transition-transform duration-200 flex-shrink-0 overflow-y-auto -translate-x-full md:translate-x-0">
     <div class="flex flex-col">
       <div class="p-6 border-b border-stone-800 flex items-center justify-between shrink-0">
         <a href="/admin" class="flex flex-col">
           <?php if ($logo): ?>
-            <img src="<?= e($logo) ?>" alt="Psikolog logosu" class="h-8 w-auto object-contain rounded-sm">
+            <img src="<?= e($logo) ?>" alt="Psikolog logosu" class="h-10 w-auto object-contain rounded-sm">
           <?php else: ?>
-            <span class="font-serif text-[1.2rem] leading-none text-white">Melisa Sağlam</span>
-            <span class="mt-1.5 text-[12px] text-amber-500">Yönetim paneli</span>
+            <span class="font-serif text-[1.4rem] leading-none text-white">Melisa Sağlam</span>
+            <span class="mt-1.5 text-[14px] text-amber-500">Yönetim paneli</span>
           <?php endif; ?>
         </a>
         <button type="button" data-drawer-close class="md:hidden p-2 text-stone-400 hover:text-white" aria-label="Kapat"><?= $icon($close) ?></button>
       </div>
-      <nav class="p-4 space-y-2 flex-1">
+      <nav class="p-4 space-y-1 flex-1">
         <?php foreach ($menu as [$name, $href, $d]): $active = $activePath === $href; ?>
-          <a href="<?= e($href) ?>" class="flex items-center gap-3 px-4 py-3 rounded transition-colors <?= $active ? 'bg-amber-700 text-white font-bold shadow-sm' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-100' ?>">
-            <?= $icon($d) ?><span class="font-medium text-sm"><?= e($name) ?></span>
-          </a>
+          <a href="<?= e($href) ?>" class="flex items-center gap-3 px-4 py-3 rounded text-sm transition-colors <?= $active ? 'bg-amber-700 text-white' : 'text-stone-300 hover:bg-stone-800 hover:text-white' ?>"><?= $icon($d) ?><?= e($name) ?></a>
         <?php endforeach; ?>
       </nav>
     </div>
-    <div class="p-4 border-t border-stone-800 space-y-2 shrink-0 bg-stone-900">
+    <div class="p-4 border-t border-stone-800 space-y-1 shrink-0 bg-stone-900">
+      <a href="/" class="flex items-center gap-3 px-4 py-3 rounded text-sm text-stone-300 hover:text-white hover:bg-stone-800 transition-colors"><?= $icon($back) ?>Siteye dön</a>
       <form method="post" action="/admin/logout">
         <?= csrf_field() ?>
-        <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-stone-800 hover:text-red-300 transition-colors rounded text-left"><?= $icon($exit) ?><span class="font-medium text-sm">Çıkış Yap</span></button>
+        <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded text-sm text-stone-300 hover:text-white hover:bg-stone-800 transition-colors text-left"><?= $icon('M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1') ?>Çıkış yap</button>
       </form>
-      <a href="/" class="flex items-center gap-3 px-4 py-3 text-stone-400 hover:text-white transition-colors rounded hover:bg-stone-800"><?= $icon($back) ?><span class="font-medium text-sm">Siteye Dön</span></a>
     </div>
   </aside>
 
   <main class="flex-1 flex flex-col min-h-screen overflow-x-hidden">
-    <header class="hidden md:flex bg-white border-b border-stone-200 px-8 py-4 justify-between items-center z-10 shadow-sm sticky top-0">
-      <h2 class="text-xl font-serif text-stone-900 font-bold"><?= e($heading) ?></h2>
-      <div class="flex items-center gap-6">
-        <a href="/" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-amber-700 transition-colors flex items-center gap-1.5"><?= $icon($back, 'w-4 h-4') ?>Siteye Dön</a>
-        <form method="post" action="/admin/logout">
-          <?= csrf_field() ?>
-          <button type="submit" class="text-xs font-bold uppercase tracking-wider text-red-600 hover:text-red-800 transition-colors flex items-center gap-1.5"><?= $icon($exit, 'w-4 h-4') ?>Çıkış Yap</button>
-        </form>
-        <div class="w-9 h-9 rounded-full overflow-hidden border border-stone-200 shadow-sm flex items-center justify-center bg-stone-100" title="Yönetim paneli"><span class="text-xs font-bold text-stone-600">MS</span></div>
-      </div>
-    </header>
-    <div class="flex-1 overflow-x-hidden p-4 sm:p-6 md:p-8 relative">
+    <div class="flex-1 overflow-x-hidden p-4 sm:p-6 md:p-10 relative">
       <div class="max-w-6xl mx-auto w-full">
         <?php if ($notice) { echo admin_alert($notice[0], $notice[1]); } ?>
         <?php $body(); ?>

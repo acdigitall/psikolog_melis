@@ -32,7 +32,7 @@ export default function PageHeaderForm({ pageIdentifier }: PageHeaderFormProps) 
     const res = await updatePageHeader(pageIdentifier, title, description);
     
     if (res.success) {
-      setMessage({ text: "Sayfa başlık bilgisi başarıyla güncellendi.", type: "success" });
+      setMessage({ text: "Sayfa başlık bilgisi güncellendi.", type: "success" });
     } else {
       setMessage({ text: res.message || "Bir hata oluştu.", type: "error" });
     }
@@ -55,7 +55,7 @@ export default function PageHeaderForm({ pageIdentifier }: PageHeaderFormProps) 
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Örn: Ürünlerimiz"
+            placeholder="ör. Hizmetler"
             className="w-full bg-stone-50 border border-stone-200 px-4 py-3 text-stone-900 focus:outline-none focus:border-amber-700 rounded" 
           />
         </div>

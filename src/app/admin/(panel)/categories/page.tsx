@@ -97,8 +97,8 @@ export default function AdminCategories() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-serif text-stone-900 font-bold">Kategori Yönetimi</h1>
-          <p className="text-xs text-stone-500 mt-1">Randevu formundaki terapi alanlarını yönetin.</p>
+          <h1 className="text-2xl font-serif text-stone-900 font-bold">Kategoriler</h1>
+          <p className="text-xs text-stone-500 mt-1">Randevu formunda seçilebilen terapi alanları.</p>
         </div>
       </div>
 

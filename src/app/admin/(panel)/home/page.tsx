@@ -71,7 +71,7 @@ export default function HomeAdmin() {
     setUploadingField(null);
     if (res.success && res.url) {
       setUrl(res.url);
-      alert('Dosya başarıyla yüklendi.');
+      alert('Dosya yüklendi.');
     } else {
       alert(res.error || 'Dosya yüklenemedi.');
     }
@@ -113,7 +113,7 @@ export default function HomeAdmin() {
     setSaving(false);
 
     if (res.success) {
-      alert("Ana sayfa başarıyla güncellendi.");
+      alert("Ana sayfa güncellendi.");
     } else {
       alert(res.error || "Bir hata oluştu.");
     }
@@ -138,8 +138,7 @@ export default function HomeAdmin() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-serif text-stone-900 mb-2">Ana Sayfa Yönetimi</h1>
-          <p className="text-stone-500">Ana sayfa metinlerini ve SEO ayarlarını yönetin.</p>
+          <h1 className="text-3xl font-serif text-stone-900 ">Ana Sayfa</h1>
         </div>
       </div>
 

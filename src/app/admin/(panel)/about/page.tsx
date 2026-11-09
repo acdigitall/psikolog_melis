@@ -102,7 +102,7 @@ export default function AboutAdmin() {
     setUploadingField(null);
     if (res.success && res.url) {
       setUrl(res.url);
-      alert('Dosya başarıyla yüklendi.');
+      alert('Dosya yüklendi.');
     } else {
       alert(res.error || 'Dosya yüklenemedi.');
     }
@@ -175,7 +175,6 @@ export default function AboutAdmin() {
       <div className="flex justify-between items-end mb-8 border-b border-stone-200 pb-4">
         <div>
           <h1 className="text-2xl font-serif font-bold text-stone-900">Hakkımda Sayfası</h1>
-          <p className="text-sm text-stone-500 mt-1">Hakkımda sayfasındaki tüm bölümleri yönetin.</p>
         </div>
       </div>
 

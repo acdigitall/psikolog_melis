@@ -4,74 +4,39 @@ import { requireAdmin } from '@/lib/auth';
 
 import prisma from "@/lib/db";
 
+function timeAgo(date: Date) {
+  const hours = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60));
+  if (hours >= 24) return `${Math.floor(hours / 24)} gün önce`;
+  return hours === 0 ? "Az önce" : `${hours} saat önce`;
+}
+
 export async function getDashboardStats() {
   try {
     await requireAdmin();
-    const serviceCount = await prisma.service.count();
-    const galleryCount = await prisma.galleryItem.count();
-    const blogCount = await prisma.blogPost.count({ where: { status: 'Yayında' } });
-    const quoteCount = await prisma.quote.count();
-
-    // Fetch recent activities (combining latest from a few tables for demo purposes)
-    const recentQuotes = await prisma.quote.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 2,
-      select: { name: true, service: true, createdAt: true }
-    });
-    const recentBlogs = await prisma.blogPost.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 2,
-      select: { title: true, createdAt: true }
-    });
-    
-    const activities: any[] = [];
-    
-    recentQuotes.forEach(q => {
-      activities.push({
-        type: `Randevu talebi · ${q.service}`,
-        title: q.name,
-        time: q.createdAt,
-        color: 'text-blue-600 bg-blue-100'
-      });
-    });
-
-    recentBlogs.forEach(b => {
-      activities.push({
-        type: 'Blog yazısı',
-        title: b.title,
-        time: b.createdAt,
-        color: 'text-amber-600 bg-amber-100'
-      });
-    });
-
-    // Sort by time descending
-    activities.sort((a, b) => b.time.getTime() - a.time.getTime());
-
-    // Format time to string
-    const formattedActivities = activities.slice(0, 4).map(act => {
-      const diffHours = Math.floor((new Date().getTime() - act.time.getTime()) / (1000 * 60 * 60));
-      let timeStr = `${diffHours} saat önce`;
-      if (diffHours >= 24) {
-        timeStr = `${Math.floor(diffHours / 24)} gün önce`;
-      } else if (diffHours === 0) {
-        timeStr = "Yeni";
-      }
-
-      return {
-        ...act,
-        time: timeStr
-      };
-    });
+    const [services, gallery, blogs, drafts, quotes, newQuotes, recentQuotes, recentBlogs] = await Promise.all([
+      prisma.service.count(),
+      prisma.galleryItem.count(),
+      prisma.blogPost.count({ where: { status: 'Yayında' } }),
+      prisma.blogPost.count({ where: { status: 'Taslak' } }),
+      prisma.quote.count(),
+      prisma.quote.count({ where: { status: 'Yeni' } }),
+      prisma.quote.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: { name: true, service: true, status: true, createdAt: true }
+      }),
+      prisma.blogPost.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: { title: true, status: true, createdAt: true }
+      }),
+    ]);
 
     return {
       success: true,
-      stats: {
-        services: serviceCount,
-        gallery: galleryCount,
-        blogs: blogCount,
-        quotes: quoteCount
-      },
-      recentActivity: formattedActivities
+      stats: { services, gallery, blogs, drafts, quotes, newQuotes },
+      recentQuotes: recentQuotes.map(({ createdAt, ...q }) => ({ ...q, time: timeAgo(createdAt) })),
+      recentBlogs: recentBlogs.map(({ createdAt, ...b }) => ({ ...b, time: timeAgo(createdAt) })),
     };
   } catch (error) {
     console.error("Dashboard stats error:", error);

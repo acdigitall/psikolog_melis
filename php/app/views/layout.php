@@ -56,7 +56,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
 <meta name="twitter:title" content="<?= e($meta['title']) ?>">
 <meta name="twitter:description" content="<?= e($meta['description']) ?>">
 <meta name="twitter:image" content="<?= e($ogImage) ?>">
-<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="icon" href="/icon.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-icon.png">
 <link rel="stylesheet" href="/assets/site.css?v=<?= (int) @filemtime(ROOT_DIR . '/assets/site.css') ?>">
 <script src="/assets/site.js?v=<?= (int) @filemtime(ROOT_DIR . '/assets/site.js') ?>" defer></script>

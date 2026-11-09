@@ -178,7 +178,7 @@ export default function ContactSettingsAdmin() {
     });
 
     if (res.success) {
-      setMessage({ text: 'Ayarlar başarıyla kaydedildi.', type: 'success' });
+      setMessage({ text: 'Ayarlar kaydedildi.', type: 'success' });
     } else {
       setMessage({ text: res.error || 'Bir hata oluştu.', type: 'error' });
     }
@@ -192,7 +192,7 @@ export default function ContactSettingsAdmin() {
       <PageHeaderForm pageIdentifier="contact" />
       <div className="bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
         <div className="p-6 border-b border-stone-200 bg-stone-50 flex justify-between items-center">
-          <h2 className="text-lg font-bold text-stone-800">Logo ve İletişim Ayarları</h2>
+          <h1 className="text-2xl font-serif text-stone-900">İletişim Ayarları</h1>
         </div>
 
         <div className="p-6">

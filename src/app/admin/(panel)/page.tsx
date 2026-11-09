@@ -1,100 +1,105 @@
 import Link from 'next/link';
 import { getDashboardStats } from '@/app/actions/dashboard';
 
+const quoteBadge: Record<string, [string, string]> = {
+  Yeni: ['Yeni', 'bg-amber-100 text-amber-800'],
+  Yanıtlandı: ['Görüşüldü', 'bg-green-100 text-green-800'],
+  Okundu: ['İncelendi', 'bg-stone-100 text-stone-600'],
+};
+
+function Badge({ text, tone }: { text: string; tone: string }) {
+  return <span className={`px-2.5 py-1 text-xs rounded-md whitespace-nowrap ${tone}`}>{text}</span>;
+}
+
+function Panel({ title, href, children }: { title: string; href: string; children: React.ReactNode }) {
+  return (
+    <section className="bg-white border border-stone-200 rounded-lg">
+      <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-stone-200">
+        <h2 className="text-lg text-stone-900">{title}</h2>
+        <Link href={href} className="text-sm text-amber-700 hover:underline">Tümü</Link>
+      </div>
+      {children}
+    </section>
+  );
+}
+
 export default async function AdminDashboard() {
   const data = await getDashboardStats();
-  
+  const s = data.stats;
+  const recentQuotes = data.recentQuotes ?? [];
+  const recentBlogs = data.recentBlogs ?? [];
+
   const stats = [
-    { label: "Terapi Hizmetleri", value: data.stats?.services || "0", icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" },
-    { label: "Galeri Görselleri", value: data.stats?.gallery || "0", icon: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" },
-    { label: "Yayınlanan Bloglar", value: data.stats?.blogs || "0", icon: "M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-.586-1.414l-4.5-4.5A2 2 0 0012.586 3H12" },
-    { label: "Randevu Talepleri", value: data.stats?.quotes || "0", icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" }
+    { label: "Randevu talebi", value: s?.quotes ?? 0, note: s?.newQuotes ? `${s.newQuotes} yeni` : '', href: "/admin/quotes" },
+    { label: "Yayındaki yazı", value: s?.blogs ?? 0, note: s?.drafts ? `${s.drafts} taslak` : '', href: "/admin/blog" },
+    { label: "Hizmet", value: s?.services ?? 0, note: '', href: "/admin/services" },
+    { label: "Galeri görseli", value: s?.gallery ?? 0, note: '', href: "/admin/gallery" },
   ];
 
-  const recentActivity = data.recentActivity || [];
+  const secondary = "px-5 py-3 text-sm bg-white border border-stone-300 text-stone-700 rounded hover:border-amber-700 hover:text-amber-700 transition-colors";
 
   return (
     <div className="space-y-8">
-      
-      {/* Welcome Section */}
-      <div className="bg-white p-8 border border-stone-200 shadow-sm flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-serif text-stone-900 mb-2">Hoş Geldiniz, Yönetici 👋</h1>
-          <p className="text-stone-500 text-sm">Psikolog web sitenizin tüm içeriklerini buradan kolayca yönetebilirsiniz.</p>
-        </div>
-        <div className="hidden md:block">
-          <span className="px-4 py-2 bg-stone-100 text-stone-600 text-xs font-bold uppercase tracking-widest border border-stone-200">
-            Versiyon 1.0.0
-          </span>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-3xl font-serif text-stone-900">Panel</h1>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/admin/services" className={secondary}>Hizmetleri düzenle</Link>
+          <Link href="/admin/gallery" className={secondary}>Galeriye görsel ekle</Link>
+          <Link href="/admin/blog" className="px-5 py-3 text-sm bg-amber-700 text-white rounded hover:bg-amber-800 transition-colors">Yeni blog yazısı</Link>
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-6 border border-stone-200 shadow-sm hover:border-amber-500 transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-stone-100 text-stone-500 flex items-center justify-center rounded-full">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={stat.icon} />
-                </svg>
-              </div>
-              <span className="text-3xl font-serif text-stone-900 font-bold">{stat.value}</span>
-            </div>
-            <h3 className="text-sm font-medium text-stone-500 uppercase tracking-wider">{stat.label}</h3>
-          </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat) => (
+          <Link key={stat.href} href={stat.href} className="bg-white border border-stone-200 rounded-lg p-6 hover:border-amber-700 transition-colors">
+            <span className="block text-4xl font-serif text-stone-900">{stat.value}</span>
+            <span className="block text-sm text-stone-600 mt-2">
+              {stat.label}
+              {stat.note && <span className="text-amber-700"> · {stat.note}</span>}
+            </span>
+          </Link>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        
-        {/* Quick Actions */}
-        <div className="lg:col-span-1 bg-white border border-stone-200 shadow-sm">
-          <div className="p-6 border-b border-stone-100">
-            <h3 className="font-bold text-stone-900">Hızlı İşlemler</h3>
-          </div>
-          <div className="p-6 space-y-4">
-            <Link href="/admin/services" className="flex items-center gap-3 p-4 bg-stone-50 border border-stone-100 hover:border-amber-700 hover:text-amber-700 transition-colors">
-              <span className="text-xl">+</span>
-              <span className="font-medium text-sm">Hizmetleri Düzenle</span>
-            </Link>
-            <Link href="/admin/gallery" className="flex items-center gap-3 p-4 bg-stone-50 border border-stone-100 hover:border-amber-700 hover:text-amber-700 transition-colors">
-              <span className="text-xl">+</span>
-              <span className="font-medium text-sm">Galeriye Görsel Yükle</span>
-            </Link>
-            <Link href="/admin/blog" className="flex items-center gap-3 p-4 bg-stone-50 border border-stone-100 hover:border-amber-700 hover:text-amber-700 transition-colors">
-              <span className="text-xl">+</span>
-              <span className="font-medium text-sm">Yeni Blog Yazısı</span>
-            </Link>
-          </div>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="lg:col-span-2 bg-white border border-stone-200 shadow-sm">
-          <div className="p-6 border-b border-stone-100 flex justify-between items-center">
-            <h3 className="font-bold text-stone-900">Son Aktiviteler</h3>
-            <span className="text-xs text-stone-500 cursor-pointer hover:text-stone-900">Tümünü Gör</span>
-          </div>
-          <div className="p-6">
-            {recentActivity.length > 0 ? (
-              <ul className="space-y-6">
-                {recentActivity.map((act: any, i: number) => (
-                  <li key={i} className="flex items-start gap-4">
-                    <div className={`mt-1 w-2.5 h-2.5 rounded-full ${act.color.split(' ')[1]}`}></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-stone-900">{act.title}</p>
-                      <p className="text-xs text-stone-500 mt-1">{act.type}</p>
+      <div className="grid lg:grid-cols-2 gap-6">
+        <Panel title="Son randevu talepleri" href="/admin/quotes">
+          {recentQuotes.length > 0 ? (
+            <ul className="divide-y divide-stone-100">
+              {recentQuotes.map((q, i) => {
+                const [label, tone] = quoteBadge[q.status] ?? [q.status, 'bg-stone-100 text-stone-600'];
+                return (
+                  <li key={i} className="flex items-center justify-between gap-4 px-6 py-4">
+                    <div className="min-w-0">
+                      <p className="text-sm text-stone-900 truncate">{q.name}</p>
+                      <p className="text-xs text-stone-500 mt-1 truncate">{q.service} · {q.time}</p>
                     </div>
-                    <span className="text-xs text-stone-400">{act.time}</span>
+                    <Badge text={label} tone={tone} />
                   </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-stone-500 text-sm">Henüz aktivite bulunmuyor.</p>
-            )}
-          </div>
-        </div>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="px-6 py-12 text-center text-sm text-stone-500">Henüz randevu talebi yok.</p>
+          )}
+        </Panel>
 
+        <Panel title="Son blog yazıları" href="/admin/blog">
+          {recentBlogs.length > 0 ? (
+            <ul className="divide-y divide-stone-100">
+              {recentBlogs.map((b, i) => (
+                <li key={i} className="flex items-center justify-between gap-4 px-6 py-4">
+                  <div className="min-w-0">
+                    <p className="text-sm text-stone-900 truncate">{b.title}</p>
+                    <p className="text-xs text-stone-500 mt-1">{b.time}</p>
+                  </div>
+                  <Badge text={b.status} tone={b.status === 'Yayında' ? 'bg-green-100 text-green-800' : 'bg-stone-100 text-stone-600'} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="px-6 py-12 text-center text-sm text-stone-500">Henüz blog yazısı yok.</p>
+          )}
+        </Panel>
       </div>
     </div>
   );

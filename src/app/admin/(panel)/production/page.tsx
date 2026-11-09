@@ -131,7 +131,7 @@ export default function ProductionAdmin() {
     });
 
     if (res.success) {
-      alert("Terapi süreci bilgileri başarıyla kaydedildi.");
+      alert("Terapi süreci bilgileri kaydedildi.");
       fetchData();
     } else {
       alert("Hata: " + res.error);
@@ -175,7 +175,7 @@ export default function ProductionAdmin() {
     }
 
     if (res.success) {
-      alert("Aşama başarıyla kaydedildi.");
+      alert("Aşama kaydedildi.");
       setIsEditingStep(false);
       fetchData();
     } else {
@@ -199,10 +199,11 @@ export default function ProductionAdmin() {
 
   return (
     <div className="space-y-12">
+      <h1 className="text-2xl font-serif text-stone-900">Terapi Süreci</h1>
       {/* Production Info Form */}
       <section className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-stone-200">
         <h2 className="text-xl font-serif font-bold text-stone-900 mb-6 pb-2 border-b border-stone-100">
-          Terapi Süreci Sayfası Genel Bilgileri (Kapak & Tanıtım)
+          Sayfa bilgileri
         </h2>
         
         <form onSubmit={handleSaveInfo} className="space-y-6">
@@ -259,7 +260,7 @@ export default function ProductionAdmin() {
                 onDrop={handleDrop}
                 className={`block w-full max-w-lg border-2 border-dashed px-4 py-12 flex flex-col items-center justify-center text-center cursor-pointer transition-all rounded-xl ${
                   isDragging 
-                    ? 'border-amber-700 bg-amber-50/50 scale-[1.01]' 
+                    ? 'border-amber-700 bg-amber-50/50' 
                     : 'border-stone-300 bg-stone-50 hover:bg-stone-100 hover:border-amber-700'
                 }`}
               >
