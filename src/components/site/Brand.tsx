@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-const BRAND_NAME = 'Uzm. Klinik Psikolog Melisa Sağlam';
+const BRAND_NAME = 'Uzm. Klinik Psikolog melis Sağlam';
 
 export default function Brand({
   logo,
@@ -26,7 +26,7 @@ export default function Brand({
       <Image src="/logo/psikoloji_logo.png" alt="" width={40} height={40} priority unoptimized className={`h-10 w-10 shrink-0 ${blend}`} />
       <span className="flex flex-col leading-none">
         <span className={`text-[12px] ${sub}`}>Uzm. Klinik Psikolog</span>
-        <span className={`mt-1.5 font-serif text-[1.35rem] tracking-[-0.01em] ${main}`}>Melisa Sağlam</span>
+        <span className={`mt-1.5 font-serif text-[1.35rem] tracking-[-0.01em] ${main}`}>melis Sağlam</span>
       </span>
     </span>
   );

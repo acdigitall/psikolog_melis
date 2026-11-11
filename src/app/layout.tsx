@@ -29,8 +29,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "İzmir Uzm. Klinik Psikolog Melisa Sağlam | Alsancak & Online Terapi",
-    template: "%s | Melisa Sağlam",
+    default: "İzmir Uzm. Klinik Psikolog melis Sağlam | Alsancak & Online Terapi",
+    template: "%s | melis Sağlam",
   },
   description: DEFAULT_DESCRIPTION,
   applicationName: SITE_NAME,
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   category: "health",
   formatDetection: { telephone: true, address: true, email: true },
   openGraph: {
-    title: "İzmir Uzm. Klinik Psikolog Melisa Sağlam | Alsancak & Online Terapi",
+    title: "İzmir Uzm. Klinik Psikolog melis Sağlam | Alsancak & Online Terapi",
     description: DEFAULT_DESCRIPTION,
     siteName: `${SITE_NAME} · İzmir`,
     locale: "tr_TR",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "İzmir Uzm. Klinik Psikolog Melisa Sağlam",
+    title: "İzmir Uzm. Klinik Psikolog melis Sağlam",
     description: DEFAULT_DESCRIPTION,
   },
   robots: {

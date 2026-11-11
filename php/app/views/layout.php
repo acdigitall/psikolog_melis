@@ -1,7 +1,7 @@
 <?php
 /** @var array $meta  @var string $content */
 $settings = contact_settings();
-$fullTitle = ($meta['absoluteTitle'] ?? false) ? $meta['title'] : $meta['title'] . ' | Melisa Sağlam';
+$fullTitle = ($meta['absoluteTitle'] ?? false) ? $meta['title'] : $meta['title'] . ' | melis Sağlam';
 $ogImage = abs_url($meta['image']);
 $siteLabel = SITE_NAME . ' · ' . CITY;
 $path = current_path();
@@ -147,7 +147,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
     <div class="border-t border-paper/15 py-8 text-sm text-paper/50 space-y-5">
       <p class="max-w-3xl leading-relaxed">Bu site acil destek sağlamaz. Kendinize ya da bir başkasına zarar verme riski varsa lütfen hemen 112'yi arayın veya en yakın acil servise başvurun.</p>
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <p>&copy; <?= date('Y') ?> Uzm. Klinik Psikolog Melisa Sağlam</p>
+        <p>&copy; <?= date('Y') ?> Uzm. Klinik Psikolog melis Sağlam</p>
         <div class="flex flex-wrap gap-x-6 gap-y-2">
           <a href="/privacy" class="<?= $footerLink ?>">Gizlilik</a>
           <a href="/terms" class="<?= $footerLink ?>">Kullanım koşulları</a>

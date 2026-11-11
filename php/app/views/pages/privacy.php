@@ -11,7 +11,7 @@ $meta = page_meta(['title' => 'Gizlilik Politikası', 'description' => 'Kişisel
 
     <div class="mt-12 space-y-6 text-ink/80 leading-[1.8] text-[1.05rem]">
       <p>
-        <strong>Uzm. Klinik Psikolog Melisa Sağlam</strong> olarak web sitemizi ziyaret eden kullanıcılarımızın ve danışanlarımızın kişisel verilerinin ve seans mahremiyetinin korunmasını en temel etik ve mesleki sorumluluğumuz olarak kabul ediyoruz. Bu Gizlilik Politikası, web sitemizi ziyaret ettiğinizde veya randevu/danışmanlık talebinde bulunduğunuzda verilerinizin nasıl korunduğunu açıklamaktadır.
+        <strong>Uzm. Klinik Psikolog melis Sağlam</strong> olarak web sitemizi ziyaret eden kullanıcılarımızın ve danışanlarımızın kişisel verilerinin ve seans mahremiyetinin korunmasını en temel etik ve mesleki sorumluluğumuz olarak kabul ediyoruz. Bu Gizlilik Politikası, web sitemizi ziyaret ettiğinizde veya randevu/danışmanlık talebinde bulunduğunuzda verilerinizin nasıl korunduğunu açıklamaktadır.
       </p>
 
       <h3 class="font-serif text-[1.6rem] text-forest !mt-12 mb-3">1. Seans Gizliliği ve Mesleki Etik</h3>
@@ -35,7 +35,7 @@ $meta = page_meta(['title' => 'Gizlilik Politikası', 'description' => 'Kişisel
       </p>
       
       <p class="pt-8 text-xs text-muted/80 border-t border-sage-light mt-8">
-        Son Güncelleme: 2026 | Uzm. Klinik Psikolog Melisa Sağlam
+        Son Güncelleme: 2026 | Uzm. Klinik Psikolog melis Sağlam
       </p>
     </div>
 

@@ -19,7 +19,7 @@ export async function getHomePage() {
     if (!homePage) {
       homePage = await prisma.homePage.create({
         data: {
-          metaTitle: "Melisa Sağlam | Bireysel, Çift ve Online Terapi",
+          metaTitle: "melis Sağlam | Bireysel, Çift ve Online Terapi",
           metaDesc: "Kaygı, depresyon, ilişki sorunları ve kişisel gelişim alanlarında bilimsel ekoller ile profesyonel psikolojik danışmanlık.",
           metaKeys: "psikolog, klinik psikolog, bireysel terapi, çift terapisi, online terapi, emdr",
           servicesTitle: "Terapi ve Danışmanlık Hizmetlerimiz",

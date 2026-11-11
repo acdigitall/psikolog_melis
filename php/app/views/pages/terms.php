@@ -21,7 +21,7 @@ $meta = page_meta(['title' => 'Kullanım Koşulları', 'description' => 'Web sit
 
       <h3 class="font-serif text-[1.6rem] text-forest !mt-12 mb-3">2. Fikri Mülkiyet Hakları</h3>
       <p>
-        Bu sitede yayımlanan tüm makaleler, metinler, grafikler, tasarım ögeleri ve içerikler <strong>Uzm. Klinik Psikolog Melisa Sağlam</strong>'un telif koruması altındadır. Kaynak gösterilmeksizin veya yazılı izin alınmaksızın kopyalanamaz, çoğaltılamaz veya ticari amaçla kullanılamaz.
+        Bu sitede yayımlanan tüm makaleler, metinler, grafikler, tasarım ögeleri ve içerikler <strong>Uzm. Klinik Psikolog melis Sağlam</strong>'un telif koruması altındadır. Kaynak gösterilmeksizin veya yazılı izin alınmaksızın kopyalanamaz, çoğaltılamaz veya ticari amaçla kullanılamaz.
       </p>
 
       <h3 class="font-serif text-[1.6rem] text-forest !mt-12 mb-3">3. Randevu ve İptal Koşulları</h3>
@@ -30,7 +30,7 @@ $meta = page_meta(['title' => 'Kullanım Koşulları', 'description' => 'Web sit
       </p>
 
       <p class="pt-8 text-xs text-muted/80 border-t border-sage-light mt-8">
-        Son Güncelleme: 2026 | Uzm. Klinik Psikolog Melisa Sağlam
+        Son Güncelleme: 2026 | Uzm. Klinik Psikolog melis Sağlam
       </p>
     </div>
 

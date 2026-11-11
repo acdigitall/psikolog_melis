@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const res = await getHomePage();
   const d = res.success && res.data ? res.data : null;
   return pageMeta({
-    title: d?.metaTitle || 'İzmir Uzm. Klinik Psikolog Melisa Sağlam | Alsancak & Online Terapi',
+    title: d?.metaTitle || 'İzmir Uzm. Klinik Psikolog melis Sağlam | Alsancak & Online Terapi',
     description: d?.metaDesc || DEFAULT_DESCRIPTION,
     keywords: d?.metaKeys || 'izmir psikolog, psikolog izmir, alsancak psikolog, izmir klinik psikolog, izmir online terapi',
     path: '/',

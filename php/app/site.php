@@ -5,13 +5,13 @@ declare(strict_types=1);
  * Site genelinde SEO / yerel SEO (İzmir) / GEO için tek kaynak.
  * NAP (isim–adres–telefon) Google İşletme Profili ile birebir aynı olmalı.
  */
-const SITE_NAME = 'Uzm. Klinik Psikolog Melisa Sağlam';
-const PSYCHOLOGIST_NAME = 'Melisa Sağlam';
+const SITE_NAME = 'Uzm. Klinik Psikolog melis Sağlam';
+const PSYCHOLOGIST_NAME = 'melis Sağlam';
 const JOB_TITLE = 'Uzman Klinik Psikolog';
 const CITY = 'İzmir';
 const DISTRICT = 'Konak';
 const NEIGHBORHOOD = 'Alsancak';
-const DEFAULT_TITLE = 'İzmir Uzm. Klinik Psikolog Melisa Sağlam | Alsancak & Online Terapi';
+const DEFAULT_TITLE = 'İzmir Uzm. Klinik Psikolog melis Sağlam | Alsancak & Online Terapi';
 const DEFAULT_DESCRIPTION = "İzmir Alsancak'ta uzman klinik psikolog: kaygı, panik atak, depresyon, ilişki sorunları ve travmada BDT, Şema Terapi ve EMDR ile yüz yüze ve online psikoterapi.";
 const DEFAULT_KEYWORDS = 'izmir psikolog, psikolog izmir, izmir klinik psikolog, alsancak psikolog, konak psikolog, karşıyaka psikolog, bornova psikolog, izmir çift terapisi, izmir emdr, izmir online terapi, izmir kaygı terapisi, izmir panik atak tedavisi, bilişsel davranışçı terapi izmir, şema terapi izmir';
 

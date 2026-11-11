@@ -61,7 +61,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               className="h-7 w-auto object-contain rounded-sm"
             />
           ) : (
-            <span className="font-semibold text-sm tracking-wide">Melisa Sağlam</span>
+            <span className="font-semibold text-sm tracking-wide">melis Sağlam</span>
           )}
         </Link>
 
@@ -117,7 +117,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                 />
               ) : (
                 <div className="flex flex-col">
-                  <span className="font-serif text-[1.4rem] leading-none text-white">Melisa Sağlam</span>
+                  <span className="font-serif text-[1.4rem] leading-none text-white">melis Sağlam</span>
                   <span className="mt-1.5 text-[14px] text-amber-500">Yönetim paneli</span>
                 </div>
               )}

@@ -221,7 +221,7 @@ const DEFAULT_SLIDES = [
 ];
 
 const DEFAULT_HOME = [
-    'metaTitle' => 'Melisa Sağlam | Bireysel, Çift ve Online Terapi',
+    'metaTitle' => 'melis Sağlam | Bireysel, Çift ve Online Terapi',
     'metaDesc' => 'Kaygı, depresyon, ilişki sorunları ve kişisel gelişim alanlarında bilimsel ekoller ile profesyonel psikolojik danışmanlık.',
     'metaKeys' => 'psikolog, klinik psikolog, bireysel terapi, çift terapisi, online terapi, emdr',
     'servicesTitle' => 'Terapi ve Danışmanlık Hizmetlerimiz',
@@ -240,7 +240,7 @@ const DEFAULT_HOME = [
 
 const DEFAULT_ABOUT = [
     'id' => 1,
-    'metaTitle' => 'Hakkımda | Melisa Sağlam',
+    'metaTitle' => 'Hakkımda | melis Sağlam',
     'metaDesc' => 'Eğitimim, benimsediğim terapi ekolleri (BDT, EMDR, Şema Terapi), etik değerler ve klinik yaklaşımım hakkında detaylı bilgi.',
     'metaKeys' => 'uzman klinik psikolog hakkında, bdt terapisti, emdr terapisti, istanbul psikolog',
     'storyImg' => '/images/hakkimda-hikaye.jpg',
@@ -271,7 +271,7 @@ const DEFAULT_PRODUCTION = [
     'title' => 'Terapi Sürecimiz Nasıl İlerler?',
     'desc' => 'Psikoterapi, kendinizi daha derinlemesine tanıma, zorlayıcı duyguları anlama ve yaşam kalitenizi artırma yolculuğudur. Sürecimiz adım adım ve tamamen sizin temponuza uygun ilerler.',
     'img' => '/images/surec-yolculuk.jpg',
-    'metaTitle' => 'Terapi Süreci & Danışmanlık Yaklaşımı | Melisa Sağlam',
+    'metaTitle' => 'Terapi Süreci & Danışmanlık Yaklaşımı | melis Sağlam',
     'metaDesc' => 'İlk görüşmeden hedeflere, düzenli seanslardan sağlıklı sonlandırmaya kadar adım adım psikolojik danışmanlık süreci.',
     'metaKeys' => 'terapi süreci, psikolog seansı nasıl geçer, terapi aşamaları',
 ];

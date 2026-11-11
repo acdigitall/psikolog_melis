@@ -11,7 +11,7 @@ $meta = page_meta(['title' => 'KVKK Aydınlatma Metni', 'description' => '6698 s
 
     <div class="mt-12 space-y-6 text-ink/80 leading-[1.8] text-[1.05rem]">
       <p>
-        <strong>Uzm. Klinik Psikolog Melisa Sağlam</strong> olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, veri sorumlusu sıfatıyla kişisel verilerinizin güvenliğine ve gizliliğine azami hassasiyet göstermekteyiz.
+        <strong>Uzm. Klinik Psikolog melis Sağlam</strong> olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, veri sorumlusu sıfatıyla kişisel verilerinizin güvenliğine ve gizliliğine azami hassasiyet göstermekteyiz.
       </p>
 
       <h3 class="font-serif text-[1.6rem] text-forest !mt-12 mb-3">1. İşlenen Kişisel Veriler</h3>
@@ -35,7 +35,7 @@ $meta = page_meta(['title' => 'KVKK Aydınlatma Metni', 'description' => '6698 s
       </p>
 
       <p class="pt-8 text-xs text-muted/80 border-t border-sage-light mt-8">
-        Son Güncelleme: 2026 | Uzm. Klinik Psikolog Melisa Sağlam
+        Son Güncelleme: 2026 | Uzm. Klinik Psikolog melis Sağlam
       </p>
     </div>
 

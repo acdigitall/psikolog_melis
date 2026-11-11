@@ -70,7 +70,7 @@ function brand(?string $logo, string $variant = 'dark'): string
         . '<img src="/logo/psikoloji_logo.png" alt="" width="40" height="40" class="h-10 w-10 shrink-0 ' . $blend . '">'
         . '<span class="flex flex-col leading-none">'
         . '<span class="text-[12px] ' . $sub . '">Uzm. Klinik Psikolog</span>'
-        . '<span class="mt-1.5 font-serif text-[1.35rem] tracking-[-0.01em] ' . $main . '">Melisa Sağlam</span>'
+        . '<span class="mt-1.5 font-serif text-[1.35rem] tracking-[-0.01em] ' . $main . '">melis Sağlam</span>'
         . '</span></span>';
 }
 

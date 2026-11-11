@@ -15,7 +15,7 @@ export default function LoginForm() {
       <div className="w-full max-w-[460px]">
         <div className="mb-8">
           <h1 className="font-serif text-[2.25rem] leading-tight text-forest">Yönetim paneli</h1>
-          <p className="mt-1 text-base text-muted">Uzm. Klinik Psikolog Melisa Sağlam</p>
+          <p className="mt-1 text-base text-muted">Uzm. Klinik Psikolog melis Sağlam</p>
         </div>
 
         <div className="rounded-lg border border-line bg-paper p-8 sm:p-10">

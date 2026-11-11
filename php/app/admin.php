@@ -995,7 +995,7 @@ function admin_login_page(?string $error): void
   <div class="w-full max-w-[460px]">
     <div class="mb-8">
       <h1 class="font-serif text-[2.25rem] leading-tight text-forest">Yönetim paneli</h1>
-      <p class="mt-1 text-base text-muted">Uzm. Klinik Psikolog Melisa Sağlam</p>
+      <p class="mt-1 text-base text-muted">Uzm. Klinik Psikolog melis Sağlam</p>
     </div>
     <div class="rounded-lg border border-line bg-paper p-8 sm:p-10">
       <form method="post" action="/admin/login" class="space-y-5">
@@ -1045,7 +1045,7 @@ function admin_shell(string $heading, string $activePath, callable $body): void
 <body class="bg-paper text-ink antialiased">
 <div class="admin-theme min-h-screen bg-stone-100 flex flex-col md:flex-row">
   <header class="md:hidden bg-stone-900 text-white px-4 py-3 flex items-center justify-between z-30 shadow-md sticky top-0">
-    <a href="/admin" class="font-semibold text-sm tracking-wide"><?php if ($logo): ?><img src="<?= e($logo) ?>" alt="Psikolog logosu" class="h-7 w-auto object-contain rounded-sm"><?php else: ?>Melisa Sağlam<?php endif; ?></a>
+    <a href="/admin" class="font-semibold text-sm tracking-wide"><?php if ($logo): ?><img src="<?= e($logo) ?>" alt="Psikolog logosu" class="h-7 w-auto object-contain rounded-sm"><?php else: ?>melis Sağlam<?php endif; ?></a>
     <div class="flex items-center gap-2">
       <a href="/" class="p-2 text-stone-400 hover:text-white" title="Siteye dön"><?= $icon($back) ?></a>
       <button type="button" data-drawer-open class="p-2 text-stone-300 hover:text-white" aria-label="Menü"><?= $icon('M4 6h16M4 12h16M4 18h16', 'w-6 h-6') ?></button>
@@ -1060,7 +1060,7 @@ function admin_shell(string $heading, string $activePath, callable $body): void
           <?php if ($logo): ?>
             <img src="<?= e($logo) ?>" alt="Psikolog logosu" class="h-10 w-auto object-contain rounded-sm">
           <?php else: ?>
-            <span class="font-serif text-[1.4rem] leading-none text-white">Melisa Sağlam</span>
+            <span class="font-serif text-[1.4rem] leading-none text-white">melis Sağlam</span>
             <span class="mt-1.5 text-[14px] text-amber-500">Yönetim paneli</span>
           <?php endif; ?>
         </a>
