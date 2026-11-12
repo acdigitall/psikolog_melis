@@ -12,33 +12,40 @@ date_default_timezone_set('UTC');
 
 /* ---------- Ayarlar ---------- */
 
-/** app/.env dosyasını okur; sunucuda tanımlı gerçek ortam değişkenleri önceliklidir. */
-function env(string $key, string $default = ''): string
+/** app/.env dosyasındaki değerler (dosya yoksa boş dizi). */
+function env_file(): array
 {
     static $file = null;
-    if ($file === null) {
-        $file = [];
-        $path = APP_DIR . '/.env';
-        if (is_readable($path)) {
-            foreach (file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
-                $line = trim($line);
-                if ($line === '' || $line[0] === '#' || !str_contains($line, '=')) {
-                    continue;
-                }
-                [$name, $value] = explode('=', $line, 2);
-                $value = trim($value);
-                if (strlen($value) >= 2 && ($value[0] === '"' || $value[0] === "'") && $value[-1] === $value[0]) {
-                    $value = substr($value, 1, -1);
-                }
-                $file[trim($name)] = $value;
+    if ($file !== null) {
+        return $file;
+    }
+    $file = [];
+    $path = APP_DIR . '/.env';
+    if (is_readable($path)) {
+        foreach (file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
+            $line = trim($line);
+            if ($line === '' || $line[0] === '#' || !str_contains($line, '=')) {
+                continue;
             }
+            [$name, $value] = explode('=', $line, 2);
+            $value = trim($value);
+            if (strlen($value) >= 2 && ($value[0] === '"' || $value[0] === "'") && $value[-1] === $value[0]) {
+                $value = substr($value, 1, -1);
+            }
+            $file[trim($name)] = $value;
         }
     }
+    return $file;
+}
+
+/** Ayar değeri; sunucuda tanımlı gerçek ortam değişkenleri app/.env dosyasından önceliklidir. */
+function env(string $key, string $default = ''): string
+{
     $real = getenv($key);
     if ($real !== false && $real !== '') {
         return $real;
     }
-    return $file[$key] ?? $default;
+    return env_file()[$key] ?? $default;
 }
 
 function is_https(): bool

@@ -35,18 +35,32 @@ function admin_email(): string
     return strtolower(trim(env('ADMIN_EMAIL')));
 }
 
+/** "b64:" önekli özeti çözer; düz özeti olduğu gibi döndürür. */
+function decode_password_hash(string $value): string
+{
+    $value = trim($value);
+    if (str_starts_with($value, 'b64:')) {
+        $decoded = base64_decode(substr($value, 4), true);
+        return $decoded === false ? '' : $decoded;
+    }
+    return $value;
+}
+
 /**
- * Yönetici şifre özeti. Bazı paneller ortam değişkenindeki "$" işaretlerini bozduğu için
- * özet "b64:" önekiyle base64 olarak da verilebilir (sifre-olustur.php ikisini de yazar).
+ * Yönetici şifre özeti. Bazı paneller ortam değişkenindeki "$" işaretlerini bozduğu için özet
+ * "b64:" önekiyle base64 olarak da verilebilir. Sunucudaki ortam değişkeni geçersizse (ör. panel
+ * eski değeri tutuyorsa) app/.env dosyasındaki geçerli özet kullanılır.
  */
 function admin_password_hash(): string
 {
-    $hash = trim(env('ADMIN_PASSWORD_HASH'));
-    if (str_starts_with($hash, 'b64:')) {
-        $decoded = base64_decode(substr($hash, 4), true);
-        return $decoded === false ? '' : $decoded;
+    $candidates = [(string) getenv('ADMIN_PASSWORD_HASH'), env_file()['ADMIN_PASSWORD_HASH'] ?? ''];
+    foreach ($candidates as $candidate) {
+        $hash = decode_password_hash($candidate);
+        if ($hash !== '' && password_get_info($hash)['algo'] !== null) {
+            return $hash;
+        }
     }
-    return $hash;
+    return decode_password_hash(env('ADMIN_PASSWORD_HASH'));
 }
 
 function sign_token(string $body, string $secret): string
@@ -118,10 +132,12 @@ function auth_config_error(): ?string
         return 'Yönetici girişi henüz yapılandırılmamış. app/.env dosyasını kontrol edin.';
     }
     if (password_get_info($hash)['algo'] === null) {
+        // Değerin nereden okunduğunu göster; yanlış yerin düzeltilmesini önler.
+        $source = ((string) getenv('ADMIN_PASSWORD_HASH')) !== '' ? 'sunucu ortam değişkeni' : 'app/.env dosyası';
         if (str_starts_with(env('ADMIN_PASSWORD_HASH'), 'scrypt:')) {
-            return 'Şifre özeti eski (Next.js) biçiminde. app/tools/sifre-olustur.php ile yeni özet üretin.';
+            return "Şifre özeti eski (Next.js) biçiminde. Kaynak: $source. Yeni özeti app/.env dosyasına ADMIN_PASSWORD_HASH=b64:... olarak yazın.";
         }
-        return 'Şifre özeti okunamadı (sunucu "$" işaretlerini bozmuş olabilir). sifre-olustur.php çıktısındaki "b64:" ile başlayan satırı kullanın.';
+        return "Şifre özeti okunamadı. Kaynak: $source. sifre-olustur.php çıktısındaki \"b64:\" ile başlayan satırı kullanın.";
     }
     return null;
 }
