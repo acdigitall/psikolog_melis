@@ -328,6 +328,10 @@ function collect_appointment(?array $existing): array
 
     $name = $str('clientName', 120);
     $phone = $str('phone', 40);
+    // Geçerli cep numaraları tek biçimde saklanır: 0532 123 45 67
+    if (($mobile = normalize_tr_mobile($phone)) !== null) {
+        $phone = format_tr_mobile($mobile);
+    }
     $date = $str('date', 10);
     $start = local_to_utc($date, $str('start', 5));
     $end = local_to_utc($date, $str('end', 5));
@@ -446,7 +450,7 @@ function admin_appointment_form(?array $existing, string $method): void
               </div>
               <div class="space-y-2">
                 <label for="phone" class="<?= LABEL_CLASS ?>">Cep telefonu *</label>
-                <input id="phone" name="f[phone]" type="tel" required maxlength="40" value="<?= e($row['phone'] ?? '') ?>" placeholder="0532 123 45 67" class="<?= INPUT_CLASS ?>" autocomplete="off">
+                <input id="phone" name="f[phone]" type="tel" inputmode="tel" required maxlength="40" value="<?= e($row['phone'] ?? '') ?>" placeholder="0532 123 45 67" data-phone class="<?= INPUT_CLASS ?>" autocomplete="off">
               </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -636,7 +640,7 @@ function admin_sms(array $segments, string $method): void
             <?php if ($testResult) { echo admin_alert($testResult['ok'] ? 'success' : 'error', $testResult['message']); } ?>
             <form method="post" action="/admin/sms/test" class="flex flex-col sm:flex-row gap-3">
               <?= csrf_field() ?>
-              <input name="phone" type="tel" required placeholder="Kendi cep numaranız" class="<?= INPUT_CLASS ?> sm:flex-1">
+              <input name="phone" type="tel" inputmode="tel" required placeholder="Kendi cep numaranız (0532 123 45 67)" data-phone class="<?= INPUT_CLASS ?> sm:flex-1">
               <button type="submit" class="<?= SAVE_BUTTON ?>">Gönder</button>
             </form>
             <p class="text-xs text-stone-400">Kayıtlı şablon örnek bir danışan adıyla gönderilir.</p>

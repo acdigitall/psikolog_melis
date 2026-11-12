@@ -40,6 +40,36 @@
     });
   });
 
+  // Cep telefonu: yazarken 0532 123 45 67 biçimine getirilir (yabancı numaralara dokunulmaz)
+  function formatPhone(raw) {
+    var d = raw.replace(/\D/g, '');
+    if (/^\s*(\+|00)/.test(raw) && !/^\s*(\+90|0090)/.test(raw)) return null;
+    if (d.indexOf('0090') === 0) d = d.slice(4);
+    else if (d.indexOf('90') === 0 && d.length > 10) d = d.slice(2);
+    if (d.charAt(0) === '5') d = '0' + d;
+    if (d !== '' && d.charAt(0) !== '0') return null;
+    d = d.slice(0, 11);
+    return [d.slice(0, 4), d.slice(4, 7), d.slice(7, 9), d.slice(9, 11)].filter(Boolean).join(' ');
+  }
+  document.querySelectorAll('input[data-phone]').forEach(function (input) {
+    function apply() {
+      var formatted = formatPhone(input.value);
+      if (formatted === null || formatted === input.value) return;
+      // İmleç, solundaki rakam sayısı korunacak şekilde yerine konur
+      var digitsBefore = input.value.slice(0, input.selectionStart).replace(/\D/g, '').length;
+      var grew = formatted.replace(/\D/g, '').length - input.value.replace(/\D/g, '').length;
+      if (grew > 0) digitsBefore += grew;
+      input.value = formatted;
+      var pos = 0;
+      for (var seen = 0; pos < formatted.length && seen < digitsBefore; pos++) {
+        if (/\d/.test(formatted.charAt(pos))) seen++;
+      }
+      if (document.activeElement === input) input.setSelectionRange(pos, pos);
+    }
+    input.addEventListener('input', apply);
+    apply();
+  });
+
   // Randevu: başlangıç seçilince bitiş boşsa 50 dk sonrası önerilir
   var apptStart = document.querySelector('[data-appt-start]');
   var apptEnd = document.querySelector('[data-appt-end]');

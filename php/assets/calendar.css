@@ -38,15 +38,16 @@
 
 /* ---------- Düzen ---------- */
 .cal-layout { display: grid; gap: 20px; align-items: start; }
-@media (min-width: 1200px) { .cal-layout { grid-template-columns: minmax(0, 1fr) 300px; } }
+@media (min-width: 1500px) { .cal-layout { grid-template-columns: minmax(0, 1fr) 300px; } }
 .cal-card {
   background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px 20px 14px; min-width: 0;
   box-shadow: 0 1px 2px rgba(27, 38, 32, .04), 0 18px 40px -28px rgba(27, 38, 32, .25);
+  container-type: inline-size;
 }
 @media (max-width: 767px) { .cal-card { padding: 14px 12px 10px; border-radius: 14px; } }
 
 .cal-side { display: grid; gap: 16px; }
-@media (min-width: 700px) and (max-width: 1199px) { .cal-side { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 700px) and (max-width: 1499px) { .cal-side { grid-template-columns: 1fr 1fr; } }
 .cal-panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 8px 8px; }
 .admin-theme .cal-panel h2 { font-size: 18px; margin: 0 10px 8px; }
 .cal-empty { margin: 0; padding: 14px 10px 18px; font-size: 13.5px; color: var(--faint); }
@@ -168,6 +169,12 @@
 .appt-name-text { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .appt-notetext { flex: 0 1 auto; min-height: 0; font-size: 12px; line-height: 16px; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .fc-timegrid-event-short .appt-body { flex-direction: row; align-items: center; gap: 8px; }
+/* Yarım saatlik randevular: iki satır sığsın diye sıkı dizilir, not gizlenir */
+.cal-card .fc .fc-timegrid-event .fc-event-main:has(.appt-body--short) { padding-top: 3px; padding-bottom: 2px; }
+.appt-body--short { gap: 0; }
+.appt-body--short .appt-time { line-height: 13px; font-size: 11px; }
+.appt-body--short .appt-name { line-height: 17px; }
+.appt-body--short .appt-notetext { display: none; }
 .fc-timegrid-event-short .appt-notetext { display: none; }
 .fc-timegrid-event-short .appt-name { flex: 0 1 auto; }
 .cal-card .fc .appt--cancelled .appt-name-text { text-decoration: line-through; }
@@ -269,3 +276,33 @@
 }
 .cal-toast.is-open { opacity: 1; transform: translate(-50%, 0); }
 .cal-toast.is-error { background: #a13c2f; }
+
+/* ---------- Dizüstü ekranlar (13–16 inç): üst bölüm sıkışır, takvime yer kalır ---------- */
+@media (min-width: 768px) and (max-height: 960px) {
+  .cal-top { margin-bottom: 14px; align-items: center; }
+  .admin-theme h1.cal-title { font-size: 1.6rem; }
+  .cal-new { height: 40px; }
+  .cal-stats { gap: 10px; margin-bottom: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cal-stat { flex-direction: row; align-items: baseline; justify-content: space-between; padding: 10px 16px; border-radius: 12px; }
+  .cal-stat-value { font-size: 24px; }
+  .cal-stat-value small { display: none; }
+  .cal-notice { margin-bottom: 14px; padding: 9px 14px; font-size: 13.5px; }
+  .cal-card { padding: 14px 16px 12px; }
+  .cal-card .fc .fc-toolbar.fc-header-toolbar { margin-bottom: 10px; }
+  .cal-card .fc .fc-col-header-cell { padding: 0 0 6px; }
+  .cal-dayhead { flex-direction: row; justify-content: center; align-items: center; gap: 6px; }
+  .cal-dom { width: 30px; height: 30px; font-size: 18px; }
+}
+
+/* ---------- Dar takvim sütunları: kartta yalnızca başlangıç saati ---------- */
+@container (max-width: 860px) {
+  .appt-time-end { display: none; }
+  .cal-card .fc .fc-timegrid-event .fc-event-main { padding: 4px 5px 3px 6px; }
+  .cal-card .fc .fc-timegrid-col-events { margin: 0 3px 0 2px; }
+  .appt-name { font-size: 13px; gap: 5px; }
+  .cal-card .fc .fc-timegrid-slot-label-cushion { padding-right: 8px; }
+}
+@container (max-width: 700px) {
+  .cal-card .fc .fc-toolbar-title { font-size: 1.1rem; }
+  .cal-card .fc .fc-button { padding: 0 11px; height: 34px; font-size: 13px; }
+}

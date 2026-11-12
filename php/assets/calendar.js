@@ -78,6 +78,9 @@
       });
   }
 
+  // Takvim, ekrana kaydırıldığında pencereye tam sığacak yükseklikte olur (dizüstülerde çift kaydırma olmasın).
+  function fitHeight() { return Math.max(460, Math.min(860, window.innerHeight - 48)); }
+
   var time = { hour: '2-digit', minute: '2-digit', hour12: false };
   var calendar = new FullCalendar.Calendar(el, {
     locale: 'tr',
@@ -86,7 +89,8 @@
     initialView: mobile ? 'listWeek' : 'timeGridWeek',
     initialDate: el.getAttribute('data-date') || undefined,
     firstDay: 1,
-    height: mobile ? 'auto' : 780,
+    height: mobile ? 'auto' : fitHeight(),
+    windowResize: function () { if (!mobile) calendar.setOption('height', fitHeight()); },
     headerToolbar: mobile
       ? { left: 'prev,next', center: 'title', right: 'today' }
       : { left: 'prev,next today', center: 'title', right: 'timeGridWeek,timeGridDay,dayGridMonth,listWeek' },
@@ -137,7 +141,10 @@
       var e = arg.event;
       var wrap = node('div', 'appt-body');
       var end = e.end || e.start;
-      wrap.appendChild(node('div', 'appt-time', hm(e.start) + '–' + hm(end)));
+      if (end - e.start <= 35 * 60000) wrap.className += ' appt-body--short';
+      var timeEl = node('div', 'appt-time', hm(e.start));
+      timeEl.appendChild(node('span', 'appt-time-end', '–' + hm(end)));
+      wrap.appendChild(timeEl);
       var name = node('div', 'appt-name');
       if (!arg.isMirror && e.extendedProps.smsKey) {
         var dot = node('span', 'sms-dot sms-dot--' + e.extendedProps.smsKey);
