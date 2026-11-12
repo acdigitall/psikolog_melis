@@ -35,6 +35,20 @@ function admin_email(): string
     return strtolower(trim(env('ADMIN_EMAIL')));
 }
 
+/**
+ * Yönetici şifre özeti. Bazı paneller ortam değişkenindeki "$" işaretlerini bozduğu için
+ * özet "b64:" önekiyle base64 olarak da verilebilir (sifre-olustur.php ikisini de yazar).
+ */
+function admin_password_hash(): string
+{
+    $hash = trim(env('ADMIN_PASSWORD_HASH'));
+    if (str_starts_with($hash, 'b64:')) {
+        $decoded = base64_decode(substr($hash, 4), true);
+        return $decoded === false ? '' : $decoded;
+    }
+    return $hash;
+}
+
 function sign_token(string $body, string $secret): string
 {
     return b64url(hash_hmac('sha256', $body, $secret, true));
@@ -99,12 +113,15 @@ function send_session_cookie(string $value, int $expires): void
 /** Panel ayarlarında eksik varsa hata mesajı döner; kurulum sorununu "şifre hatalı"dan ayırmak için. */
 function auth_config_error(): ?string
 {
-    $hash = env('ADMIN_PASSWORD_HASH');
-    if (admin_email() === '' || session_secret() === null || $hash === '') {
+    $hash = admin_password_hash();
+    if (admin_email() === '' || session_secret() === null || env('ADMIN_PASSWORD_HASH') === '') {
         return 'Yönetici girişi henüz yapılandırılmamış. app/.env dosyasını kontrol edin.';
     }
     if (password_get_info($hash)['algo'] === null) {
-        return 'Şifre özeti bu sürümle uyumsuz. app/tools/sifre-olustur.php ile yeni özet üretin.';
+        if (str_starts_with(env('ADMIN_PASSWORD_HASH'), 'scrypt:')) {
+            return 'Şifre özeti eski (Next.js) biçiminde. app/tools/sifre-olustur.php ile yeni özet üretin.';
+        }
+        return 'Şifre özeti okunamadı (sunucu "$" işaretlerini bozmuş olabilir). sifre-olustur.php çıktısındaki "b64:" ile başlayan satırı kullanın.';
     }
     return null;
 }
@@ -112,7 +129,7 @@ function auth_config_error(): ?string
 function check_credentials(string $email, string $password): bool
 {
     $emailOk = strtolower(trim($email)) === admin_email();
-    $passOk = password_verify($password, $emailOk ? env('ADMIN_PASSWORD_HASH') : DUMMY_HASH);
+    $passOk = password_verify($password, $emailOk ? admin_password_hash() : DUMMY_HASH);
     return $emailOk && $passOk;
 }
 

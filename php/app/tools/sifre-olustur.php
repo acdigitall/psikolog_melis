@@ -1,6 +1,6 @@
 <?php
 // Kullanım: php app/tools/sifre-olustur.php 'YeniSifre'
-// Çıktıdaki satırı app/.env dosyasına yapıştırın.
+// Çıktıdaki satırlardan uygun olanı kullanın: app/.env dosyası ya da hosting panelindeki ortam değişkeni.
 if (PHP_SAPI !== 'cli') {
     exit;
 }
@@ -13,4 +13,6 @@ if (strlen($password) > 72) {
     fwrite(STDERR, "Şifre en fazla 72 bayt olabilir.\n");
     exit(1);
 }
-echo 'ADMIN_PASSWORD_HASH=' . password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]) . PHP_EOL;
+$hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+echo "app/.env dosyası için:\n  ADMIN_PASSWORD_HASH=$hash\n\n";
+echo "Hosting panelindeki ortam değişkeni için (\"$\" içermez):\n  ADMIN_PASSWORD_HASH=b64:" . base64_encode($hash) . "\n";
