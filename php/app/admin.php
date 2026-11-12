@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require APP_DIR . '/admin_crm.php';
+
 const ADMIN_MESSAGES = [
     'saved' => ['success', 'Değişiklikler kaydedildi.'],
     'deleted' => ['success', 'Kayıt silindi.'],
@@ -56,7 +58,7 @@ function admin_resources(): array
             'columns' => [['image', 'Görsel', 'image'], ['title', 'Başlık', 'text'], ['category', 'Kategori', 'text'], ['status', 'Durum', 'text'], ['views', 'Okunma', 'text'], ['createdAt', 'Tarih', 'date']],
             'fields' => fn () => [
                 ['key' => 'title', 'label' => 'Yazı başlığı *', 'required' => true, 'placeholder' => 'Yazı başlığını yazın...'],
-                ['key' => 'category', 'label' => 'Kategori *', 'type' => 'select', 'required' => true, 'options' => array_column(categories(), 'name')],
+                ['key' => 'category', 'label' => 'Kategori (ilgili hizmet) *', 'type' => 'select', 'required' => true, 'options' => service_titles(), 'help' => 'Seçenekler Hizmetler bölümündeki başlıklardan gelir.'],
                 ['key' => 'status', 'label' => 'Durum *', 'type' => 'select', 'required' => true, 'options' => ['Yayında', 'Taslak']],
                 ...seo_fields(),
                 ['section' => 'İçerik'],
@@ -80,13 +82,12 @@ function admin_resources(): array
             'columns' => [['img', 'Görsel', 'image'], ['title', 'Başlık', 'text'], ['category', 'Kategori', 'text'], ['order', 'Sıra', 'text']],
             'fields' => fn () => [
                 ['key' => 'title', 'label' => 'Görsel başlığı *', 'required' => true, 'placeholder' => 'ör. Seans odası'],
-                ['key' => 'category', 'label' => 'Kategori * (yeni bir ad yazarsanız eklenir)', 'type' => 'datalist', 'required' => true, 'options' => array_column(categories(), 'name')],
+                ['key' => 'category', 'label' => 'Kategori * (ör. Seans Odası; yeni bir ad da yazabilirsiniz)', 'type' => 'datalist', 'required' => true, 'options' => gallery_categories()],
                 ['key' => 'order', 'label' => 'Sıralama (isteğe bağlı)', 'type' => 'number', 'placeholder' => '1, 2, 3... (1 en üstte)'],
                 ['key' => 'img', 'label' => 'Görsel *', 'type' => 'image', 'required' => true],
                 ...seo_fields(),
             ],
             'beforeSave' => function (array $data): array {
-                db_run('INSERT IGNORE INTO `Category` (name) VALUES (?)', [trim($data['category'])]);
                 $data['category'] = trim($data['category']);
                 return $data;
             },
@@ -107,16 +108,6 @@ function admin_resources(): array
                 if ($existing === null && (int) $data['order'] === 0) {
                     $data['order'] = (int) db_value('SELECT COUNT(*) FROM `Slide`') + 1;
                 }
-                return $data;
-            },
-        ],
-        'categories' => [
-            'table' => 'Category', 'title' => 'Kategoriler', 'add' => '+ Yeni kategori ekle', 'orderBy' => 'name ASC',
-            'confirm' => 'Bu kategoriyi silmek istediğinize emin misiniz? (Randevu formundaki listeden kaldırılacak)', 'duplicate' => 'Bu kategori zaten mevcut.',
-            'columns' => [['name', 'Kategori', 'text']],
-            'fields' => [['key' => 'name', 'label' => 'Kategori adı *', 'required' => true]],
-            'beforeSave' => function (array $data): array {
-                $data['name'] = trim($data['name']);
                 return $data;
             },
         ],
@@ -315,6 +306,8 @@ function admin_route(string $path, string $method): void
         $path === '/admin/logout' && $method === 'POST' => admin_logout(),
         $first === 'page-header' && isset($segments[1]) && $method === 'POST' => admin_save_header($segments[1], $resources, $singletons),
         $first === 'quotes' => admin_quotes($segments, $method),
+        $first === 'calendar' => admin_calendar($segments, $method),
+        $first === 'sms' => admin_sms($segments, $method),
         isset($singletons[$first]) && count($segments) === 1 => admin_singleton($first, $singletons[$first], $method),
         isset($resources[$first]) => admin_resource($first, $resources[$first], array_slice($segments, 1), $method),
         default => not_found(),
@@ -777,6 +770,7 @@ function admin_dashboard(): void
           <div class="flex flex-wrap items-center justify-between gap-4">
             <h1 class="text-3xl font-serif text-stone-900">Panel</h1>
             <div class="flex flex-wrap gap-3">
+              <a href="/admin/calendar" class="<?= $secondary ?>">Takvim</a>
               <a href="/admin/services" class="<?= $secondary ?>">Hizmetleri düzenle</a>
               <a href="/admin/gallery/new" class="<?= $secondary ?>">Galeriye görsel ekle</a>
               <a href="/admin/blog/new" class="px-5 py-3 text-sm bg-amber-700 text-white rounded hover:bg-amber-800 transition-colors">Yeni blog yazısı</a>
@@ -968,7 +962,7 @@ function admin_quotes(array $segments, string $method): void
     });
 }
 
-function admin_head(string $title): void
+function admin_head(string $title, string $extra = ''): void
 {
     ?>
 <!doctype html>
@@ -981,6 +975,7 @@ function admin_head(string $title): void
 <link rel="icon" href="/icon.png" type="image/png">
 <link rel="stylesheet" href="/assets/site.css?v=<?= (int) @filemtime(ROOT_DIR . '/assets/site.css') ?>">
 <script src="/assets/admin.js?v=<?= (int) @filemtime(ROOT_DIR . '/assets/admin.js') ?>" defer></script>
+<?= $extra ?>
 </head>
     <?php
 }
@@ -1019,17 +1014,19 @@ function admin_login_page(?string $error): void
     <?php
 }
 
-function admin_shell(string $heading, string $activePath, callable $body): void
+/** $options: 'head' (ek <head> içeriği), 'wide' (geniş içerik alanı) */
+function admin_shell(string $heading, string $activePath, callable $body, array $options = []): void
 {
     $menu = [
         ['Ana Sayfa', '/admin/home', 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
         ['Hizmetler', '/admin/services', 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
-        ['Randevu Talepleri', '/admin/quotes', 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
+        ['Takvim', '/admin/calendar', 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2zm4-6h2v2H9v-2z'],
+        ['SMS Ayarları', '/admin/sms', 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z'],
+        ['Randevu Talepleri', '/admin/quotes','M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
         ['Terapi Süreci', '/admin/production', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
         ['Klinik & Seans Odaları', '/admin/gallery', 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
         ['Hakkımda', '/admin/about', 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
         ['Açılış Slaytları', '/admin/slides', 'M4 5a1 1 0 011-1h14a1 1 0 011 1v10a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM8 20h8M12 16v4'],
-        ['Kategoriler', '/admin/categories', 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
         ['Blog Yazıları', '/admin/blog', 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-.586-1.414l-4.5-4.5A2 2 0 0012.586 3H12'],
         ['İletişim Ayarları', '/admin/contact', 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
     ];
@@ -1040,7 +1037,7 @@ function admin_shell(string $heading, string $activePath, callable $body): void
     $close = 'M6 18L18 6M6 6l12 12';
     $notice = ADMIN_MESSAGES[$_GET['m'] ?? ''] ?? null;
 
-    admin_head($heading . ' · Yönetim Paneli');
+    admin_head($heading . ' · Yönetim Paneli', $options['head'] ?? '');
     ?>
 <body class="bg-paper text-ink antialiased">
 <div class="admin-theme min-h-screen bg-stone-100 flex flex-col md:flex-row">
@@ -1083,7 +1080,7 @@ function admin_shell(string $heading, string $activePath, callable $body): void
 
   <main class="flex-1 flex flex-col min-h-screen overflow-x-hidden">
     <div class="flex-1 overflow-x-hidden p-4 sm:p-6 md:p-10 relative">
-      <div class="max-w-6xl mx-auto w-full">
+      <div class="<?= empty($options['wide']) ? 'max-w-6xl' : 'max-w-[1500px]' ?> mx-auto w-full">
         <?php if ($notice) { echo admin_alert($notice[0], $notice[1]); } ?>
         <?php $body(); ?>
       </div>

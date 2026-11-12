@@ -74,18 +74,16 @@ function gallery_items(): array
     return safe(fn () => db_all('SELECT * FROM `GalleryItem` ORDER BY createdAt DESC'), []);
 }
 
-function categories(): array
+/** Randevu formu ve blog kategorileri hizmet başlıklarından gelir (ayrı kategori listesi tutulmaz). */
+function service_titles(): array
 {
-    return safe(function () {
-        $rows = db_all('SELECT * FROM `Category` ORDER BY name ASC');
-        if (!$rows) {
-            foreach (['Konut', 'Otel', 'Ofis', 'Restoran', 'Eğitim', 'Sağlık', 'Üretim (Fabrika)'] as $name) {
-                db_run('INSERT IGNORE INTO `Category` (name) VALUES (?)', [$name]);
-            }
-            $rows = db_all('SELECT * FROM `Category` ORDER BY name ASC');
-        }
-        return $rows;
-    }, []);
+    return array_column(services(), 'title');
+}
+
+/** Galeride kullanılmış mekân/kategori adları (ör. Seans Odası, Bekleme Alanı). */
+function gallery_categories(): array
+{
+    return safe(fn () => array_column(db_all("SELECT DISTINCT category FROM `GalleryItem` WHERE category <> '' ORDER BY category ASC"), 'category'), []);
 }
 
 function slides(): array

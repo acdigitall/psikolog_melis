@@ -6,7 +6,7 @@ $meta = page_meta([
 ]);
 
 $preset = clean_input($_GET['service'] ?? '', 120);
-$names = array_column(categories(), 'name') ?: DEFAULT_CATEGORIES;
+$names = service_titles() ? [...service_titles(), 'Henüz emin değilim'] : DEFAULT_CATEGORIES;
 $options = ($preset !== '' && !in_array($preset, $names, true)) ? [$preset, ...$names] : $names;
 
 $formError = null;

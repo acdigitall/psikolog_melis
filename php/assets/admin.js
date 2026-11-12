@@ -40,6 +40,35 @@
     });
   });
 
+  // Randevu: başlangıç seçilince bitiş boşsa 50 dk sonrası önerilir
+  var apptStart = document.querySelector('[data-appt-start]');
+  var apptEnd = document.querySelector('[data-appt-end]');
+  if (apptStart && apptEnd) {
+    apptStart.addEventListener('change', function () {
+      var m = /^(\d{2}):(\d{2})$/.exec(apptStart.value);
+      if (!m || apptEnd.value) return;
+      var t = Math.min(+m[1] * 60 + +m[2] + 50, 23 * 60 + 55);
+      apptEnd.value = String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0');
+    });
+  }
+
+  // SMS şablonu: canlı önizleme ve karakter/SMS sayısı
+  var tpl = document.querySelector('[data-sms-template]');
+  if (tpl) {
+    var preview = document.querySelector('[data-sms-preview]');
+    var count = document.querySelector('[data-sms-count]');
+    var sample = { '{ad}': 'Ayşe', '{adsoyad}': 'Ayşe Yılmaz', '{tarih}': '12 Kasım', '{saat}': '14:00', '{psikolog}': tpl.getAttribute('data-psikolog') };
+    var render = function () {
+      var text = tpl.value.replace(/\{(ad|adsoyad|tarih|saat|psikolog)\}/g, function (k) { return sample[k]; }).trim();
+      preview.textContent = text;
+      // Türkçe karakterli SMS: tek mesaj 155, çok parçalı her parça 149 karakter (yaklaşık)
+      var parts = text.length <= 155 ? 1 : Math.ceil(text.length / 149);
+      count.textContent = text.length + ' karakter · ' + parts + ' SMS';
+    };
+    tpl.addEventListener('input', render);
+    render();
+  }
+
   // Hizmet adından adres önerisi
   var map = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u' };
   var slug = document.querySelector('[data-slug-from]');

@@ -263,4 +263,5 @@ require APP_DIR . '/site.php';
 require APP_DIR . '/content.php';
 require APP_DIR . '/data.php';
 require APP_DIR . '/auth.php';
+require APP_DIR . '/crm.php';
 require APP_DIR . '/components.php';

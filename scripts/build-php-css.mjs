@@ -1,4 +1,4 @@
-// PHP sürümünün CSS'ini üretir: node scripts/build-php-css.mjs
+// Sitenin CSS dosyasını üretir: npm run build:css
 // Yalnızca php/ içindeki sınıflar değiştiğinde gerekir; sunucuda Node gerekmez.
 import fs from 'node:fs';
 import postcss from 'postcss';

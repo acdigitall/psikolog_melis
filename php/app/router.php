@@ -47,6 +47,11 @@ function route_request(): void
         return;
     }
 
+    if ($path === '/cron/sms') {
+        send_cron_sms();
+        return;
+    }
+
     if ($path === '/admin' || str_starts_with($path, '/admin/')) {
         require APP_DIR . '/admin.php';
         admin_route($path, $method);
@@ -101,6 +106,28 @@ function route_request(): void
     }
 
     not_found();
+}
+
+/** Komut çalıştıramayan zamanlayıcılar için: /cron/sms?key=GİZLİ_ANAHTAR */
+function send_cron_sms(): void
+{
+    header('Content-Type: application/json; charset=utf-8');
+    header('Cache-Control: no-store');
+    header('X-Robots-Tag: noindex, nofollow');
+    $secret = cron_secret();
+    $key = is_string($_GET['key'] ?? null) ? $_GET['key'] : '';
+    if ($secret === '' || !hash_equals($secret, $key)) {
+        http_response_code(404);
+        echo '{"error":"not found"}';
+        return;
+    }
+    try {
+        echo json_encode(dispatch_due_sms(), JSON_UNESCAPED_UNICODE);
+    } catch (Throwable $e) {
+        error_log('[psikolog] cron: ' . $e->getMessage());
+        http_response_code(500);
+        echo '{"error":"internal"}';
+    }
 }
 
 function send_robots(): void

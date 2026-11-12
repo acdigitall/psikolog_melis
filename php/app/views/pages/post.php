@@ -43,7 +43,8 @@ $renderContent = function (string $text) use (&$renderContent): string {
 };
 
 $minutes = max(2, (int) round(count(preg_split('/\s+/u', $post['content']) ?: []) / 200));
-$serviceSlug = CATEGORY_SERVICE[$post['category']] ?? null;
+// Yeni yazılarda kategori bir hizmet başlığıdır; eski yazılar için sabit eşleme kullanılır.
+$serviceSlug = CATEGORY_SERVICE[$post['category']] ?? (array_column(services(), 'slug', 'title')[$post['category']] ?? null);
 foreach (SERVICE_LOCAL as $key => $local) {
     if (in_array($post['slug'], $local['relatedPosts'], true)) {
         $serviceSlug = $key;
