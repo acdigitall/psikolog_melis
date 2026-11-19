@@ -1,7 +1,7 @@
 <?php
 $meta = page_meta([
     'title' => 'İletişim ve Adres · Alsancak, Konak / İzmir',
-    'description' => "İzmir Alsancak'taki klinik adresi, telefon, e-posta, seans saatleri ve ulaşım bilgileri. Yüz yüze ya da online randevu için ulaşın.",
+    'description' => "İzmir Alsancak'taki klinik adresi, telefon, e-posta, Çalışma saatleri ve ulaşım bilgileri. Yüz yüze ya da online randevu için ulaşın.",
     'path' => '/contact',
     'image' => '/images/klinik-detay.jpg',
 ]);
@@ -47,7 +47,7 @@ page_hero([
         foreach ($emails as $m) {
             $row((string) ($m['label'] ?? 'E-posta'), '<a href="mailto:' . e($m['value'] ?? '') . '" class="hover:text-olive transition-colors break-all">' . e($m['value'] ?? '') . '</a>');
         }
-        $row('Seans saatleri', 'Hafta içi 10:00–20:00<br>Cumartesi 10:00–16:00');
+        $row('Çalışma saatleri', 'Hafta içi 10:00–20:00<br>Cumartesi 10:00–16:00');
         if ($socialLinks) {
             $links = '';
             foreach ($socialLinks as $s) {

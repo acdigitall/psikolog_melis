@@ -121,6 +121,38 @@ CREATE TABLE IF NOT EXISTS `HomePage` (
   `ctaBtn2Text` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ctaBtn2Link` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `updatedAt` datetime(3) NOT NULL,
+  `heroSubtitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroDesc` text COLLATE utf8mb4_unicode_ci,
+  `heroImg` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroImgAlt` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroBtn1Text` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroBtn1Link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroBtn2Text` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroBtn2Link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroNoteLinkText` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroNoteLink` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `heroNote` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `ApproachPage` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `metaTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `metaDesc` text COLLATE utf8mb4_unicode_ci,
+  `metaKeys` text COLLATE utf8mb4_unicode_ci,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `desc` text COLLATE utf8mb4_unicode_ci,
+  `img` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imgAlt` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `introTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `introText` text COLLATE utf8mb4_unicode_ci,
+  `items` mediumtext COLLATE utf8mb4_unicode_ci,
+  `closingTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `closingText` text COLLATE utf8mb4_unicode_ci,
+  `ctaTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ctaDesc` text COLLATE utf8mb4_unicode_ci,
+  `updatedAt` datetime(3) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -164,6 +196,7 @@ CREATE TABLE IF NOT EXISTS `Quote` (
   `service` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Yeni',
+  `type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Randevu',
   `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -184,20 +217,6 @@ CREATE TABLE IF NOT EXISTS `Service` (
   `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   PRIMARY KEY (`id`),
   UNIQUE KEY `Service_slug_key` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS `Slide` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subtitle` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `desc` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bg` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `order` int NOT NULL DEFAULT '0',
-  `metaTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `metaDesc` text COLLATE utf8mb4_unicode_ci,
-  `metaKeys` text COLLATE utf8mb4_unicode_ci,
-  `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `SmsLog` (

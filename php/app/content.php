@@ -196,32 +196,24 @@ const CATEGORY_SERVICE = [
     'Terapiye Başlarken' => 'bireysel-yetiskin-terapisi',
 ];
 
-const DEFAULT_SLIDES = [
-    [
-        'subtitle' => 'İzmir Psikolog · Uzm. Klinik Psikolog · Alsancak & Online',
-        'title' => 'Pratik, şefkatli ve gerçekten işe yarayan bir terapi',
-        'desc' => 'Kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde kanıta dayalı yöntemlerle, size özel bir yol haritası oluşturuyoruz.',
-        'bg' => '/images/hero-sakin-oda.jpg',
-        'order' => 1,
-    ],
-    [
-        'subtitle' => 'Yüz Yüze & Online Seanslar',
-        'title' => 'Nerede olursanız olun, güvenli bir alan',
-        'desc' => 'Görüntülü görüşmeyle Türkiye\'nin ve dünyanın her yerinden, yüz yüze seanslarla aynı özen ve gizlilikle görüşebiliriz.',
-        'bg' => '/images/hero-nefes.jpg',
-        'order' => 2,
-    ],
-    [
-        'subtitle' => 'Kanıta Dayalı Yöntemler',
-        'title' => 'BDT, Şema Terapi ve EMDR ile kalıcı değişim',
-        'desc' => 'Belirtileri yalnızca hafifletmek değil; onları besleyen düşünce, duygu ve davranış örüntülerini birlikte dönüştürmek için.',
-        'bg' => '/images/hero-orman-yolu.jpg',
-        'order' => 3,
-    ],
+/** Ana sayfa açılış bölümü; panelde alan boş bırakılırsa bu metinler gösterilir. */
+const DEFAULT_HERO = [
+    'subtitle' => 'İzmir Psikolog · Uzm. Klinik Psikolog · Alsancak & Online',
+    'title' => 'Pratik, şefkatli ve gerçekten işe yarayan bir terapi',
+    'desc' => 'Kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde kanıta dayalı yöntemlerle, size özel bir yol haritası oluşturuyoruz.',
+    'img' => '/images/hero-sakin-oda.jpg',
+    'imgAlt' => "İzmir Alsancak'ta sakin terapi odası",
+    'btn1Text' => 'Randevu talebi oluştur',
+    'btn1Link' => '/quote',
+    'btn2Text' => 'Telefonda ön görüşme talep et',
+    'btn2Link' => '/on-gorusme',
+    'noteLinkText' => "İzmir Alsancak'taki klinikte",
+    'noteLink' => '/izmir-psikolog',
+    'note' => "yüz yüze · Türkiye'nin her yerinden online",
 ];
 
 const DEFAULT_HOME = [
-    'metaTitle' => 'melis Sağlam | Bireysel, Çift ve Online Terapi',
+    'metaTitle' => 'Melis Sağlam Güleç | Bireysel, Çift ve Online Terapi',
     'metaDesc' => 'Kaygı, depresyon, ilişki sorunları ve kişisel gelişim alanlarında bilimsel ekoller ile profesyonel psikolojik danışmanlık.',
     'metaKeys' => 'psikolog, klinik psikolog, bireysel terapi, çift terapisi, online terapi, emdr',
     'servicesTitle' => 'Terapi ve Danışmanlık Hizmetlerimiz',
@@ -240,7 +232,7 @@ const DEFAULT_HOME = [
 
 const DEFAULT_ABOUT = [
     'id' => 1,
-    'metaTitle' => 'Hakkımda | melis Sağlam',
+    'metaTitle' => 'Hakkımda | Melis Sağlam Güleç',
     'metaDesc' => 'Eğitimim, benimsediğim terapi ekolleri (BDT, EMDR, Şema Terapi), etik değerler ve klinik yaklaşımım hakkında detaylı bilgi.',
     'metaKeys' => 'uzman klinik psikolog hakkında, bdt terapisti, emdr terapisti, istanbul psikolog',
     'storyImg' => '/images/hakkimda-hikaye.jpg',
@@ -267,11 +259,48 @@ const DEFAULT_ABOUT = [
     'policies' => '[{"title":"Koşulsuz Gizlilik","desc":"Seans odasında paylaşılan tüm bilgiler etik kurallar ve danışan mahremiyeti çerçevesinde gizli tutulur."},{"title":"Yargısız ve Güvenli Alan","desc":"Duygu ve düşüncelerinizin yargılanmadan, kabul ve empati ile dinlendiği güvenli bir ortam."},{"title":"İş Birlikçi Hedefler","desc":"Terapi hedefleri danışan ve terapist tarafından birlikte belirlenir; süreç şeffaf biçimde yürütülür."}]',
 ];
 
+/** "Kullandığım Yaklaşımlar" sayfası; panelde alan boş bırakılırsa bu metinler gösterilir. */
+const DEFAULT_APPROACHES = [
+    'metaTitle' => 'Kullandığım Yaklaşımlar · BDT, Şema Terapi, EMDR · İzmir Psikolog',
+    'metaDesc' => "İzmir Alsancak'ta ve online seanslarda kullandığım kanıta dayalı terapi yaklaşımları: Bilişsel Davranışçı Terapi, Şema Terapi ve EMDR.",
+    'metaKeys' => 'izmir bdt, izmir şema terapi, izmir emdr, kanıta dayalı terapi, terapi yöntemleri',
+    'title' => 'Kullandığım Yaklaşımlar',
+    'desc' => 'Her danışanın ihtiyacı farklıdır. Bilimsel olarak etkinliği gösterilmiş yöntemleri, sizin hikâyenize ve hedeflerinize göre bir araya getiriyorum.',
+    'img' => '/images/hakkimda-denge.jpg',
+    'imgAlt' => 'Sakin ve dengeli bir terapi ortamı',
+    'introTitle' => 'Tek bir kalıp değil, size uyan bir yol',
+    'introText' => "Terapide kullandığım yöntemler, araştırmalarla etkinliği desteklenmiş ve uluslararası kabul görmüş yaklaşımlardır. İlk görüşmelerde yaşadığınız zorlukları, geçmiş deneyimlerinizi ve terapiden beklentilerinizi birlikte değerlendiriyoruz.\nBu değerlendirmeye göre bir yaklaşımı temel alıyor, gerektiğinde diğerlerinden de yararlanıyoruz. Süreç boyunca neyin işe yaradığını birlikte gözden geçiriyor, planı ihtiyacınıza göre güncelliyoruz.",
+    'items' => [
+        [
+            'title' => 'Bilişsel Davranışçı Terapi (BDT)',
+            'tagline' => 'Düşünce, duygu ve davranış arasındaki bağı fark etmek',
+            'desc' => "BDT, yaşadığımız olayları nasıl yorumladığımızın duygularımızı ve davranışlarımızı nasıl etkilediğine odaklanır. Sizi zorlayan otomatik düşünceleri fark etmeyi, onları daha gerçekçi ve işlevsel bakış açılarıyla değerlendirmeyi öğreniriz.\nSeanslar yapılandırılmış ve hedef odaklıdır; seans aralarında günlük hayatta uygulayabileceğiniz küçük ve somut çalışmalar yaparız.",
+            'fit' => 'Kaygı ve panik, depresyon, obsesif-kompulsif belirtiler, sosyal kaygı, uyku ve stres sorunları',
+        ],
+        [
+            'title' => 'Şema Terapi',
+            'tagline' => 'Tekrarlayan örüntülerin köklerine inmek',
+            'desc' => "Şema Terapi, BDT'yi bağlanma ve duygu odaklı yaklaşımlarla birleştirir. Çocuklukta karşılanmamış duygusal ihtiyaçlardan doğan ve yetişkinlikte ilişkilerde, işte ya da kendimize bakışımızda tekrar eden kalıpları (şemaları) anlamayı hedefler.\nBu kalıpların bugün nasıl tetiklendiğini fark eder, kendinize karşı daha şefkatli ve sağlıklı bir tutum geliştirmeniz için birlikte çalışırız.",
+            'fit' => 'Tekrarlayan ilişki sorunları, değersizlik ve yetersizlik duyguları, kronik kaygı ya da depresyon, kişilik örüntüleri',
+        ],
+        [
+            'title' => 'EMDR',
+            'tagline' => 'Zorlayıcı anıların yükünü hafifletmek',
+            'desc' => "EMDR (Göz Hareketleriyle Duyarsızlaştırma ve Yeniden İşleme), travmatik ya da rahatsız edici anıların beyinde yeniden işlenmesine yardımcı olan yapılandırılmış bir terapi yöntemidir. Dünya Sağlık Örgütü tarafından travma sonrası stres için önerilen yöntemler arasındadır.\nAnıyı unutturmaz; ancak onunla ilişkili yoğun duygu ve beden tepkilerinin azalmasını, anının geçmişte kalmış bir deneyim olarak yerine oturmasını sağlar.",
+            'fit' => 'Travma sonrası stres, kaza, kayıp ve yas, fobiler, geçmişte kalmış ama hâlâ etkisini sürdüren zor yaşantılar',
+        ],
+    ],
+    'closingTitle' => 'Hangi yaklaşımın size uygun olduğunu nasıl belirliyoruz?',
+    'closingText' => "Hangi yöntemle çalışacağımıza tek başıma karar vermiyorum. İlk seanslarda neler yaşadığınızı ve neyi değiştirmek istediğinizi dinledikten sonra seçenekleri açıkça konuşuyor, birlikte karar veriyoruz.\nYöntemin adı değil, sizin kendinizi daha iyi hissetmeniz önemlidir. Bu yüzden süreç boyunca ilerlemenizi düzenli olarak birlikte değerlendiriyoruz.",
+    'ctaTitle' => 'Size uygun yaklaşımı birlikte belirleyelim',
+    'ctaDesc' => 'Yüz yüze ya da online bir tanışma görüşmesinde ihtiyaçlarınızı konuşalım ve size en uygun yolu birlikte planlayalım.',
+];
+
 const DEFAULT_PRODUCTION = [
     'title' => 'Terapi Sürecimiz Nasıl İlerler?',
     'desc' => 'Psikoterapi, kendinizi daha derinlemesine tanıma, zorlayıcı duyguları anlama ve yaşam kalitenizi artırma yolculuğudur. Sürecimiz adım adım ve tamamen sizin temponuza uygun ilerler.',
     'img' => '/images/surec-yolculuk.jpg',
-    'metaTitle' => 'Terapi Süreci & Danışmanlık Yaklaşımı | melis Sağlam',
+    'metaTitle' => 'Terapi Süreci & Danışmanlık Yaklaşımı | Melis Sağlam Güleç',
     'metaDesc' => 'İlk görüşmeden hedeflere, düzenli seanslardan sağlıklı sonlandırmaya kadar adım adım psikolojik danışmanlık süreci.',
     'metaKeys' => 'terapi süreci, psikolog seansı nasıl geçer, terapi aşamaları',
 ];

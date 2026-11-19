@@ -2,8 +2,7 @@
 $d = home_page();
 $about = about_page();
 $allServices = services();
-$allSlides = slides();
-$hero = $allSlides[0] ?? null;
+$hero = fn (string $key, string $default) => trim((string) ($d[$key] ?? '')) ?: $default;
 $posts = array_slice(published_posts(), 0, 3);
 $steps = array_slice(production_steps(), 0, 4);
 
@@ -20,22 +19,22 @@ $meta = page_meta([
     'absoluteTitle' => true,
 ]);
 ?>
-<section class="mx-auto grid max-w-[1240px] items-center gap-12 px-6 pt-10 pb-16 md:grid-cols-[1.25fr_1fr] md:gap-10 md:pt-14 md:pb-24 lg:grid-cols-[1.15fr_1fr] lg:gap-20 lg:pb-28 lg:px-10">
+<section class="mx-auto grid max-w-[1240px] items-center gap-10 px-6 pt-8 pb-16 md:grid-cols-[1.25fr_1fr] md:gap-10 md:pt-14 md:pb-24 lg:grid-cols-[1.15fr_1fr] lg:gap-20 lg:pb-28 lg:px-10">
   <div>
-    <h1 class="intro kicker mb-7 font-sans"><?= e(($hero['subtitle'] ?? null) ?: 'İzmir Psikolog · Uzm. Klinik Psikolog · Alsancak & Online') ?></h1>
-    <p <?= delay(80) ?> class="intro display max-w-[15ch] [text-wrap:balance]"><?= accent(($hero['title'] ?? null) ?: 'Pratik, şefkatli ve gerçekten işe yarayan bir terapi', 2) ?></p>
-    <p <?= delay(160) ?> class="intro lead mt-7 max-w-xl"><?= e(($hero['desc'] ?? null) ?: 'Kaygı, depresyon, ilişki sorunları ve travma sonrası süreçlerde kanıta dayalı yöntemlerle, size özel bir yol haritası oluşturuyoruz.') ?></p>
+    <h1 class="intro kicker mb-7 font-sans"><?= e($hero('heroSubtitle', DEFAULT_HERO['subtitle'])) ?></h1>
+    <p <?= delay(80) ?> class="intro display max-w-[15ch] [text-wrap:balance]"><?= accent($hero('heroTitle', DEFAULT_HERO['title']), 2) ?></p>
+    <p <?= delay(160) ?> class="intro lead mt-7 max-w-xl"><?= e($hero('heroDesc', DEFAULT_HERO['desc'])) ?></p>
     <div <?= delay(240) ?> class="intro mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-      <a href="/quote" class="btn-primary">Randevu talebi oluştur <?= arrow_right() ?></a>
-      <a href="/contact" class="btn-ghost">Ön görüşme için arayın</a>
+      <a href="<?= e($hero('heroBtn1Link', DEFAULT_HERO['btn1Link'])) ?>" class="btn-primary"><?= e($hero('heroBtn1Text', DEFAULT_HERO['btn1Text'])) ?> <?= arrow_right() ?></a>
+      <a href="<?= e($hero('heroBtn2Link', DEFAULT_HERO['btn2Link'])) ?>" class="btn-ghost"><?= e($hero('heroBtn2Text', DEFAULT_HERO['btn2Text'])) ?></a>
     </div>
     <p <?= delay(320) ?> class="intro mt-10 text-sm text-muted">
-      <a href="/izmir-psikolog" class="underline decoration-line underline-offset-4 hover:text-forest transition-colors">İzmir Alsancak'taki klinikte</a> yüz yüze · Türkiye'nin her yerinden online
+      <a href="<?= e($hero('heroNoteLink', DEFAULT_HERO['noteLink'])) ?>" class="underline decoration-line underline-offset-4 hover:text-forest transition-colors"><?= e($hero('heroNoteLinkText', DEFAULT_HERO['noteLinkText'])) ?></a> <?= e($hero('heroNote', DEFAULT_HERO['note'])) ?>
     </p>
   </div>
-  <div class="intro-image mx-auto w-full max-w-[300px] sm:max-w-[380px] md:max-w-none lg:max-w-[480px]">
+  <div class="intro-image order-first md:order-none mx-auto w-full max-w-[300px] sm:max-w-[380px] md:max-w-none lg:max-w-[480px]">
     <div class="arch relative aspect-[4/5] bg-sage-light">
-      <?= img_fill(($hero['bg'] ?? null) ?: '/images/hero-sakin-oda.jpg', ($hero['metaTitle'] ?? null) ?: "İzmir Alsancak'ta sakin terapi odası", '', true) ?>
+      <?= img_fill($hero('heroImg', DEFAULT_HERO['img']), $hero('heroImgAlt', DEFAULT_HERO['imgAlt']), '', true) ?>
     </div>
   </div>
 </section>
@@ -50,7 +49,7 @@ $meta = page_meta([
     <ul data-reveal class="mt-12 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
       <?php foreach ($concerns as $c): ?>
         <li class="flex items-baseline gap-3 text-[1.05rem] text-ink/85">
-          <span class="mt-2 h-1.5 w-1.5 shrink-0 translate-y-[-2px] rounded-full bg-olive"></span>
+          <span class="mt-2 h-1.5 w-1.5 shrink-0 translate-y-[-2px] rounded-full bg-clay"></span>
           <?= e($c) ?>
         </li>
       <?php endforeach; ?>
@@ -65,7 +64,7 @@ $meta = page_meta([
       <h2 class="font-serif text-[clamp(1.7rem,1.3rem+1.2vw,2.4rem)] leading-tight !text-paper">Bu yolu tek başınıza yürümek zorunda değilsiniz.</h2>
       <p class="mt-3 text-paper/75">Kısa bir ön görüşmeyle sorularınızı yanıtlayalım, size uygun desteği birlikte belirleyelim.</p>
     </div>
-    <a href="/quote" class="btn-light shrink-0">Ön görüşme talep et <?= arrow_right() ?></a>
+    <a href="/on-gorusme" class="btn-light shrink-0">Telefonda ön görüşme talep et <?= arrow_right() ?></a>
   </div>
 </section>
 
@@ -169,8 +168,8 @@ $meta = page_meta([
 <section class="border-t border-line">
   <div class="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
     <div data-reveal class="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-      <h2 class="h-section"><?= e(($d['projectsTitle'] ?? null) ?: 'Son yazılar') ?></h2>
-      <a href="/blog" class="link-line shrink-0 self-start md:self-auto">Tüm yazılar <?= arrow_right() ?></a>
+      <h2 class="h-section"><?= e(($d['projectsTitle'] ?? null) ?: 'Son Bloglar') ?></h2>
+      <a href="/blog" class="link-line shrink-0 self-start md:self-auto">Tüm Bloglar <?= arrow_right() ?></a>
     </div>
     <div class="snap-row sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3">
       <?php foreach ($posts as $i => $post): ?>

@@ -15,7 +15,8 @@
 }
 
 /* ---------- Üst bölüm ---------- */
-.cal-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.cal-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 20px 16px; margin-bottom: 20px; }
+.cal-stats { grid-column: 1 / -1; }
 .cal-eyebrow { font-size: 13px; color: var(--muted); margin: 0 0 4px; }
 .admin-theme h1.cal-title { font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem); line-height: 1.1; margin: 0; }
 .cal-new {
@@ -26,7 +27,7 @@
 }
 .cal-new:hover { background: var(--forest-dark); transform: translateY(-1px); box-shadow: 0 1px 2px rgba(23, 50, 31, .2), 0 12px 24px -10px rgba(23, 50, 31, .6); }
 
-.cal-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+.cal-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 @media (min-width: 900px) { .cal-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .cal-stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; display: flex; flex-direction: column; gap: 4px; }
 .cal-stat-label { font-size: 12.5px; color: var(--muted); }
@@ -142,11 +143,11 @@
 .fc-day-today .cal-dow { color: var(--forest); font-weight: 600; }
 .fc-day-today .cal-dom, .fc-day-today .fc-col-header-cell-cushion:hover .cal-dom { background: var(--forest); color: #fff; }
 
-.cal-card .fc .fc-timegrid-slot { height: 40px; }
+.cal-card .fc .fc-timegrid-slot { height: 24px; }
 .cal-card .fc .fc-timegrid-slot-minor { border-top-color: transparent; }
 .cal-card .fc .fc-timegrid-slot-label { border: 0; vertical-align: top; }
-.cal-card .fc .fc-timegrid-slot-label-cushion { padding: 0 12px 0 2px; font-size: 11.5px; color: var(--faint); font-variant-numeric: tabular-nums; position: relative; top: -9px; }
-.cal-card .fc .fc-timegrid-slots tr:first-child .fc-timegrid-slot-label-cushion { visibility: hidden; }
+.cal-card .fc .fc-timegrid-slot-label-cushion { padding: 0 12px 0 2px; font-size: 11.5px; color: var(--faint); font-variant-numeric: tabular-nums; position: relative; top: 3px; }
+.cal-card .fc .fc-scroller { scrollbar-width: thin; scrollbar-color: #d9d2c0 transparent; }
 .cal-card .fc .fc-timegrid-axis { border: 0; }
 .cal-card .fc .fc-timegrid-col-events { margin: 0 6px 0 3px; }
 .cal-card .fc .fc-timegrid-now-indicator-line { border-width: 2px 0 0; }
@@ -162,19 +163,19 @@
   transition: box-shadow .15s, transform .15s, background .15s;
 }
 .cal-card .fc .fc-timegrid-event:hover { background: #245435; box-shadow: 0 0 0 1px #fff, 0 8px 18px -8px rgba(23, 50, 31, .55); z-index: 5 !important; }
-.cal-card .fc .fc-timegrid-event .fc-event-main { padding: 5px 7px 4px 8px; color: #fff; overflow: hidden; }
-.appt-body { display: flex; flex-direction: column; gap: 1px; height: 100%; overflow: hidden; }
-.appt-time { flex: none; font-size: 11.5px; line-height: 15px; font-weight: 600; opacity: .75; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
-.appt-name { flex: none; display: flex; align-items: center; gap: 6px; font-size: 13.5px; line-height: 18px; font-weight: 600; min-width: 0; }
+.cal-card .fc .fc-timegrid-event .fc-event-main { padding: 3px 7px 2px 8px; color: #fff; overflow: hidden; }
+.appt-body { display: flex; flex-flow: column wrap; align-content: flex-start; gap: 0 20px; height: 100%; overflow: hidden; }
+.appt-body > * { width: 100%; }
+.appt-time { flex: none; font-size: 11.5px; line-height: 14px; font-weight: 600; opacity: .75; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
+.appt-name { flex: none; display: flex; align-items: center; gap: 6px; font-size: 13.5px; line-height: 17px; font-weight: 600; min-width: 0; }
 .appt-name-text { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.appt-notetext { flex: 0 1 auto; min-height: 0; font-size: 12px; line-height: 16px; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.appt-notetext { flex: none; font-size: 12px; line-height: 16px; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .fc-timegrid-event-short .appt-body { flex-direction: row; align-items: center; gap: 8px; }
-/* Yarım saatlik randevular: iki satır sığsın diye sıkı dizilir, not gizlenir */
-.cal-card .fc .fc-timegrid-event .fc-event-main:has(.appt-body--short) { padding-top: 3px; padding-bottom: 2px; }
-.appt-body--short { gap: 0; }
-.appt-body--short .appt-time { line-height: 13px; font-size: 11px; }
-.appt-body--short .appt-name { line-height: 17px; }
-.appt-body--short .appt-notetext { display: none; }
+/* Yarım saatlik randevular: başlangıç saati ve isim tek satırda */
+.appt-body--short { flex-flow: row nowrap; align-items: center; gap: 6px; }
+.appt-body--short > * { width: auto; }
+.appt-body--short .appt-time-end, .appt-body--short .appt-notetext { display: none; }
+.appt-body--short .appt-name { flex: 1 1 0; }
 .fc-timegrid-event-short .appt-notetext { display: none; }
 .fc-timegrid-event-short .appt-name { flex: 0 1 auto; }
 .cal-card .fc .appt--cancelled .appt-name-text { text-decoration: line-through; }
@@ -277,18 +278,20 @@
 .cal-toast.is-open { opacity: 1; transform: translate(-50%, 0); }
 .cal-toast.is-error { background: #a13c2f; }
 
-/* ---------- Dizüstü ekranlar (13–16 inç): üst bölüm sıkışır, takvime yer kalır ---------- */
-@media (min-width: 768px) and (max-height: 960px) {
-  .cal-top { margin-bottom: 14px; align-items: center; }
+/* ---------- Dizüstü ekranlar (13–16 inç): sayılar başlık satırına iner, takvime yer kalır ---------- */
+@media (min-width: 1100px) and (max-height: 1000px) {
+  .cal-header { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; margin-bottom: 14px; }
+  .cal-heading { grid-column: 1; grid-row: 1; }
+  .cal-stats { grid-column: 2; grid-row: 1; display: flex; justify-content: flex-end; gap: 8px; }
+  .cal-new { grid-column: 3; grid-row: 1; height: 40px; }
   .admin-theme h1.cal-title { font-size: 1.6rem; }
-  .cal-new { height: 40px; }
-  .cal-stats { gap: 10px; margin-bottom: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .cal-stat { flex-direction: row; align-items: baseline; justify-content: space-between; padding: 10px 16px; border-radius: 12px; }
-  .cal-stat-value { font-size: 24px; }
+  .cal-stat { flex-direction: row; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 999px; }
+  .cal-stat-label { font-size: 13px; }
+  .cal-stat-value { font-size: 20px; }
   .cal-stat-value small { display: none; }
-  .cal-notice { margin-bottom: 14px; padding: 9px 14px; font-size: 13.5px; }
+  .cal-notice { margin-bottom: 14px; padding: 8px 14px; font-size: 13.5px; }
   .cal-card { padding: 14px 16px 12px; }
-  .cal-card .fc .fc-toolbar.fc-header-toolbar { margin-bottom: 10px; }
+  .cal-card .fc .fc-toolbar.fc-header-toolbar { margin-bottom: 8px; }
   .cal-card .fc .fc-col-header-cell { padding: 0 0 6px; }
   .cal-dayhead { flex-direction: row; justify-content: center; align-items: center; gap: 6px; }
   .cal-dom { width: 30px; height: 30px; font-size: 18px; }

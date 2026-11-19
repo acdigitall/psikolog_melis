@@ -43,7 +43,7 @@ function accent(string $text, int $words = 1): string
     }
     $head = implode(' ', array_slice($parts, 0, -$words));
     $tail = implode(' ', array_slice($parts, -$words));
-    return e($head) . ' <em class="italic text-olive">' . e($tail) . '</em>';
+    return e($head) . ' <em class="italic text-clay">' . e($tail) . '</em>';
 }
 
 function safe_url(?string $url): string
@@ -70,7 +70,7 @@ function brand(?string $logo, string $variant = 'dark'): string
         . '<img src="/logo/psikoloji_logo.png" alt="" width="40" height="40" class="h-10 w-10 shrink-0 ' . $blend . '">'
         . '<span class="flex flex-col leading-none">'
         . '<span class="text-[12px] ' . $sub . '">Uzm. Klinik Psikolog</span>'
-        . '<span class="mt-1.5 font-serif text-[1.35rem] tracking-[-0.01em] ' . $main . '">melis Sağlam</span>'
+        . '<span class="mt-1.5 font-serif text-[1.35rem] tracking-[-0.01em] ' . $main . '">Melis Sağlam Güleç</span>'
         . '</span></span>';
 }
 
@@ -108,6 +108,12 @@ function page_hero(array $o): void
           <h1 <?= delay(60) ?> class="intro display max-w-[16ch]"><?= e($title) ?></h1>
           <?php if ($description): ?>
             <p <?= delay(140) ?> class="intro lead mt-7 max-w-xl whitespace-pre-line"><?= e($description) ?></p>
+          <?php endif; ?>
+          <?php if (!empty($o['link'])): ?>
+            <p <?= delay(220) ?> class="intro mt-6 text-[15px] text-muted">
+              <?= e($o['link']['lead'] ?? '') ?>
+              <a href="<?= e($o['link']['href']) ?>" class="font-medium text-forest underline decoration-forest/30 underline-offset-4 hover:decoration-forest transition-colors"><?= e($o['link']['text']) ?> →</a>
+            </p>
           <?php endif; ?>
         </div>
         <?php if ($image): ?>

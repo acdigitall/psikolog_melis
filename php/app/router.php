@@ -58,7 +58,7 @@ function route_request(): void
         return;
     }
 
-    if ($method !== 'GET' && $method !== 'HEAD' && !($method === 'POST' && $path === '/quote')) {
+    if ($method !== 'GET' && $method !== 'HEAD' && !($method === 'POST' && in_array($path, ['/quote', '/on-gorusme'], true))) {
         http_response_code(405);
         header('Allow: GET, HEAD');
         return;
@@ -69,11 +69,13 @@ function route_request(): void
         '/about' => 'about',
         '/services' => 'services',
         '/production' => 'production',
+        '/yaklasimlar' => 'approaches',
         '/gallery' => 'gallery',
         '/blog' => 'blog',
         '/faq' => 'faq',
         '/contact' => 'contact',
         '/quote' => 'quote',
+        '/on-gorusme' => 'precall',
         '/izmir-psikolog' => 'izmir',
         '/kvkk' => 'kvkk',
         '/privacy' => 'privacy',
@@ -150,8 +152,8 @@ function send_sitemap(): void
     $routes = [
         ['', 'weekly', '1.0'], ['/izmir-psikolog', 'monthly', '0.9'], ['/about', 'monthly', '0.8'],
         ['/services', 'weekly', '0.9'], ['/blog', 'daily', '0.8'], ['/contact', 'monthly', '0.7'],
-        ['/faq', 'monthly', '0.6'], ['/gallery', 'weekly', '0.6'], ['/quote', 'monthly', '0.6'],
-        ['/production', 'monthly', '0.6'], ['/kvkk', 'yearly', '0.4'], ['/privacy', 'yearly', '0.4'], ['/terms', 'yearly', '0.4'],
+        ['/faq', 'monthly', '0.6'], ['/gallery', 'weekly', '0.6'], ['/quote', 'monthly', '0.6'], ['/on-gorusme', 'monthly', '0.6'],
+        ['/production', 'monthly', '0.6'], ['/yaklasimlar', 'monthly', '0.7'], ['/kvkk', 'yearly', '0.4'], ['/privacy', 'yearly', '0.4'], ['/terms', 'yearly', '0.4'],
     ];
     $base = site_url();
     $entry = fn ($loc, $mod, $freq, $prio) => '<url><loc>' . e($loc) . "</loc><lastmod>$mod</lastmod><changefreq>$freq</changefreq><priority>$prio</priority></url>\n";
@@ -196,7 +198,7 @@ function send_llms(): void
     }
     array_push(
         $lines,
-        '- Seans saatleri: Pazartesi–Cuma 10:00–20:00, Cumartesi 10:00–16:00, Pazar kapalı',
+        '- Çalışma saatleri: Pazartesi–Cuma 10:00–20:00, Cumartesi 10:00–16:00, Pazar kapalı',
         '- Seans süresi: bireysel 50 dakika, çift seansı 60–75 dakika',
         '- Seans biçimi: yüz yüze (Alsancak, İzmir) ve online',
         '- Yüz yüze hizmet verilen ilçeler: ' . implode(', ', IZMIR_DISTRICTS),

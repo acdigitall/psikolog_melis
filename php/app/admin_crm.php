@@ -218,21 +218,20 @@ function admin_calendar_page(): void
     admin_shell('Takvim', '/admin/calendar', function () use ($stats, $todayRows, $upcoming, $smsWarning, $longDate, $focus, $item, $tz, $now) {
         ?>
         <div class="cal-page">
-          <div class="cal-top">
-            <div>
+          <div class="cal-header">
+            <div class="cal-heading">
               <p class="cal-eyebrow"><?= e($longDate) ?></p>
               <h1 class="cal-title">Randevu Takvimi</h1>
             </div>
             <a href="/admin/calendar/new" class="cal-new"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Yeni randevu</a>
-          </div>
-
-          <div class="cal-stats">
-            <?php foreach ($stats as [$label, $value, $unit]): ?>
-              <div class="cal-stat">
-                <span class="cal-stat-label"><?= e($label) ?></span>
-                <span class="cal-stat-value"><?= (int) $value ?><small><?= e($unit) ?></small></span>
-              </div>
-            <?php endforeach; ?>
+            <div class="cal-stats">
+              <?php foreach ($stats as [$label, $value, $unit]): ?>
+                <div class="cal-stat">
+                  <span class="cal-stat-label"><?= e($label) ?></span>
+                  <span class="cal-stat-value"><?= (int) $value ?><small><?= e($unit) ?></small></span>
+                </div>
+              <?php endforeach; ?>
+            </div>
           </div>
 
           <?php if ($smsWarning): ?>

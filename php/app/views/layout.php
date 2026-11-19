@@ -1,13 +1,13 @@
 <?php
 /** @var array $meta  @var string $content */
 $settings = contact_settings();
-$fullTitle = ($meta['absoluteTitle'] ?? false) ? $meta['title'] : $meta['title'] . ' | melis Sağlam';
+$fullTitle = ($meta['absoluteTitle'] ?? false) ? $meta['title'] : $meta['title'] . ' | Melis Sağlam Güleç';
 $ogImage = abs_url($meta['image']);
 $siteLabel = SITE_NAME . ' · ' . CITY;
 $path = current_path();
 $navLinks = [
-    ['Hakkımda', '/about'], ['Hizmetler', '/services'], ['Süreç', '/production'], ['Klinik', '/gallery'],
-    ['Yazılar', '/blog'], ['Sorular', '/faq'], ['İletişim', '/contact'],
+    ['Hakkımda', '/about'], ['Yaklaşımlar', '/yaklasimlar'], ['Hizmetler', '/services'], ['Süreç', '/production'], ['Klinik', '/gallery'],
+    ['Bloglar', '/blog'], ['Sorular', '/faq'], ['İletişim', '/contact'],
 ];
 $phone = $settings['phone1'] ?? null;
 $socialLinks = parse_list($settings['socialLinks'] ?? null);
@@ -63,21 +63,21 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
 </head>
 <body class="bg-paper text-ink antialiased">
 <?= json_ld(site_graph($settings)) ?>
-<div aria-hidden="true" class="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px]"><div id="route-bar" class="h-full bg-olive"></div></div>
+<div aria-hidden="true" class="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px]"><div id="route-bar" class="h-full bg-clay"></div></div>
 
 <header id="site-header" class="site-header sticky top-0 z-50 w-full transition-[background-color,border-color] duration-500 border-b">
   <nav class="mx-auto flex h-[76px] max-w-[1240px] items-center justify-between gap-8 px-6 lg:px-10">
     <a href="/" class="shrink-0" aria-label="Anasayfa"><?= brand($settings['logo'] ?? null) ?></a>
-    <ul class="hidden lg:flex items-center gap-8">
+    <ul class="hidden xl:flex items-center gap-7 2xl:gap-8">
       <?php foreach ($navLinks as [$name, $href]): $active = str_starts_with($path, $href); ?>
         <li>
-          <a href="<?= e($href) ?>" <?= $active ? 'aria-current="page"' : '' ?> class="relative py-2 text-[15px] transition-colors duration-300 after:absolute after:left-0 after:-bottom-0.5 after:h-px after:bg-forest after:transition-[width] after:duration-500 after:ease-[cubic-bezier(.22,1,.36,1)] <?= $active ? 'text-forest after:w-full' : 'text-ink/70 hover:text-forest after:w-0 hover:after:w-full' ?>"><?= e($name) ?></a>
+          <a href="<?= e($href) ?>" <?= $active ? 'aria-current="page"' : '' ?> class="relative py-2 text-[17px] font-medium transition-colors duration-300 after:absolute after:left-0 after:-bottom-0.5 after:h-px after:bg-clay after:transition-[width] after:duration-500 after:ease-[cubic-bezier(.22,1,.36,1)] <?= $active ? 'text-bark-dark after:w-full' : 'text-bark hover:text-bark-dark after:w-0 hover:after:w-full' ?>"><?= e($name) ?></a>
         </li>
       <?php endforeach; ?>
     </ul>
     <div class="flex items-center gap-5">
       <a href="/quote" class="hidden sm:inline-flex btn-primary !h-11 !px-5">Randevu al</a>
-      <button id="menu-toggle" type="button" class="lg:hidden -mr-2 flex h-11 w-11 items-center justify-center text-forest" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobil-menu">
+      <button id="menu-toggle" type="button" class="xl:hidden -mr-2 flex h-11 w-11 items-center justify-center text-forest" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobil-menu">
         <span class="relative block h-3 w-6">
           <span class="menu-bar absolute left-0 h-px w-6 bg-current"></span>
           <span class="menu-bar absolute left-0 h-px w-6 bg-current"></span>
@@ -87,12 +87,12 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
   </nav>
 </header>
 
-<div id="mobil-menu" aria-hidden="true" class="lg:hidden fixed inset-x-0 top-[76px] bottom-0 z-40 bg-paper">
+<div id="mobil-menu" aria-hidden="true" class="xl:hidden fixed inset-x-0 top-[76px] bottom-0 z-40 bg-paper">
   <div class="flex h-full flex-col justify-between overflow-y-auto px-6 pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))] [@media(max-height:700px)]:pt-5">
     <ul class="space-y-1">
       <?php foreach ([['Anasayfa', '/'], ...$navLinks] as $i => [$name, $href]): ?>
         <li style="--i:<?= $i ?>">
-          <a href="<?= e($href) ?>" class="block py-2 font-serif text-[2.1rem] leading-tight text-forest [@media(max-height:700px)]:py-1 [@media(max-height:700px)]:text-[1.65rem]"><?= e($name) ?></a>
+          <a href="<?= e($href) ?>" class="block py-2 font-serif text-[2.1rem] leading-tight text-bark [@media(max-height:700px)]:py-1 [@media(max-height:700px)]:text-[1.65rem]"><?= e($name) ?></a>
         </li>
       <?php endforeach; ?>
     </ul>
@@ -115,7 +115,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
       <div>
         <h4 class="mb-5 font-sans text-sm text-paper/45">Sayfalar</h4>
         <ul class="space-y-2.5 text-[15px]">
-          <?php foreach ([['Hakkımda', '/about'], ['Hizmetler', '/services'], ['Terapi süreci', '/production'], ['Klinik', '/gallery'], ['Yazılar', '/blog'], ['Sorular', '/faq'], ['İzmir psikolog', '/izmir-psikolog']] as [$name, $href]): ?>
+          <?php foreach ([['Hakkımda', '/about'], ['Kullandığım yaklaşımlar', '/yaklasimlar'], ['Hizmetler', '/services'], ['Terapi süreci', '/production'], ['Klinik', '/gallery'], ['Bloglar', '/blog'], ['Sorular', '/faq'], ['İzmir psikolog', '/izmir-psikolog']] as [$name, $href]): ?>
             <li><a href="<?= e($href) ?>" class="<?= $footerLink ?>"><?= e($name) ?></a></li>
           <?php endforeach; ?>
         </ul>
@@ -129,7 +129,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
         </ul>
       </div>
       <div class="col-span-2 sm:col-span-1">
-        <h4 class="mb-5 font-sans text-sm text-paper/45">Seans saatleri</h4>
+        <h4 class="mb-5 font-sans text-sm text-paper/45">Çalışma saatleri</h4>
         <dl class="space-y-2.5 text-[15px] text-paper/65">
           <div class="flex justify-between gap-6"><dt>Hafta içi</dt><dd>10:00–20:00</dd></div>
           <div class="flex justify-between gap-6"><dt>Cumartesi</dt><dd>10:00–16:00</dd></div>
@@ -147,7 +147,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
     <div class="border-t border-paper/15 py-8 text-sm text-paper/50 space-y-5">
       <p class="max-w-3xl leading-relaxed">Bu site acil destek sağlamaz. Kendinize ya da bir başkasına zarar verme riski varsa lütfen hemen 112'yi arayın veya en yakın acil servise başvurun.</p>
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <p>&copy; <?= date('Y') ?> Uzm. Klinik Psikolog melis Sağlam</p>
+        <p>&copy; <?= date('Y') ?> Uzm. Klinik Psikolog Melis Sağlam Güleç</p>
         <div class="flex flex-wrap gap-x-6 gap-y-2">
           <a href="/privacy" class="<?= $footerLink ?>">Gizlilik</a>
           <a href="/terms" class="<?= $footerLink ?>">Kullanım koşulları</a>

@@ -86,30 +86,62 @@ function gallery_categories(): array
     return safe(fn () => array_column(db_all("SELECT DISTINCT category FROM `GalleryItem` WHERE category <> '' ORDER BY category ASC"), 'category'), []);
 }
 
-function slides(): array
-{
-    return safe(function () {
-        $rows = db_all('SELECT * FROM `Slide` ORDER BY `order` ASC');
-        if (!$rows) {
-            foreach (DEFAULT_SLIDES as $slide) {
-                db_insert('Slide', $slide);
-            }
-            $rows = db_all('SELECT * FROM `Slide` ORDER BY `order` ASC');
-        }
-        return $rows;
-    }, []);
-}
-
 function home_page(): ?array
 {
-    return safe(function () {
+    static $cache = false;
+    if ($cache !== false) {
+        return $cache;
+    }
+    return $cache = safe(function () {
         $row = db_one('SELECT * FROM `HomePage` LIMIT 1');
-        if ($row) {
-            return $row;
+        if (!$row) {
+            $id = db_insert('HomePage', [...DEFAULT_HOME, 'updatedAt' => now_sql()]);
+            $row = db_one('SELECT * FROM `HomePage` WHERE id = ?', [$id]);
         }
-        $id = db_insert('HomePage', [...DEFAULT_HOME, 'updatedAt' => now_sql()]);
-        return db_one('SELECT * FROM `HomePage` WHERE id = ?', [$id]);
+        if (!array_key_exists('heroNote', $row)) {
+            migrate_home_hero((int) $row['id'], !array_key_exists('heroTitle', $row));
+            $row = db_one('SELECT * FROM `HomePage` WHERE id = ?', [$row['id']]);
+        }
+        return $row;
     });
+}
+
+/**
+ * Açılış bölümü eskiden "Açılış Slaytları"ndaki ilk slayttan okunuyordu.
+ * Alanları Ana Sayfa ayarlarına ekler ve ilk slaytın içeriğini bir kez aktarır (Slide tablosuna dokunmaz).
+ */
+function migrate_home_hero(int $homeId, bool $copySlide): void
+{
+    $have = array_column(db_all('SHOW COLUMNS FROM `HomePage`'), 'Field');
+    $columns = [
+        'heroSubtitle' => 'VARCHAR(191) NULL',
+        'heroTitle' => 'VARCHAR(191) NULL',
+        'heroDesc' => 'TEXT NULL',
+        'heroImg' => 'VARCHAR(191) NULL',
+        'heroImgAlt' => 'VARCHAR(191) NULL',
+        'heroBtn1Text' => 'VARCHAR(191) NULL',
+        'heroBtn1Link' => 'VARCHAR(191) NULL',
+        'heroBtn2Text' => 'VARCHAR(191) NULL',
+        'heroBtn2Link' => 'VARCHAR(191) NULL',
+        'heroNoteLinkText' => 'VARCHAR(191) NULL',
+        'heroNoteLink' => 'VARCHAR(191) NULL',
+        'heroNote' => 'VARCHAR(191) NULL',
+    ];
+    foreach ($columns as $name => $type) {
+        if (!in_array($name, $have, true)) {
+            db()->exec("ALTER TABLE `HomePage` ADD COLUMN `$name` $type");
+        }
+    }
+    if (!$copySlide) {
+        return;
+    }
+    $slide = safe(fn () => db_one('SELECT * FROM `Slide` ORDER BY `order` ASC, id ASC LIMIT 1'));
+    if ($slide) {
+        db_run(
+            'UPDATE `HomePage` SET heroSubtitle = ?, heroTitle = ?, heroDesc = ?, heroImg = ?, heroImgAlt = ? WHERE id = ? AND heroTitle IS NULL',
+            [$slide['subtitle'], $slide['title'], $slide['desc'], $slide['bg'], $slide['metaTitle'] ?: null, $homeId]
+        );
+    }
 }
 
 function about_page(): array
@@ -123,6 +155,45 @@ function about_page(): array
         return db_one('SELECT * FROM `AboutPage` WHERE id = ?', [$id]);
     }, DEFAULT_ABOUT) ?? DEFAULT_ABOUT;
 }
+
+/** "Kullandığım Yaklaşımlar" sayfası. Tablo yoksa oluşturulur ve varsayılan içerikle doldurulur. */
+function approaches_page(): array
+{
+    static $cache = null;
+    return $cache ??= safe(function () {
+        db()->exec(APPROACH_PAGE_SQL);
+        $row = db_one('SELECT * FROM `ApproachPage` LIMIT 1');
+        if ($row) {
+            return $row;
+        }
+        $id = db_insert('ApproachPage', [
+            ...DEFAULT_APPROACHES,
+            'items' => json_encode(DEFAULT_APPROACHES['items'], JSON_UNESCAPED_UNICODE),
+            'updatedAt' => now_sql(),
+        ]);
+        return db_one('SELECT * FROM `ApproachPage` WHERE id = ?', [$id]);
+    }, []) ?: [];
+}
+
+const APPROACH_PAGE_SQL = "CREATE TABLE IF NOT EXISTS `ApproachPage` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `metaTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `metaDesc` text COLLATE utf8mb4_unicode_ci,
+  `metaKeys` text COLLATE utf8mb4_unicode_ci,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `desc` text COLLATE utf8mb4_unicode_ci,
+  `img` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imgAlt` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `introTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `introText` text COLLATE utf8mb4_unicode_ci,
+  `items` mediumtext COLLATE utf8mb4_unicode_ci,
+  `closingTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `closingText` text COLLATE utf8mb4_unicode_ci,
+  `ctaTitle` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ctaDesc` text COLLATE utf8mb4_unicode_ci,
+  `updatedAt` datetime(3) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
 function production_info(): ?array
 {
@@ -188,6 +259,55 @@ function submit_quote(array $input): ?string
         : SESSION_TYPES[0]['value'];
     $message = clean_input("[Seans tercihi: $sessionType]\n\n" . ($input['message'] ?? ''), 3000);
 
+    return save_quote(compact('name', 'email', 'phone', 'service', 'message') + ['type' => QUOTE_TYPE_APPOINTMENT]);
+}
+
+const QUOTE_TYPE_APPOINTMENT = 'Randevu';
+const QUOTE_TYPE_PRECALL = 'Ön görüşme';
+const PRECALL_TIMES = ['Hafta içi gündüz', 'Hafta içi akşam', 'Hafta sonu', 'Fark etmez'];
+
+/** Talep türü sütunu eski kurulumlarda yoksa eklenir; eski kayıtlar "Randevu" sayılır. */
+function ensure_quote_type_column(): void
+{
+    static $done = false;
+    if ($done) {
+        return;
+    }
+    $done = true;
+    if (!db_one("SHOW COLUMNS FROM `Quote` LIKE 'type'")) {
+        db()->exec("ALTER TABLE `Quote` ADD COLUMN `type` VARCHAR(32) NOT NULL DEFAULT 'Randevu'");
+    }
+}
+
+/** Telefonda ön görüşme talebi. @return string|null Hata mesajı; başarılıysa null. */
+function submit_precall(array $input): ?string
+{
+    $name = clean_input($input['name'] ?? '', 120);
+    $phone = clean_input($input['phone'] ?? '', 40);
+    $time = in_array($input['callTime'] ?? '', PRECALL_TIMES, true) ? $input['callTime'] : 'Fark etmez';
+
+    if ($name === '' || $phone === '') {
+        return 'Lütfen ad soyad ve telefon alanlarını doldurun.';
+    }
+    if (empty($input['consent'])) {
+        return 'Devam etmek için KVKK aydınlatma metnini onaylamanız gerekiyor.';
+    }
+    if (mb_strlen($name) < 2) {
+        return 'Lütfen adınızı yazın.';
+    }
+    if (!preg_match('/^[0-9+()\s-]{7,40}$/', $phone)) {
+        return 'Lütfen geçerli bir telefon numarası yazın.';
+    }
+    $message = clean_input("[Aranmak istediği zaman: $time]\n\n" . ($input['message'] ?? ''), 3000);
+
+    return save_quote([
+        'name' => $name, 'email' => '', 'phone' => $phone, 'service' => 'Telefonda ön görüşme',
+        'message' => $message, 'type' => QUOTE_TYPE_PRECALL,
+    ]);
+}
+
+function save_quote(array $row): ?string
+{
     $rateKey = 'quote-ip:' . client_ip();
     if (rate_count($rateKey, 3600) >= 5) {
         return 'Kısa sürede çok fazla talep gönderildi. Lütfen daha sonra tekrar deneyin ya da telefonla ulaşın.';
@@ -195,7 +315,8 @@ function submit_quote(array $input): ?string
     rate_count($rateKey, 3600, true);
 
     try {
-        db_insert('Quote', compact('name', 'email', 'phone', 'service', 'message') + ['status' => 'Yeni']);
+        ensure_quote_type_column();
+        db_insert('Quote', $row + ['status' => 'Yeni']);
     } catch (Throwable $e) {
         error_log('[psikolog] ' . $e->getMessage());
         return 'Talebiniz şu anda gönderilemedi. Lütfen telefonla ulaşın.';

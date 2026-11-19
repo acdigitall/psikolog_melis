@@ -78,8 +78,26 @@
       });
   }
 
-  // Takvim, ekrana kaydırıldığında pencereye tam sığacak yükseklikte olur (dizüstülerde çift kaydırma olmasın).
-  function fitHeight() { return Math.max(460, Math.min(860, window.innerHeight - 48)); }
+  // Takvim ilk ekranda pencerenin altına kadar uzanır; saat satırları bu alana yayılır (iç kaydırma olmaz).
+  function fitHeight() {
+    var top = el.getBoundingClientRect().top + window.scrollY;
+    return Math.max(540, Math.min(940, window.innerHeight - top - 28));
+  }
+  // Görünen saat aralığı: 09–21; daha erken/geç randevu varsa kendiliğinden genişler.
+  var dayMin = 9, dayMax = 21;
+  function fitHours(events) {
+    var min = 9, max = 21;
+    events.forEach(function (e) {
+      if (!e.start) return;
+      var end = e.end || e.start;
+      min = Math.min(min, e.start.getUTCHours());
+      max = Math.max(max, end.getUTCDate() !== e.start.getUTCDate() ? 24 : end.getUTCHours() + (end.getUTCMinutes() > 0 ? 1 : 0));
+    });
+    if (min === dayMin && max === dayMax) return;
+    dayMin = min; dayMax = max;
+    calendar.setOption('slotMinTime', pad(min) + ':00:00');
+    calendar.setOption('slotMaxTime', pad(max) + ':00:00');
+  }
 
   var time = { hour: '2-digit', minute: '2-digit', hour12: false };
   var calendar = new FullCalendar.Calendar(el, {
@@ -104,9 +122,10 @@
     moreLinkText: function (n) { return '+' + n + ' randevu'; },
     allDaySlot: false,
     nowIndicator: true,
-    slotMinTime: '07:00:00',
-    slotMaxTime: '23:00:00',
-    scrollTime: '08:30:00',
+    slotMinTime: '09:00:00',
+    slotMaxTime: '21:00:00',
+    expandRows: true,
+    eventsSet: fitHours,
     slotDuration: '00:30:00',
     snapDuration: '00:05:00',
     slotLabelInterval: '01:00',

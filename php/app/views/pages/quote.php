@@ -32,6 +32,7 @@ page_hero([
     'title' => 'Randevu talebi',
     'description' => 'Formu doldurun; size uygun gün ve saatleri konuşmak için en kısa sürede dönüş yapayım. Bilgileriniz gizli tutulur.',
     'crumbs' => [['label' => 'Randevu']],
+    'link' => ['lead' => 'Önce konuşmak mı istersiniz?', 'text' => 'Telefonda ön görüşme talep edin', 'href' => '/on-gorusme'],
 ]);
 ?>
 <section class="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
@@ -50,7 +51,7 @@ page_hero([
         </label>
         <label class="block">
           <span class="<?= $label ?>">Telefon</span>
-          <input type="tel" name="phone" required autocomplete="tel" value="<?= e($values['phone']) ?>" class="<?= $field ?>" placeholder="05xx xxx xx xx">
+          <input type="tel" name="phone" required autocomplete="tel" inputmode="tel" data-phone value="<?= e($values['phone']) ?>" class="<?= $field ?>" placeholder="05xx xxx xx xx">
         </label>
         <label class="block">
           <span class="<?= $label ?>">E-posta</span>
@@ -97,7 +98,7 @@ page_hero([
       <ol class="mt-8 border-t border-line">
         <?php foreach (['Talebiniz bana ulaşır; genellikle 1 iş günü içinde dönüş yaparım.', 'Kısa bir telefon görüşmesiyle ihtiyacınızı ve uygun saatleri konuşuruz.', 'İlk seansımızı yüz yüze ya da online olarak planlarız.'] as $i => $t): ?>
           <li class="grid grid-cols-[2.5rem_1fr] border-b border-line py-5 text-[15px] leading-relaxed text-ink/80">
-            <span class="font-serif italic text-olive"><?= $i + 1 ?>.</span>
+            <span class="font-serif italic text-clay"><?= $i + 1 ?>.</span>
             <?= e($t) ?>
           </li>
         <?php endforeach; ?>

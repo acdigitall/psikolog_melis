@@ -92,25 +92,6 @@ function admin_resources(): array
                 return $data;
             },
         ],
-        'slides' => [
-            'table' => 'Slide', 'title' => 'Açılış Slaytları', 'add' => '+ Yeni slayt ekle', 'orderBy' => '`order` ASC',
-            'confirm' => 'Bu slaytı silmek istediğinize emin misiniz?',
-            'columns' => [['bg', 'Görsel', 'image'], ['title', 'Ana başlık', 'text'], ['subtitle', 'Üst başlık', 'text'], ['order', 'Sıra', 'text']],
-            'fields' => [
-                ['key' => 'subtitle', 'label' => 'Üst başlık *', 'required' => true, 'placeholder' => 'ör. Bilimsel yaklaşım, şefkatli dinleme'],
-                ['key' => 'title', 'label' => 'Ana başlık *', 'required' => true, 'placeholder' => 'ör. Kendinizi anlama yolculuğunuzda yanınızdayım'],
-                ['key' => 'desc', 'label' => 'Açıklama *', 'type' => 'textarea', 'rows' => 3, 'required' => true, 'placeholder' => 'Slaytta görünecek kısa açıklama...'],
-                ['key' => 'order', 'label' => 'Sıra', 'type' => 'number'],
-                ['key' => 'bg', 'label' => 'Arka plan görseli *', 'type' => 'image', 'required' => true],
-                ...seo_fields(),
-            ],
-            'beforeSave' => function (array $data, ?array $existing): array {
-                if ($existing === null && (int) $data['order'] === 0) {
-                    $data['order'] = (int) db_value('SELECT COUNT(*) FROM `Slide`') + 1;
-                }
-                return $data;
-            },
-        ],
         'steps' => [
             'table' => 'ProductionStep', 'title' => 'Terapi Aşamaları', 'add' => '+ Yeni aşama ekle', 'orderBy' => '`order` ASC', 'touch' => true, 'returnTo' => '/admin/production', 'embedded' => true,
             'confirm' => 'Bu terapi aşamasını silmek istediğinize emin misiniz?',
@@ -133,6 +114,19 @@ function admin_singletons(): array
             'table' => 'HomePage', 'title' => 'Ana Sayfa', 'load' => fn () => home_page(),
             'fields' => [
                 ...seo_fields(),
+                ['section' => 'Açılış bölümü (sayfanın en üstü)'],
+                ['key' => 'heroSubtitle', 'label' => 'Üst yazı', 'placeholder' => DEFAULT_HERO['subtitle']],
+                ['key' => 'heroTitle', 'label' => 'Ana başlık', 'placeholder' => DEFAULT_HERO['title'], 'help' => 'Son iki kelime sitede vurgulu (italik) görünür.'],
+                ['key' => 'heroDesc', 'label' => 'Açıklama', 'type' => 'textarea', 'rows' => 3, 'placeholder' => DEFAULT_HERO['desc']],
+                ['key' => 'heroBtn1Text', 'label' => '1. buton metni', 'placeholder' => DEFAULT_HERO['btn1Text']],
+                ['key' => 'heroBtn1Link', 'label' => '1. buton bağlantısı', 'placeholder' => DEFAULT_HERO['btn1Link']],
+                ['key' => 'heroBtn2Text', 'label' => '2. buton metni', 'placeholder' => DEFAULT_HERO['btn2Text']],
+                ['key' => 'heroBtn2Link', 'label' => '2. buton bağlantısı', 'placeholder' => DEFAULT_HERO['btn2Link']],
+                ['key' => 'heroNoteLinkText', 'label' => 'Alt not: altı çizili (bağlantılı) kısım', 'placeholder' => DEFAULT_HERO['noteLinkText'], 'help' => 'Butonların altındaki küçük satır.'],
+                ['key' => 'heroNoteLink', 'label' => 'Alt not: bağlantı adresi', 'placeholder' => DEFAULT_HERO['noteLink']],
+                ['key' => 'heroNote', 'label' => 'Alt not: devamı', 'placeholder' => DEFAULT_HERO['note']],
+                ['key' => 'heroImg', 'label' => 'Görsel', 'type' => 'image'],
+                ['key' => 'heroImgAlt', 'label' => 'Görsel açıklaması (arama motorları ve ekran okuyucular için)', 'placeholder' => DEFAULT_HERO['imgAlt']],
                 ['section' => 'Hizmetler bölümü'],
                 ['key' => 'servicesTitle', 'label' => 'Bölüm başlığı'],
                 ['section' => 'Yaklaşım bölümü'],
@@ -181,6 +175,33 @@ function admin_singletons(): array
                 ['section' => 'İlkeler'],
                 ['key' => 'policyTitle', 'label' => 'Başlık'],
                 ['key' => 'policies', 'label' => 'İlkeler', 'type' => 'repeater', 'columns' => $titleDesc],
+            ],
+        ],
+        'approaches' => [
+            'table' => 'ApproachPage', 'title' => 'Kullandığım Yaklaşımlar', 'load' => fn () => approaches_page(),
+            'fields' => [
+                ...seo_fields(),
+                ['section' => 'Sayfa başı'],
+                ['key' => 'title', 'label' => 'Sayfa başlığı', 'placeholder' => DEFAULT_APPROACHES['title']],
+                ['key' => 'desc', 'label' => 'Kısa açıklama', 'type' => 'textarea', 'rows' => 3, 'placeholder' => DEFAULT_APPROACHES['desc']],
+                ['key' => 'img', 'label' => 'Görsel', 'type' => 'image'],
+                ['key' => 'imgAlt', 'label' => 'Görsel açıklaması (arama motorları ve ekran okuyucular için)', 'placeholder' => DEFAULT_APPROACHES['imgAlt']],
+                ['section' => 'Giriş'],
+                ['key' => 'introTitle', 'label' => 'Başlık', 'placeholder' => DEFAULT_APPROACHES['introTitle']],
+                ['key' => 'introText', 'label' => 'Metin', 'type' => 'textarea', 'rows' => 5, 'help' => 'Boş satırla ya da Enter ile yeni paragraf başlatabilirsiniz.'],
+                ['section' => 'Yaklaşımlar'],
+                ['key' => 'items', 'label' => 'Yaklaşımlar (sitede bu sırayla görünür)', 'type' => 'repeater', 'stack' => true, 'columns' => [
+                    ['key' => 'title', 'label' => 'Yaklaşımın adı', 'placeholder' => 'ör. Bilişsel Davranışçı Terapi (BDT)'],
+                    ['key' => 'tagline', 'label' => 'Kısa özet (tek cümle)', 'placeholder' => 'ör. Düşünce, duygu ve davranış arasındaki bağı fark etmek'],
+                    ['key' => 'desc', 'label' => 'Açıklama (Enter ile yeni paragraf)', 'type' => 'textarea', 'rows' => 5],
+                    ['key' => 'fit', 'label' => 'Kimler için / hangi konularda', 'type' => 'textarea', 'rows' => 2],
+                ]],
+                ['section' => 'Yöntem seçimi bölümü'],
+                ['key' => 'closingTitle', 'label' => 'Başlık', 'placeholder' => DEFAULT_APPROACHES['closingTitle']],
+                ['key' => 'closingText', 'label' => 'Metin', 'type' => 'textarea', 'rows' => 5],
+                ['section' => 'Sayfa sonu çağrısı'],
+                ['key' => 'ctaTitle', 'label' => 'Başlık (satır atlamak için <br/> kullanabilirsiniz)', 'placeholder' => DEFAULT_APPROACHES['ctaTitle']],
+                ['key' => 'ctaDesc', 'label' => 'Açıklama', 'type' => 'textarea', 'rows' => 3, 'placeholder' => DEFAULT_APPROACHES['ctaDesc']],
             ],
         ],
         'production' => [
@@ -543,8 +564,13 @@ function admin_alert(string $type, string $text): string
 
 function repeater_row(array $field, string $index, array $row): string
 {
-    $html = '<div data-repeater-row class="flex flex-col sm:flex-row gap-3 items-start bg-stone-50 p-3 rounded border border-stone-200">';
+    // 'stack' => true: uzun metinli satırlarda alanlar alt alta ve etiketli gösterilir.
+    $stack = !empty($field['stack']);
+    $html = '<div data-repeater-row class="flex flex-col ' . ($stack ? '' : 'sm:flex-row ') . 'gap-3 items-start bg-stone-50 p-3 rounded border border-stone-200">';
     foreach ($field['columns'] as $column) {
+        if ($stack) {
+            $html .= '<label class="block w-full text-xs font-bold text-stone-600"><span class="block mb-1">' . e($column['label']) . '</span>';
+        }
         $name = 'f[' . $field['key'] . '][' . $index . '][' . $column['key'] . ']';
         $value = (string) ($row[$column['key']] ?? '');
         $inputClass = 'w-full bg-white border border-stone-200 px-3 py-2 text-sm rounded focus:outline-none focus:border-amber-700';
@@ -561,9 +587,12 @@ function repeater_row(array $field, string $index, array $row): string
             }
             $html .= '</select>';
         } elseif ($type === 'textarea') {
-            $html .= '<textarea rows="2" name="' . e($name) . '" placeholder="' . $placeholder . '" class="' . $inputClass . '">' . e($value) . '</textarea>';
+            $html .= '<textarea rows="' . (int) ($column['rows'] ?? 2) . '" name="' . e($name) . '" placeholder="' . $placeholder . '" class="' . $inputClass . ' font-normal">' . e($value) . '</textarea>';
         } else {
-            $html .= '<input type="text" name="' . e($name) . '" value="' . e($value) . '" placeholder="' . $placeholder . '" class="' . $inputClass . '">';
+            $html .= '<input type="text" name="' . e($name) . '" value="' . e($value) . '" placeholder="' . $placeholder . '" class="' . $inputClass . ' font-normal">';
+        }
+        if ($stack) {
+            $html .= '</label>';
         }
     }
     return $html . '<button type="button" data-repeater-remove class="px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded shrink-0">Sil</button></div>';
@@ -873,21 +902,38 @@ function admin_quotes(array $segments, string $method): void
     if ($selectedId) {
         safe(fn () => db_run("UPDATE `Quote` SET status = 'Okundu' WHERE id = ? AND status = 'Yeni'", [$selectedId]));
     }
-    $quotes = safe(fn () => db_all('SELECT * FROM `Quote` ORDER BY createdAt DESC'), []);
+    safe(fn () => ensure_quote_type_column());
+    $all = safe(fn () => db_all('SELECT * FROM `Quote` ORDER BY createdAt DESC'), []);
+    $tabs = ['' => ['Tümü', null], 'randevu' => ['Randevu talepleri', QUOTE_TYPE_APPOINTMENT], 'on-gorusme' => ['Ön görüşme talepleri', QUOTE_TYPE_PRECALL]];
+    $tab = isset($tabs[$_GET['tur'] ?? '']) ? (string) ($_GET['tur'] ?? '') : '';
+    $typeOf = fn (array $q) => ($q['type'] ?? '') ?: QUOTE_TYPE_APPOINTMENT;
+    $quotes = $tabs[$tab][1] === null ? $all : array_values(array_filter($all, fn ($q) => $typeOf($q) === $tabs[$tab][1]));
     $selected = null;
-    foreach ($quotes as $quote) {
+    foreach ($all as $quote) {
         if ((int) $quote['id'] === $selectedId) {
             $selected = $quote;
         }
     }
 
-    admin_shell('Randevu Talepleri', '/admin/quotes', function () use ($quotes, $selected, $selectedId) {
+    admin_shell('Randevu Talepleri', '/admin/quotes', function () use ($quotes, $all, $tabs, $tab, $typeOf, $selected, $selectedId) {
+        $tabQuery = $tab !== '' ? "&tur=$tab" : '';
         ?>
         <div class="space-y-6">
           <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-serif text-stone-900 font-bold">Gelen Randevu Talepleri</h1>
+            <h1 class="text-2xl font-serif text-stone-900 font-bold">Gelen Talepler</h1>
             <span class="text-xs text-stone-500 font-medium">Toplam: <?= count($quotes) ?> Talep</span>
           </div>
+          <nav class="flex flex-wrap gap-2">
+            <?php foreach ($tabs as $key => [$label, $type]):
+                $items = $type === null ? $all : array_filter($all, fn ($q) => $typeOf($q) === $type);
+                $newCount = count(array_filter($items, fn ($q) => $q['status'] === 'Yeni'));
+            ?>
+              <a href="/admin/quotes<?= $key !== '' ? "?tur=$key" : '' ?>" class="px-4 py-2 rounded-lg text-sm font-semibold border transition-colors <?= $key === $tab ? 'bg-stone-900 text-white border-stone-900' : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-50' ?>">
+                <?= e($label) ?> <span class="opacity-60">(<?= count($items) ?>)</span>
+                <?php if ($newCount): ?><span class="ml-1 px-1.5 py-0.5 text-[10px] rounded bg-amber-100 text-amber-800"><?= $newCount ?> yeni</span><?php endif; ?>
+              </a>
+            <?php endforeach; ?>
+          </nav>
           <div class="flex flex-col lg:flex-row gap-6 items-start">
             <div class="w-full lg:w-1/2 bg-white border border-stone-200 shadow-sm overflow-x-auto rounded-xl">
               <?php if (!$quotes): ?>
@@ -901,12 +947,15 @@ function admin_quotes(array $segments, string $method): void
                     <?php foreach ($quotes as $quote): $isNew = $quote['status'] === 'Yeni'; ?>
                       <tr class="<?= (int) $quote['id'] === $selectedId ? 'bg-amber-50' : 'hover:bg-stone-50' ?> <?= $isNew ? 'font-bold text-stone-900 bg-amber-50/20' : '' ?>">
                         <td class="px-6 py-4">
-                          <a href="/admin/quotes?id=<?= (int) $quote['id'] ?>" class="block">
+                          <a href="/admin/quotes?id=<?= (int) $quote['id'] . $tabQuery ?>" class="block">
                             <span class="block"><?= e($quote['name']) ?></span>
                             <span class="block text-xs text-stone-400 font-normal mt-1"><?= e(tr_date($quote['createdAt'], true, true)) ?></span>
                           </a>
                         </td>
-                        <td class="px-6 py-4 truncate max-w-[150px]"><?= e($quote['service']) ?></td>
+                        <td class="px-6 py-4 truncate max-w-[150px]">
+                          <?php if ($typeOf($quote) === QUOTE_TYPE_PRECALL): ?><span class="inline-block mb-1 px-2 py-0.5 text-[10px] font-bold uppercase rounded bg-sky-100 text-sky-800">Ön görüşme</span><br><?php endif; ?>
+                          <?= e($quote['service']) ?>
+                        </td>
                         <td class="px-6 py-4"><?= quote_status_badge($quote['status']) ?></td>
                       </tr>
                     <?php endforeach; ?>
@@ -927,7 +976,9 @@ function admin_quotes(array $segments, string $method): void
                   <div class="grid grid-cols-2 gap-4 text-sm mb-6">
                     <div><span class="block text-stone-400 text-xs uppercase tracking-wider mb-1">Danışan Adı</span><span class="font-semibold text-stone-900"><?= e($selected['name']) ?></span></div>
                     <div><span class="block text-stone-400 text-xs uppercase tracking-wider mb-1">Telefon</span><a href="tel:<?= e($selected['phone']) ?>" class="font-semibold text-amber-700 hover:underline"><?= e($selected['phone']) ?></a></div>
-                    <div class="col-span-2"><span class="block text-stone-400 text-xs uppercase tracking-wider mb-1">E-Posta</span><a href="mailto:<?= e($selected['email']) ?>" class="font-semibold text-amber-700 hover:underline"><?= e($selected['email']) ?></a></div>
+                    <?php if ($selected['email'] !== ''): ?>
+                      <div class="col-span-2"><span class="block text-stone-400 text-xs uppercase tracking-wider mb-1">E-Posta</span><a href="mailto:<?= e($selected['email']) ?>" class="font-semibold text-amber-700 hover:underline"><?= e($selected['email']) ?></a></div>
+                    <?php endif; ?>
                   </div>
                   <div class="bg-stone-50 p-5 rounded-lg border border-stone-100 mb-6">
                     <span class="block text-stone-400 text-xs uppercase tracking-wider mb-2 font-semibold">Başvuru Notu &amp; Detaylar</span>
@@ -936,7 +987,11 @@ function admin_quotes(array $segments, string $method): void
                   <div class="space-y-3">
                     <div class="flex flex-col sm:flex-row gap-3">
                       <a href="https://wa.me/<?= e(preg_replace('/[^0-9]/', '', $selected['phone'])) ?>" target="_blank" rel="noopener noreferrer" class="flex-1 text-center px-4 py-3 bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-800 transition-colors rounded-lg shadow-sm">WhatsApp ile Yanıtla</a>
-                      <a href="mailto:<?= e($selected['email']) ?>?subject=<?= rawurlencode('Psikolojik Danışmanlık ve Randevu Talebi') ?>" class="flex-1 text-center px-4 py-3 bg-stone-900 text-white font-bold text-xs uppercase tracking-wider hover:bg-stone-800 transition-colors rounded-lg shadow-sm">E-Posta Gönder</a>
+                      <?php if ($selected['email'] !== ''): ?>
+                        <a href="mailto:<?= e($selected['email']) ?>?subject=<?= rawurlencode('Psikolojik Danışmanlık ve Randevu Talebi') ?>" class="flex-1 text-center px-4 py-3 bg-stone-900 text-white font-bold text-xs uppercase tracking-wider hover:bg-stone-800 transition-colors rounded-lg shadow-sm">E-Posta Gönder</a>
+                      <?php else: ?>
+                        <a href="<?= e(tel_href($selected['phone'])) ?>" class="flex-1 text-center px-4 py-3 bg-stone-900 text-white font-bold text-xs uppercase tracking-wider hover:bg-stone-800 transition-colors rounded-lg shadow-sm">Ara</a>
+                      <?php endif; ?>
                       <form method="post" action="/admin/quotes/<?= (int) $selected['id'] ?>/delete" data-confirm="Bu randevu talebini silmek istediğinize emin misiniz?">
                         <?= csrf_field() ?>
                         <button type="submit" class="w-full px-4 py-3 bg-white border border-stone-200 text-red-600 font-bold text-xs uppercase tracking-wider hover:bg-red-50 transition-colors rounded-lg">Sil</button>
@@ -990,7 +1045,7 @@ function admin_login_page(?string $error): void
   <div class="w-full max-w-[460px]">
     <div class="mb-8">
       <h1 class="font-serif text-[2.25rem] leading-tight text-forest">Yönetim paneli</h1>
-      <p class="mt-1 text-base text-muted">Uzm. Klinik Psikolog melis Sağlam</p>
+      <p class="mt-1 text-base text-muted">Uzm. Klinik Psikolog Melis Sağlam Güleç</p>
     </div>
     <div class="rounded-lg border border-line bg-paper p-8 sm:p-10">
       <form method="post" action="/admin/login" class="space-y-5">
@@ -1026,7 +1081,7 @@ function admin_shell(string $heading, string $activePath, callable $body, array 
         ['Terapi Süreci', '/admin/production', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
         ['Klinik & Seans Odaları', '/admin/gallery', 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
         ['Hakkımda', '/admin/about', 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
-        ['Açılış Slaytları', '/admin/slides', 'M4 5a1 1 0 011-1h14a1 1 0 011 1v10a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM8 20h8M12 16v4'],
+        ['Kullandığım Yaklaşımlar', '/admin/approaches', 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'],
         ['Blog Yazıları', '/admin/blog', 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-.586-1.414l-4.5-4.5A2 2 0 0012.586 3H12'],
         ['İletişim Ayarları', '/admin/contact', 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
     ];
@@ -1042,7 +1097,7 @@ function admin_shell(string $heading, string $activePath, callable $body, array 
 <body class="bg-paper text-ink antialiased">
 <div class="admin-theme min-h-screen bg-stone-100 flex flex-col md:flex-row">
   <header class="md:hidden bg-stone-900 text-white px-4 py-3 flex items-center justify-between z-30 shadow-md sticky top-0">
-    <a href="/admin" class="font-semibold text-sm tracking-wide"><?php if ($logo): ?><img src="<?= e($logo) ?>" alt="Psikolog logosu" class="h-7 w-auto object-contain rounded-sm"><?php else: ?>melis Sağlam<?php endif; ?></a>
+    <a href="/admin" class="font-semibold text-sm tracking-wide"><?php if ($logo): ?><img src="<?= e($logo) ?>" alt="Psikolog logosu" class="h-7 w-auto object-contain rounded-sm"><?php else: ?>Melis Sağlam Güleç<?php endif; ?></a>
     <div class="flex items-center gap-2">
       <a href="/" class="p-2 text-stone-400 hover:text-white" title="Siteye dön"><?= $icon($back) ?></a>
       <button type="button" data-drawer-open class="p-2 text-stone-300 hover:text-white" aria-label="Menü"><?= $icon('M4 6h16M4 12h16M4 18h16', 'w-6 h-6') ?></button>
@@ -1057,7 +1112,7 @@ function admin_shell(string $heading, string $activePath, callable $body, array 
           <?php if ($logo): ?>
             <img src="<?= e($logo) ?>" alt="Psikolog logosu" class="h-10 w-auto object-contain rounded-sm">
           <?php else: ?>
-            <span class="font-serif text-[1.4rem] leading-none text-white">melis Sağlam</span>
+            <span class="font-serif text-[1.4rem] leading-none text-white">Melis Sağlam Güleç</span>
             <span class="mt-1.5 text-[14px] text-amber-500">Yönetim paneli</span>
           <?php endif; ?>
         </a>

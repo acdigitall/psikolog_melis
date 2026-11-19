@@ -25,6 +25,11 @@
   --color-sage: #738566;
   --color-sage-light: #D9DFD0;
   --color-mist: #E9ECE2;
+  /* Kahve tonları: yeşile eşlik eden ikincil vurgu */
+  --color-bark: #6B4A34;
+  --color-bark-dark: #4A3223;
+  --color-clay: #9C6B4E;
+  --color-clay-light: #EEE2D6;
   --color-cream: #FBF8F0;
   --color-paper: #FBF8F0;
   --color-sand: #F2ECDF;
@@ -98,7 +103,7 @@
     line-height: 1.6;
   }
   .kicker {
-    @apply inline-flex items-center gap-3 text-[13px] font-medium text-olive;
+    @apply inline-flex items-center gap-3 text-[13px] font-medium text-bark;
     letter-spacing: 0.02em;
   }
   .kicker::before {

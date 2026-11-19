@@ -50,7 +50,7 @@ page_hero([
         </div>
       <?php endif; ?>
       <div class="border-b border-line py-5">
-        <dt class="text-sm text-muted">Seans saatleri</dt>
+        <dt class="text-sm text-muted">SeaÇalışmans saatleri</dt>
         <dd class="mt-1 font-serif text-[1.2rem] leading-snug text-forest">
           <?php foreach (OPENING_HOURS as $h):
               $days = count($h['days']) > 1 ? $dayTr[$h['days'][0]] . '–' . $dayTr[end($h['days'])] : $dayTr[$h['days'][0]];

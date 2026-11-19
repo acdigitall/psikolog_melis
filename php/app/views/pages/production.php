@@ -29,7 +29,7 @@ $facts = [
     <ol class="border-t border-line">
       <?php foreach ($steps as $i => $step): ?>
         <li data-reveal <?= delay($i * 40) ?> class="grid gap-4 border-b border-line py-10 md:grid-cols-[5rem_1fr]">
-          <span class="font-serif text-[2.4rem] leading-none italic text-sage"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
+          <span class="font-serif text-[2.4rem] leading-none italic text-clay"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
           <div>
             <h2 class="font-serif text-[clamp(1.5rem,1.2rem+0.9vw,2rem)] leading-tight"><?= e($step['title']) ?></h2>
             <p class="mt-4 max-w-xl text-ink/75 leading-[1.75]"><?= e($step['desc']) ?></p>
