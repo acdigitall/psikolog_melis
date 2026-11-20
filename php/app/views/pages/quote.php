@@ -81,7 +81,7 @@ page_hero([
       </fieldset>
 
       <label class="block">
-        <span class="<?= $label ?>">Kısaca sizi neyin getirdiği ve uygun saatleriniz (isteğe bağlı)</span>
+        <span class="<?= $label ?>">Kısaca başvuru nedeniniz, uygun gün ve saatleriniz (isteğe bağlı)</span>
         <textarea name="message" rows="4" class="<?= $field ?> resize-y" placeholder="Ayrıntıya girmek zorunda değilsiniz; birkaç cümle yeterli."><?= e($values['message']) ?></textarea>
       </label>
 

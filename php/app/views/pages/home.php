@@ -189,6 +189,9 @@ $meta = page_meta([
 <?php cta_band([
     'title' => $d['ctaTitle'] ?? null,
     'description' => $d['ctaDesc'] ?? null,
-    'primary' => ['text' => ($d['ctaBtn1Text'] ?? null) ?: 'Randevu talebi oluştur', 'href' => ($d['ctaBtn1Link'] ?? null) ?: '/quote'],
-    'secondary' => ['text' => ($d['ctaBtn2Text'] ?? null) ?: 'Önce soru sormak istiyorum', 'href' => ($d['ctaBtn2Link'] ?? null) ?: '/contact'],
+    // Admin'de metin boş bırakılırsa buton gizlenir; kayıt yoksa varsayılan gösterilir.
+    'primary' => trim((string) ($d['ctaBtn1Text'] ?? 'Randevu talebi oluştur')) === '' ? null
+        : ['text' => $d['ctaBtn1Text'] ?? 'Randevu talebi oluştur', 'href' => ($d['ctaBtn1Link'] ?? null) ?: '/quote'],
+    'secondary' => trim((string) ($d['ctaBtn2Text'] ?? 'Önce soru sormak istiyorum')) === '' ? null
+        : ['text' => $d['ctaBtn2Text'] ?? 'Önce soru sormak istiyorum', 'href' => ($d['ctaBtn2Link'] ?? null) ?: '/contact'],
 ]); ?>

@@ -7,7 +7,7 @@ $siteLabel = SITE_NAME . ' · ' . CITY;
 $path = current_path();
 $navLinks = [
     ['Hakkımda', '/about'], ['Yaklaşımlar', '/yaklasimlar'], ['Hizmetler', '/services'], ['Süreç', '/production'], ['Klinik', '/gallery'],
-    ['Bloglar', '/blog'], ['Sorular', '/faq'], ['İletişim', '/contact'],
+    ['Bloglar', '/blog'], ['S.S.S', '/faq'], ['İletişim', '/contact'],
 ];
 $phone = $settings['phone1'] ?? null;
 $socialLinks = parse_list($settings['socialLinks'] ?? null);
@@ -115,7 +115,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
       <div>
         <h4 class="mb-5 font-sans text-sm text-paper/45">Sayfalar</h4>
         <ul class="space-y-2.5 text-[15px]">
-          <?php foreach ([['Hakkımda', '/about'], ['Kullandığım yaklaşımlar', '/yaklasimlar'], ['Hizmetler', '/services'], ['Terapi süreci', '/production'], ['Klinik', '/gallery'], ['Bloglar', '/blog'], ['Sorular', '/faq'], ['İzmir psikolog', '/izmir-psikolog']] as [$name, $href]): ?>
+          <?php foreach ([['Hakkımda', '/about'], ['Kullandığım yaklaşımlar', '/yaklasimlar'], ['Hizmetler', '/services'], ['Terapi süreci', '/production'], ['Klinik', '/gallery'], ['Bloglar', '/blog'], ['S.S.S', '/faq'], ['İzmir psikolog', '/izmir-psikolog']] as [$name, $href]): ?>
             <li><a href="<?= e($href) ?>" class="<?= $footerLink ?>"><?= e($name) ?></a></li>
           <?php endforeach; ?>
         </ul>

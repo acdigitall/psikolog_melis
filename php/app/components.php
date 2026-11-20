@@ -132,17 +132,20 @@ function cta_band(array $o = []): void
 {
     $title = ($o['title'] ?? null) ?: 'Kendinizi daha iyi hissetmeye doğru ilk adımı atın';
     $description = ($o['description'] ?? null) ?: 'Yüz yüze ya da online; size uygun bir zamanda tanışma görüşmesi planlayalım. Hangi desteğin size iyi geleceğini birlikte netleştirelim.';
-    $primary = $o['primary'] ?? ['text' => 'Randevu talebi oluştur', 'href' => '/quote'];
-    $secondary = $o['secondary'] ?? ['text' => 'Önce soru sormak istiyorum', 'href' => '/contact'];
+    // Anahtar hiç verilmezse varsayılan buton; açıkça null verilirse buton gösterilmez.
+    $primary = array_key_exists('primary', $o) ? $o['primary'] : ['text' => 'Randevu talebi oluştur', 'href' => '/quote'];
+    $secondary = array_key_exists('secondary', $o) ? $o['secondary'] : ['text' => 'Önce soru sormak istiyorum', 'href' => '/contact'];
     ?>
     <section class="mx-auto max-w-[1240px] px-6 pb-16 md:pb-24 lg:pb-28 lg:px-10">
       <div data-reveal class="scene-tepeler overflow-hidden rounded-[1.75rem] bg-forest px-6 py-14 text-center text-paper sm:px-10 md:px-16 md:py-20">
         <h2 class="h-section mx-auto max-w-2xl !text-paper"><?= with_breaks($title) ?></h2>
         <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-paper/90 sm:text-lg"><?= e($description) ?></p>
+        <?php if ($primary || $secondary): ?>
         <div class="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-          <a href="<?= e(safe_url($primary['href'])) ?>" class="btn-light"><?= e($primary['text']) ?> <?= arrow_right() ?></a>
-          <a href="<?= e(safe_url($secondary['href'])) ?>" class="btn-outline-light"><?= e($secondary['text']) ?></a>
+          <?php if ($primary): ?><a href="<?= e(safe_url($primary['href'])) ?>" class="btn-light"><?= e($primary['text']) ?> <?= arrow_right() ?></a><?php endif; ?>
+          <?php if ($secondary): ?><a href="<?= e(safe_url($secondary['href'])) ?>" class="btn-outline-light"><?= e($secondary['text']) ?></a><?php endif; ?>
         </div>
+        <?php endif; ?>
       </div>
     </section>
     <?php
