@@ -242,3 +242,16 @@ CREATE TABLE IF NOT EXISTS `SmsSettings` (
   `updatedAt` datetime(3) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `PageBlock` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `page` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `template` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sortOrder` int NOT NULL DEFAULT '0',
+  `isActive` tinyint(1) NOT NULL DEFAULT '1',
+  `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `updatedAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  KEY `PageBlock_page_idx` (`page`, `sortOrder`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

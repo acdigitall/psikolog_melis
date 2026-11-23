@@ -168,8 +168,8 @@ $meta = page_meta([
 <section class="border-t border-line">
   <div class="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
     <div data-reveal class="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-      <h2 class="h-section"><?= e(($d['projectsTitle'] ?? null) ?: 'Son Bloglar') ?></h2>
-      <a href="/blog" class="link-line shrink-0 self-start md:self-auto">Tüm Bloglar <?= arrow_right() ?></a>
+      <h2 class="h-section"><?= e(($d['projectsTitle'] ?? null) ?: 'Son Blog Yazıları') ?></h2>
+      <a href="/blog" class="link-line shrink-0 self-start md:self-auto">Tüm blog yazıları <?= arrow_right() ?></a>
     </div>
     <div class="snap-row sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3">
       <?php foreach ($posts as $i => $post): ?>
@@ -186,12 +186,4 @@ $meta = page_meta([
 </section>
 <?php endif; ?>
 
-<?php cta_band([
-    'title' => $d['ctaTitle'] ?? null,
-    'description' => $d['ctaDesc'] ?? null,
-    // Admin'de metin boş bırakılırsa buton gizlenir; kayıt yoksa varsayılan gösterilir.
-    'primary' => trim((string) ($d['ctaBtn1Text'] ?? 'Randevu talebi oluştur')) === '' ? null
-        : ['text' => $d['ctaBtn1Text'] ?? 'Randevu talebi oluştur', 'href' => ($d['ctaBtn1Link'] ?? null) ?: '/quote'],
-    'secondary' => trim((string) ($d['ctaBtn2Text'] ?? 'Önce soru sormak istiyorum')) === '' ? null
-        : ['text' => $d['ctaBtn2Text'] ?? 'Önce soru sormak istiyorum', 'href' => ($d['ctaBtn2Link'] ?? null) ?: '/contact'],
-]); ?>
+<?php cta_band(); ?>

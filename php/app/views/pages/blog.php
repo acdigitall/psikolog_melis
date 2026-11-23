@@ -13,9 +13,9 @@ $hoverZoom = 'transition-transform ease-[cubic-bezier(.22,1,.36,1)] group-hover:
 
 page_hero([
     'image' => '/images/blog-gunluk.jpg',
-    'title' => ($header['title'] ?? null) ?: 'Bloglar',
+    'title' => ($header['title'] ?? null) ?: 'Blog Yazıları',
     'description' => $header['description'] ?? null,
-    'crumbs' => [['label' => 'Bloglar']],
+    'crumbs' => [['label' => 'Blog Yazıları']],
 ]);
 ?>
 <section class="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">

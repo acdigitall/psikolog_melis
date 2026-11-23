@@ -152,7 +152,4 @@ page_hero([
 </section>
 <?php endif; ?>
 
-<?php cta_band([
-    'title' => "İzmir'de ilk görüşmenizi planlayalım",
-    'description' => "Alsancak'taki klinikte ya da online; size uygun bir zamanda kısa bir tanışma görüşmesiyle başlayalım.",
-]); ?>
+<?php cta_band(); ?>

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require APP_DIR . '/admin_crm.php';
+require APP_DIR . '/admin_blocks.php';
 
 const ADMIN_MESSAGES = [
     'saved' => ['success', 'Değişiklikler kaydedildi.'],
@@ -136,7 +137,7 @@ function admin_singletons(): array
                 ['section' => 'Yazılar bölümü'],
                 ['key' => 'projectsTitle', 'label' => 'Bölüm başlığı'],
                 ['key' => 'projectsDesc', 'label' => 'Açıklama metni', 'type' => 'textarea', 'rows' => 3],
-                ['section' => 'Sayfa sonu çağrısı'],
+                ['section' => 'Sayfa sonu çağrısı (tüm sayfalarda ortak)'],
                 ['key' => 'ctaTitle', 'label' => 'Ana başlık (satır atlamak için <br/> kullanabilirsiniz)'],
                 ['key' => 'ctaDesc', 'label' => 'Açıklama paragrafı', 'type' => 'textarea', 'rows' => 3],
                 ['key' => 'ctaBtn1Text', 'label' => '1. buton metni', 'help' => 'Boş bırakırsanız buton gizlenir.'],
@@ -178,14 +179,9 @@ function admin_singletons(): array
             ],
         ],
         'approaches' => [
-            'table' => 'ApproachPage', 'title' => 'Kullandığım Yaklaşımlar', 'load' => fn () => approaches_page(),
+            // Ayrı sayfa değil: Hakkımda sayfasındaki "Yaklaşımlar" bölümünün içeriği.
+            'table' => 'ApproachPage', 'title' => 'Hakkımda · Yaklaşımlar', 'load' => fn () => approaches_page(), 'menu' => '/admin/about',
             'fields' => [
-                ...seo_fields(),
-                ['section' => 'Sayfa başı'],
-                ['key' => 'title', 'label' => 'Sayfa başlığı', 'placeholder' => DEFAULT_APPROACHES['title']],
-                ['key' => 'desc', 'label' => 'Kısa açıklama', 'type' => 'textarea', 'rows' => 3, 'placeholder' => DEFAULT_APPROACHES['desc']],
-                ['key' => 'img', 'label' => 'Görsel', 'type' => 'image'],
-                ['key' => 'imgAlt', 'label' => 'Görsel açıklaması (arama motorları ve ekran okuyucular için)', 'placeholder' => DEFAULT_APPROACHES['imgAlt']],
                 ['section' => 'Giriş'],
                 ['key' => 'introTitle', 'label' => 'Başlık', 'placeholder' => DEFAULT_APPROACHES['introTitle']],
                 ['key' => 'introText', 'label' => 'Metin', 'type' => 'textarea', 'rows' => 5, 'help' => 'Boş satırla ya da Enter ile yeni paragraf başlatabilirsiniz.'],
@@ -199,9 +195,6 @@ function admin_singletons(): array
                 ['section' => 'Yöntem seçimi bölümü'],
                 ['key' => 'closingTitle', 'label' => 'Başlık', 'placeholder' => DEFAULT_APPROACHES['closingTitle']],
                 ['key' => 'closingText', 'label' => 'Metin', 'type' => 'textarea', 'rows' => 5],
-                ['section' => 'Sayfa sonu çağrısı'],
-                ['key' => 'ctaTitle', 'label' => 'Başlık (satır atlamak için <br/> kullanabilirsiniz)', 'placeholder' => DEFAULT_APPROACHES['ctaTitle']],
-                ['key' => 'ctaDesc', 'label' => 'Açıklama', 'type' => 'textarea', 'rows' => 3, 'placeholder' => DEFAULT_APPROACHES['ctaDesc']],
             ],
         ],
         'production' => [
@@ -329,6 +322,7 @@ function admin_route(string $path, string $method): void
         $first === 'quotes' => admin_quotes($segments, $method),
         $first === 'calendar' => admin_calendar($segments, $method),
         $first === 'sms' => admin_sms($segments, $method),
+        $first === 'blocks' => admin_blocks($segments, $method),
         isset($singletons[$first]) && count($segments) === 1 => admin_singleton($first, $singletons[$first], $method),
         isset($resources[$first]) => admin_resource($first, $resources[$first], array_slice($segments, 1), $method),
         default => not_found(),
@@ -454,11 +448,22 @@ function admin_singleton(string $name, array $config, string $method): void
         $row = [...($row ?? []), ...$data];
     }
 
-    admin_shell($config['title'], "/admin/$name", function () use ($name, $config, $fields, $row, $error) {
+    admin_shell($config['title'], $config['menu'] ?? "/admin/$name", function () use ($name, $config, $fields, $row, $error) {
         if (isset($config['header'])) {
             page_header_form($config['header']);
         }
         echo '<h1 class="text-2xl font-serif text-stone-900 font-bold mb-6">' . e($config['title']) . '</h1>';
+        if ($name === 'about') {
+            echo '<a href="/admin/approaches" class="mb-3 flex items-center justify-between gap-4 rounded-lg border border-stone-200 bg-white px-5 py-4 shadow-sm hover:border-stone-900">'
+                . '<span><span class="block font-bold text-stone-900">Yaklaşımlar</span><span class="block text-sm text-stone-500">Sayfadaki "Kullandığım yaklaşımlar" bölümü: giriş, yöntemler listesi ve kapanış metni.</span></span>'
+                . '<span class="shrink-0 text-sm font-bold text-stone-900">Düzenle →</span></a>';
+        }
+        if (isset(BLOCK_PAGES[$name])) {
+            $count = count(page_blocks($name, false));
+            echo '<a href="/admin/blocks/' . e($name) . '" class="mb-6 flex items-center justify-between gap-4 rounded-lg border border-stone-200 bg-white px-5 py-4 shadow-sm hover:border-stone-900">'
+                . '<span><span class="block font-bold text-stone-900">Ek bölümler</span><span class="block text-sm text-stone-500">Bu sayfaya şablon seçerek yeni bölümler ekleyin' . ($count ? " · şu an $count bölüm var" : '') . '.</span></span>'
+                . '<span class="shrink-0 text-sm font-bold text-stone-900">Yönet →</span></a>';
+        }
         admin_form("/admin/$name", $fields, $row ?? [], $error);
         if (isset($config['after'])) {
             echo '<div class="mt-12">';
@@ -1081,7 +1086,6 @@ function admin_shell(string $heading, string $activePath, callable $body, array 
         ['Terapi Süreci', '/admin/production', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
         ['Klinik & Seans Odaları', '/admin/gallery', 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
         ['Hakkımda', '/admin/about', 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
-        ['Kullandığım Yaklaşımlar', '/admin/approaches', 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'],
         ['Blog Yazıları', '/admin/blog', 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-.586-1.414l-4.5-4.5A2 2 0 0012.586 3H12'],
         ['İletişim Ayarları', '/admin/contact', 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
     ];

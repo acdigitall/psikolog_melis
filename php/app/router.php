@@ -69,7 +69,6 @@ function route_request(): void
         '/about' => 'about',
         '/services' => 'services',
         '/production' => 'production',
-        '/yaklasimlar' => 'approaches',
         '/gallery' => 'gallery',
         '/blog' => 'blog',
         '/faq' => 'faq',
@@ -81,6 +80,11 @@ function route_request(): void
         '/privacy' => 'privacy',
         '/terms' => 'terms',
     ];
+
+    // Yaklaşımlar ayrı sayfa değil; içerik Hakkımda sayfasına taşındı.
+    if ($path === '/yaklasimlar') {
+        redirect('/about#yaklasimlar', 301);
+    }
 
     if (isset($pages[$path])) {
         render($pages[$path]);
@@ -153,7 +157,7 @@ function send_sitemap(): void
         ['', 'weekly', '1.0'], ['/izmir-psikolog', 'monthly', '0.9'], ['/about', 'monthly', '0.8'],
         ['/services', 'weekly', '0.9'], ['/blog', 'daily', '0.8'], ['/contact', 'monthly', '0.7'],
         ['/faq', 'monthly', '0.6'], ['/gallery', 'weekly', '0.6'], ['/quote', 'monthly', '0.6'], ['/on-gorusme', 'monthly', '0.6'],
-        ['/production', 'monthly', '0.6'], ['/yaklasimlar', 'monthly', '0.7'], ['/kvkk', 'yearly', '0.4'], ['/privacy', 'yearly', '0.4'], ['/terms', 'yearly', '0.4'],
+        ['/production', 'monthly', '0.6'], ['/kvkk', 'yearly', '0.4'], ['/privacy', 'yearly', '0.4'], ['/terms', 'yearly', '0.4'],
     ];
     $base = site_url();
     $entry = fn ($loc, $mod, $freq, $prio) => '<url><loc>' . e($loc) . "</loc><lastmod>$mod</lastmod><changefreq>$freq</changefreq><priority>$prio</priority></url>\n";

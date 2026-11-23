@@ -6,8 +6,8 @@ $ogImage = abs_url($meta['image']);
 $siteLabel = SITE_NAME . ' · ' . CITY;
 $path = current_path();
 $navLinks = [
-    ['Hakkımda', '/about'], ['Yaklaşımlar', '/yaklasimlar'], ['Çalışma Alanları', '/services'], ['Süreç', '/production'], ['Klinik', '/gallery'],
-    ['Bloglar', '/blog'], ['S.S.S', '/faq'], ['İletişim', '/contact'],
+    ['Hakkımda', '/about'], ['Çalışma Alanları', '/services'], ['Süreç', '/production'], ['Klinik', '/gallery'],
+    ['Blog Yazıları', '/blog'], ['S.S.S', '/faq'], ['İletişim', '/contact'],
 ];
 $phone = $settings['phone1'] ?? null;
 $socialLinks = parse_list($settings['socialLinks'] ?? null);
@@ -115,7 +115,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
       <div>
         <h4 class="mb-5 font-sans text-sm text-paper/45">Sayfalar</h4>
         <ul class="space-y-2.5 text-[15px]">
-          <?php foreach ([['Hakkımda', '/about'], ['Kullandığım yaklaşımlar', '/yaklasimlar'], ['Çalışma Alanları', '/services'], ['Terapi süreci', '/production'], ['Klinik', '/gallery'], ['Bloglar', '/blog'], ['S.S.S', '/faq'], ['İzmir psikolog', '/izmir-psikolog']] as [$name, $href]): ?>
+          <?php foreach ([['Hakkımda', '/about'], ['Çalışma Alanları', '/services'], ['Terapi süreci', '/production'], ['Klinik', '/gallery'], ['Blog Yazıları', '/blog'], ['S.S.S', '/faq'], ['İzmir psikolog', '/izmir-psikolog']] as [$name, $href]): ?>
             <li><a href="<?= e($href) ?>" class="<?= $footerLink ?>"><?= e($name) ?></a></li>
           <?php endforeach; ?>
         </ul>
@@ -138,7 +138,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
         <?php if ($socialLinks): ?>
           <ul class="mt-8 flex flex-wrap gap-3">
             <?php foreach ($socialLinks as $s): $platform = ($s['name'] ?? '') ?: ($s['platform'] ?? ''); ?>
-              <li><a href="<?= e(safe_url($s['url'] ?? '')) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= e($platform) ?>" title="<?= e($platform) ?>" class="flex h-10 w-10 items-center justify-center rounded-full border border-paper/20 text-paper/70 transition-colors duration-300 hover:border-paper/60 hover:bg-paper hover:text-forest"><?= social_icon($platform) ?></a></li>
+              <li><a href="<?= e(safe_url($s['url'] ?? '')) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= e($platform) ?>" title="<?= e($platform) ?>" style="background: <?= e(social_brand_bg($platform)) ?>" class="flex h-10 w-10 items-center justify-center rounded-full text-white transition-transform duration-300 hover:-translate-y-0.5"><?= social_icon($platform) ?></a></li>
             <?php endforeach; ?>
           </ul>
         <?php endif; ?>

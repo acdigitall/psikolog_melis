@@ -272,3 +272,4 @@ require APP_DIR . '/data.php';
 require APP_DIR . '/auth.php';
 require APP_DIR . '/crm.php';
 require APP_DIR . '/components.php';
+require APP_DIR . '/blocks.php';

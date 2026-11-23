@@ -349,6 +349,17 @@ body.menu-open #mobil-menu li { opacity: 1; transform: none; transition-delay: c
 #route-bar { transform: scaleX(0); opacity: 0; transform-origin: left; transition: transform .3s ease-out, opacity .4s ease .2s; }
 #route-bar.is-loading { transform: scaleX(.7); opacity: 1; transition: transform 6s cubic-bezier(.1,.6,.2,1), opacity .2s; }
 
+/* Ek bölümler: "Koyu yeşil" arka plan seçildiğinde yazılar açık renge döner.
+   Açık zeminli kartların (.block-card) içi olduğu gibi kalır. */
+.block-dark { color: var(--color-paper); }
+.block-dark :is(.h-section, .h-sub, .text-forest, blockquote):not(.block-card *) { color: var(--color-paper); }
+.block-dark :is(.lead, .text-muted, .text-ink\/80, .text-ink\/75):not(.block-card *) { color: color-mix(in oklab, var(--color-paper) 78%, transparent); }
+.block-dark :is(.kicker, .text-bark, .text-clay):not(.block-card *) { color: var(--color-sage-light); }
+.block-dark :is(.border-line, .border-t, .border-b, .border-y, .border-l):not(.block-card *) { border-color: rgba(251, 248, 240, 0.18); }
+.block-dark .btn-forest { background: var(--color-paper); color: var(--color-forest); }
+.block-dark details summary { color: var(--color-paper); }
+.block-dark details p { color: color-mix(in oklab, var(--color-paper) 75%, transparent); }
+
 /* ───────── Yönetim paneli teması ─────────
    Panel bileşenleri Tailwind'in stone/amber tonlarını kullanır; bu kapsamda o tonlar
    sitenin orman yeşili–krem paletine eşlenir. Böylece sayfa mantığına dokunmadan

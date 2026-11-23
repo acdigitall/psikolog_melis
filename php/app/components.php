@@ -26,6 +26,23 @@ function social_icon(string $platform, string $class = 'h-[18px] w-[18px]'): str
     };
 }
 
+/** Platformun kendi marka rengi (CSS background değeri). */
+function social_brand_bg(string $platform): string
+{
+    $p = mb_strtolower($platform);
+    return match (true) {
+        str_contains($p, 'instagram') => 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)',
+        str_contains($p, 'linkedin') => '#0A66C2',
+        str_contains($p, 'youtube') => '#FF0000',
+        str_contains($p, 'facebook') => '#1877F2',
+        str_contains($p, 'twitter'), $p === 'x' => '#000000',
+        str_contains($p, 'tiktok') => '#000000',
+        str_contains($p, 'whatsapp') => '#25D366',
+        str_contains($p, 'pinterest') => '#E60023',
+        default => 'rgba(255,255,255,.15)',
+    };
+}
+
 function plus_icon(string $class = 'w-4 h-4'): string
 {
     return '<svg class="' . e($class) . '" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke-linecap="round"/></svg>';
@@ -148,20 +165,32 @@ function page_hero(array $o): void
     <?php
 }
 
-function cta_band(array $o = []): void
+/**
+ * Sayfa sonu çağrı kutusu. Tüm sayfalarda aynıdır ve içeriği admin'de
+ * "Ana Sayfa" ayarlarındaki çağrı bölümünden gelir.
+ */
+function cta_band(): void
 {
-    $title = ($o['title'] ?? null) ?: 'Kendinizi daha iyi hissetmeye doğru ilk adımı atın';
-    $description = ($o['description'] ?? null) ?: 'Yüz yüze ya da online; size uygun bir zamanda tanışma görüşmesi planlayalım. Hangi desteğin size iyi geleceğini birlikte netleştirelim.';
-    // Anahtar hiç verilmezse varsayılan buton; açıkça null verilirse buton gösterilmez.
-    $primary = array_key_exists('primary', $o) ? $o['primary'] : ['text' => 'Randevu talebi oluştur', 'href' => '/quote'];
-    $secondary = array_key_exists('secondary', $o) ? $o['secondary'] : ['text' => 'Önce soru sormak istiyorum', 'href' => '/contact'];
+    $d = home_page() ?? [];
+    // Admin'de boş bırakılan alan (başlık, açıklama, buton) gizlenir; varsayılan yalnızca hiç kayıt yokken gösterilir.
+    $title = trim((string) ($d['ctaTitle'] ?? 'Kendinizi daha iyi hissetmeye doğru ilk adımı atın'));
+    $description = trim((string) ($d['ctaDesc'] ?? 'Yüz yüze ya da online; size uygun bir zamanda tanışma görüşmesi planlayalım. Hangi desteğin size iyi geleceğini birlikte netleştirelim.'));
+    $button = function (string $textKey, string $linkKey, string $text, string $href) use ($d): ?array {
+        $value = $d[$textKey] ?? $text;
+        return trim((string) $value) === '' ? null : ['text' => $value, 'href' => ($d[$linkKey] ?? null) ?: $href];
+    };
+    $primary = $button('ctaBtn1Text', 'ctaBtn1Link', 'Randevu talebi oluştur', '/quote');
+    $secondary = $button('ctaBtn2Text', 'ctaBtn2Link', 'Önce soru sormak istiyorum', '/contact');
+    if ($title === '' && $description === '' && !$primary && !$secondary) {
+        return;
+    }
     ?>
     <section class="mx-auto max-w-[1240px] px-6 pb-16 md:pb-24 lg:pb-28 lg:px-10">
       <div data-reveal class="scene-tepeler overflow-hidden rounded-[1.75rem] bg-forest px-6 py-14 text-center text-paper sm:px-10 md:px-16 md:py-20">
-        <h2 class="h-section mx-auto max-w-2xl !text-paper"><?= with_breaks($title) ?></h2>
-        <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-paper/90 sm:text-lg"><?= e($description) ?></p>
+        <?php if ($title !== ''): ?><h2 class="h-section mx-auto max-w-2xl !text-paper"><?= with_breaks($title) ?></h2><?php endif; ?>
+        <?php if ($description !== ''): ?><p class="mx-auto max-w-xl text-base leading-relaxed text-paper/90 sm:text-lg <?= $title !== '' ? 'mt-5' : '' ?>"><?= e($description) ?></p><?php endif; ?>
         <?php if ($primary || $secondary): ?>
-        <div class="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <div class="<?= $title !== '' || $description !== '' ? 'mt-10' : '' ?> flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <?php if ($primary): ?><a href="<?= e(safe_url($primary['href'])) ?>" class="btn-light"><?= e($primary['text']) ?> <?= arrow_right() ?></a><?php endif; ?>
           <?php if ($secondary): ?><a href="<?= e(safe_url($secondary['href'])) ?>" class="btn-outline-light"><?= e($secondary['text']) ?></a><?php endif; ?>
         </div>

@@ -70,7 +70,7 @@ $meta = page_meta([
 
 echo json_ld([
     article_schema($post),
-    breadcrumb_schema([['name' => 'Bloglar', 'path' => '/blog'], ['name' => $post['title'], 'path' => '/blog/' . $post['slug']]]),
+    breadcrumb_schema([['name' => 'Blog Yazıları', 'path' => '/blog'], ['name' => $post['title'], 'path' => '/blog/' . $post['slug']]]),
 ]);
 ?>
 <article>
