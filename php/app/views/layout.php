@@ -136,9 +136,9 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
           <div class="flex justify-between gap-6"><dt>Pazar</dt><dd>Kapalı</dd></div>
         </dl>
         <?php if ($socialLinks): ?>
-          <ul class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-[15px]">
-            <?php foreach ($socialLinks as $s): ?>
-              <li><a href="<?= e(safe_url($s['url'] ?? '')) ?>" target="_blank" rel="noopener noreferrer" class="<?= $footerLink ?>"><?= e(($s['name'] ?? '') ?: ($s['platform'] ?? '')) ?></a></li>
+          <ul class="mt-8 flex flex-wrap gap-3">
+            <?php foreach ($socialLinks as $s): $platform = ($s['name'] ?? '') ?: ($s['platform'] ?? ''); ?>
+              <li><a href="<?= e(safe_url($s['url'] ?? '')) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= e($platform) ?>" title="<?= e($platform) ?>" class="flex h-10 w-10 items-center justify-center rounded-full border border-paper/20 text-paper/70 transition-colors duration-300 hover:border-paper/60 hover:bg-paper hover:text-forest"><?= social_icon($platform) ?></a></li>
             <?php endforeach; ?>
           </ul>
         <?php endif; ?>
