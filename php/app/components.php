@@ -64,10 +64,10 @@ function brand(?string $logo, string $variant = 'dark'): string
     $light = $variant === 'light';
     $main = $light ? 'text-paper' : 'text-forest';
     $sub = $light ? 'text-paper/60' : 'text-muted';
-    // Logo dosyası şeffaf değil: zemin önce beyaza çekilir, sonra harmanlamayla gizlenir.
-    $blend = $light ? 'brightness-[1.15] invert mix-blend-screen' : 'brightness-[1.15] mix-blend-multiply';
+    // Logo şeffaf PNG (siyah sembol); koyu zeminde beyaza çevrilir.
+    $blend = $light ? 'invert' : '';
     return '<span class="flex items-center gap-2.5">'
-        . '<img src="/logo/psikoloji_logo.png" alt="" width="40" height="40" class="h-10 w-10 shrink-0 ' . $blend . '">'
+        . '<img src="/logo/psikoloji_logo.png?v=2" alt="" width="40" height="40" class="h-10 w-10 shrink-0 ' . $blend . '">'
         . '<span class="flex flex-col leading-none">'
         . '<span class="text-[12px] ' . $sub . '">Uzm. Klinik Psikolog</span>'
         . '<span class="mt-1.5 font-serif text-[1.35rem] tracking-[-0.01em] ' . $main . '">Melis Sağlam Güleç</span>'
