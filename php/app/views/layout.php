@@ -6,7 +6,7 @@ $ogImage = abs_url($meta['image']);
 $siteLabel = SITE_NAME . ' · ' . CITY;
 $path = current_path();
 $navLinks = [
-    ['Hakkımda', '/about'], ['Yaklaşımlar', '/yaklasimlar'], ['Hizmetler', '/services'], ['Süreç', '/production'], ['Klinik', '/gallery'],
+    ['Hakkımda', '/about'], ['Yaklaşımlar', '/yaklasimlar'], ['Çalışma Alanları', '/services'], ['Süreç', '/production'], ['Klinik', '/gallery'],
     ['Bloglar', '/blog'], ['S.S.S', '/faq'], ['İletişim', '/contact'],
 ];
 $phone = $settings['phone1'] ?? null;
@@ -56,8 +56,8 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
 <meta name="twitter:title" content="<?= e($meta['title']) ?>">
 <meta name="twitter:description" content="<?= e($meta['description']) ?>">
 <meta name="twitter:image" content="<?= e($ogImage) ?>">
-<link rel="icon" href="/icon.png" type="image/png">
-<link rel="apple-touch-icon" href="/apple-icon.png">
+<link rel="icon" href="/icon.png?v=2" type="image/png">
+<link rel="apple-touch-icon" href="/apple-icon.png?v=2">
 <link rel="stylesheet" href="/assets/site.css?v=<?= (int) @filemtime(ROOT_DIR . '/assets/site.css') ?>">
 <script src="/assets/site.js?v=<?= (int) @filemtime(ROOT_DIR . '/assets/site.js') ?>" defer></script>
 </head>
@@ -115,7 +115,7 @@ $footerLink = 'text-paper/65 hover:text-paper transition-colors duration-300';
       <div>
         <h4 class="mb-5 font-sans text-sm text-paper/45">Sayfalar</h4>
         <ul class="space-y-2.5 text-[15px]">
-          <?php foreach ([['Hakkımda', '/about'], ['Kullandığım yaklaşımlar', '/yaklasimlar'], ['Hizmetler', '/services'], ['Terapi süreci', '/production'], ['Klinik', '/gallery'], ['Bloglar', '/blog'], ['S.S.S', '/faq'], ['İzmir psikolog', '/izmir-psikolog']] as [$name, $href]): ?>
+          <?php foreach ([['Hakkımda', '/about'], ['Kullandığım yaklaşımlar', '/yaklasimlar'], ['Çalışma Alanları', '/services'], ['Terapi süreci', '/production'], ['Klinik', '/gallery'], ['Bloglar', '/blog'], ['S.S.S', '/faq'], ['İzmir psikolog', '/izmir-psikolog']] as [$name, $href]): ?>
             <li><a href="<?= e($href) ?>" class="<?= $footerLink ?>"><?= e($name) ?></a></li>
           <?php endforeach; ?>
         </ul>

@@ -11,7 +11,7 @@ page_hero([
     'image' => '/images/hero-nefes.jpg',
     'title' => ($header['title'] ?? null) ?: 'Size nasıl destek olabilirim?',
     'description' => $header['description'] ?? null,
-    'crumbs' => [['label' => 'Hizmetler']],
+    'crumbs' => [['label' => 'Çalışma Alanları']],
 ]);
 ?>
 <section class="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">

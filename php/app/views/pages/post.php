@@ -97,7 +97,7 @@ echo json_ld([
         <p class="text-sm text-olive">İzmir'de ve online destek</p>
         <p class="mt-2 font-serif text-[1.5rem] leading-snug text-forest"><?= e($relatedService['title']) ?></p>
         <p class="mt-3 text-[1rem] leading-relaxed text-ink/75"><?= e($relatedService['desc']) ?></p>
-        <a href="/services/<?= e($relatedService['slug']) ?>" class="link-line mt-5 text-[1rem]">Hizmet hakkında bilgi <?= arrow_right() ?></a>
+        <a href="/services/<?= e($relatedService['slug']) ?>" class="link-line mt-5 text-[1rem]">Çalışma alanı hakkında bilgi <?= arrow_right() ?></a>
       </aside>
     <?php endif; ?>
 

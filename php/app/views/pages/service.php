@@ -31,7 +31,7 @@ $meta = page_meta([
 
 echo json_ld([
     service_schema($service),
-    breadcrumb_schema([['name' => 'Hizmetler', 'path' => '/services'], ['name' => $service['title'], 'path' => '/services/' . $service['slug']]]),
+    breadcrumb_schema([['name' => 'Çalışma Alanları', 'path' => '/services'], ['name' => $service['title'], 'path' => '/services/' . $service['slug']]]),
     ...($local && $local['faqs'] ? [faq_schema($local['faqs'])] : []),
 ]);
 ?>
@@ -40,7 +40,7 @@ echo json_ld([
     <nav aria-label="Sayfa yolu" class="mb-12 md:mb-16 text-sm text-muted">
       <a href="/" class="hover:text-forest">Anasayfa</a>
       <span class="mx-2 text-sage/60">/</span>
-      <a href="/services" class="hover:text-forest">Hizmetler</a>
+      <a href="/services" class="hover:text-forest">Çalışma Alanları</a>
       <span class="mx-2 text-sage/60">/</span>
       <span class="text-ink/80"><?= e($service['title']) ?></span>
     </nav>

@@ -114,7 +114,7 @@ $meta = page_meta([
 <section class="mx-auto max-w-[1240px] px-6 py-16 md:py-24 lg:py-28 lg:px-10">
   <div data-reveal class="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
     <h2 class="h-section max-w-2xl"><?= e(($d['servicesTitle'] ?? null) ?: 'Size nasıl destek olabilirim?') ?></h2>
-    <a href="/services" class="link-line shrink-0 self-start md:self-auto">Tüm hizmetler <?= arrow_right() ?></a>
+    <a href="/services" class="link-line shrink-0 self-start md:self-auto">Tüm çalışma alanları <?= arrow_right() ?></a>
   </div>
   <div class="snap-row sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-3">
     <?php foreach ($shownServices as $i => $s): ?>

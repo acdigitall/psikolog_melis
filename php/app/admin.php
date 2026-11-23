@@ -32,20 +32,20 @@ function admin_resources(): array
 {
     return [
         'services' => [
-            'table' => 'Service', 'title' => 'Hizmetler', 'add' => '+ Yeni hizmet ekle', 'orderBy' => 'id ASC', 'header' => 'services',
-            'confirm' => 'Bu hizmeti silmek istediğinize emin misiniz?', 'duplicate' => 'Bu URL (slug) zaten kullanımda. Lütfen başka bir URL belirleyin.',
-            'columns' => [['img', 'Görsel', 'image'], ['title', 'Hizmet', 'text'], ['slug', 'Adres', 'text'], ['isFeatured', 'Öne çıkan', 'bool']],
+            'table' => 'Service', 'title' => 'Çalışma Alanları', 'add' => '+ Yeni çalışma alanı ekle', 'orderBy' => 'id ASC', 'header' => 'services',
+            'confirm' => 'Bu çalışma alanını silmek istediğinize emin misiniz?', 'duplicate' => 'Bu URL (slug) zaten kullanımda. Lütfen başka bir URL belirleyin.',
+            'columns' => [['img', 'Görsel', 'image'], ['title', 'Çalışma alanı', 'text'], ['slug', 'Adres', 'text'], ['isFeatured', 'Öne çıkan', 'bool']],
             'fields' => [
-                ['key' => 'title', 'label' => 'Hizmet adı *', 'required' => true, 'placeholder' => 'ör. Çift ve İlişki Terapisi'],
+                ['key' => 'title', 'label' => 'Çalışma alanı adı *', 'required' => true, 'placeholder' => 'ör. Çift ve İlişki Terapisi'],
                 ['key' => 'slug', 'label' => 'Sayfa adresi (slug) *', 'placeholder' => 'ör. cift-ve-iliski-terapisi', 'slugFrom' => 'f[title]'],
                 ['key' => 'isFeatured', 'label' => 'Ana sayfada öne çıkar', 'type' => 'checkbox'],
                 ...seo_fields(),
                 ['section' => 'İçerik'],
-                ['key' => 'desc', 'label' => 'Kısa açıklama (özet)', 'type' => 'textarea', 'rows' => 3, 'required' => true, 'placeholder' => 'Hizmet listesinde görünecek kısa özet...'],
+                ['key' => 'desc', 'label' => 'Kısa açıklama (özet)', 'type' => 'textarea', 'rows' => 3, 'required' => true, 'placeholder' => 'Liste sayfasında görünecek kısa özet...'],
                 ['key' => 'longDesc', 'label' => 'Uzun açıklama (detay sayfası için)', 'type' => 'textarea', 'rows' => 10, 'required' => true, 'placeholder' => 'Detay sayfasında görünecek ayrıntılı açıklama...'],
                 ['key' => 'features', 'label' => 'Çalışılan konular (virgülle ayırın)', 'type' => 'textarea', 'rows' => 3, 'placeholder' => 'ör. Kaygı, Panik atak, Sosyal kaygı'],
                 ['key' => 'steps', 'label' => 'Süreç adımları (virgülle ayırın)', 'type' => 'textarea', 'rows' => 3, 'placeholder' => 'ör. Tanışma görüşmesi, Değerlendirme, Hedef belirleme'],
-                ['key' => 'img', 'label' => 'Hizmet görseli *', 'type' => 'image', 'required' => true],
+                ['key' => 'img', 'label' => 'Görsel *', 'type' => 'image', 'required' => true],
             ],
             'beforeSave' => function (array $data): array {
                 $data['slug'] = slugify($data['slug'] !== '' ? $data['slug'] : $data['title']);
@@ -58,7 +58,7 @@ function admin_resources(): array
             'columns' => [['image', 'Görsel', 'image'], ['title', 'Başlık', 'text'], ['category', 'Kategori', 'text'], ['status', 'Durum', 'text'], ['views', 'Okunma', 'text'], ['createdAt', 'Tarih', 'date']],
             'fields' => fn () => [
                 ['key' => 'title', 'label' => 'Yazı başlığı *', 'required' => true, 'placeholder' => 'Yazı başlığını yazın...'],
-                ['key' => 'category', 'label' => 'Kategori (ilgili hizmet) *', 'type' => 'select', 'required' => true, 'options' => service_titles(), 'help' => 'Seçenekler Hizmetler bölümündeki başlıklardan gelir.'],
+                ['key' => 'category', 'label' => 'Kategori (ilgili çalışma alanı) *', 'type' => 'select', 'required' => true, 'options' => service_titles(), 'help' => 'Seçenekler Çalışma Alanları bölümündeki başlıklardan gelir.'],
                 ['key' => 'status', 'label' => 'Durum *', 'type' => 'select', 'required' => true, 'options' => ['Yayında', 'Taslak']],
                 ...seo_fields(),
                 ['section' => 'İçerik'],
@@ -127,7 +127,7 @@ function admin_singletons(): array
                 ['key' => 'heroNote', 'label' => 'Alt not: devamı', 'placeholder' => DEFAULT_HERO['note']],
                 ['key' => 'heroImg', 'label' => 'Görsel', 'type' => 'image'],
                 ['key' => 'heroImgAlt', 'label' => 'Görsel açıklaması (arama motorları ve ekran okuyucular için)', 'placeholder' => DEFAULT_HERO['imgAlt']],
-                ['section' => 'Hizmetler bölümü'],
+                ['section' => 'Çalışma alanları bölümü'],
                 ['key' => 'servicesTitle', 'label' => 'Bölüm başlığı'],
                 ['section' => 'Yaklaşım bölümü'],
                 ['key' => 'whyUsTitle', 'label' => 'Bölüm başlığı'],
@@ -788,7 +788,7 @@ function admin_dashboard(): void
     $cards = [
         ['Randevu talebi', 'quotes', '/admin/quotes', $newQuotes ? "$newQuotes yeni" : ''],
         ['Yayındaki yazı', 'blogs', '/admin/blog', $drafts ? "$drafts taslak" : ''],
-        ['Hizmet', 'services', '/admin/services', ''],
+        ['Çalışma alanı', 'services', '/admin/services', ''],
         ['Galeri görseli', 'gallery', '/admin/gallery', ''],
     ];
 
@@ -800,7 +800,7 @@ function admin_dashboard(): void
             <h1 class="text-3xl font-serif text-stone-900">Panel</h1>
             <div class="flex flex-wrap gap-3">
               <a href="/admin/calendar" class="<?= $secondary ?>">Takvim</a>
-              <a href="/admin/services" class="<?= $secondary ?>">Hizmetleri düzenle</a>
+              <a href="/admin/services" class="<?= $secondary ?>">Çalışma alanlarını düzenle</a>
               <a href="/admin/gallery/new" class="<?= $secondary ?>">Galeriye görsel ekle</a>
               <a href="/admin/blog/new" class="px-5 py-3 text-sm bg-amber-700 text-white rounded hover:bg-amber-800 transition-colors">Yeni blog yazısı</a>
             </div>
@@ -1027,7 +1027,7 @@ function admin_head(string $title, string $extra = ''): void
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($title) ?></title>
-<link rel="icon" href="/icon.png" type="image/png">
+<link rel="icon" href="/icon.png?v=2" type="image/png">
 <link rel="stylesheet" href="/assets/site.css?v=<?= (int) @filemtime(ROOT_DIR . '/assets/site.css') ?>">
 <script src="/assets/admin.js?v=<?= (int) @filemtime(ROOT_DIR . '/assets/admin.js') ?>" defer></script>
 <?= $extra ?>
@@ -1074,7 +1074,7 @@ function admin_shell(string $heading, string $activePath, callable $body, array 
 {
     $menu = [
         ['Ana Sayfa', '/admin/home', 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
-        ['Hizmetler', '/admin/services', 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
+        ['Çalışma Alanları', '/admin/services', 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
         ['Takvim', '/admin/calendar', 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2zm4-6h2v2H9v-2z'],
         ['SMS Ayarları', '/admin/sms', 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z'],
         ['Randevu Talepleri', '/admin/quotes','M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
